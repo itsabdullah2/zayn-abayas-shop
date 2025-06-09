@@ -3,11 +3,17 @@ import { navLinks } from "@/constants/navLinks";
 import { FaSearch, FaUser } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import CartDropdown from "./CartDropdown";
+import { useContextSelector } from "use-context-selector";
+import { AppContext } from "@/context/AppContext";
 
 const DeskNavigation = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const [activeLink, setActiveLink] = useState<string>(pathname);
+  const handleOpenSearchPopup = useContextSelector(
+    AppContext,
+    (ctx) => ctx?.handleOpenSearchPopup
+  );
 
   useEffect(() => {
     setActiveLink(pathname);
@@ -34,6 +40,7 @@ const DeskNavigation = () => {
         <button
           role="button"
           className="cursor-pointer text-txt-light hover:text-secondary duration-200"
+          onClick={handleOpenSearchPopup}
         >
           <FaSearch size={20} />
         </button>
