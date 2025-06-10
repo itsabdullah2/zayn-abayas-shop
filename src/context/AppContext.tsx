@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 
 type AppContextType = {
@@ -22,9 +22,9 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
-  const handleCloseSearchPopup = () => {
+  const handleCloseSearchPopup = useCallback(() => {
     setSearchPopup(false);
-  };
+  }, []);
   const handleOpenSearchPopup = () => {
     setSearchPopup(true);
   };
@@ -41,7 +41,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       document.removeEventListener("keydown", handleCloseOnPressEsc);
     };
-  });
+  }, [handleCloseSearchPopup]);
 
   const value = {
     // States
