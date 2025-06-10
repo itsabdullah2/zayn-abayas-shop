@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { AppContext } from "@/context/AppContext";
 import { Link } from "react-router-dom";
 import { useContextSelector } from "use-context-selector";
+import SearchInput from "./SearchInput";
 
 const SearchPopup = () => {
   const handleCloseSearchPopup = useContextSelector(
@@ -16,25 +17,20 @@ const SearchPopup = () => {
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-100 bg-background text-primary py-8 px-5 rounded-xl w-[95vw] sm:w-[40.625rem] h-[28.125rem] max-h-[37.5rem] overflow-y-auto `}
       >
         <div className="flex flex-col gap-5">
-          <input
-            type="search"
-            placeholder="Search..."
-            className="w-full border border-gray rounded-lg py-4 px-2 bg-light-gray focus:placeholder:opacity-0 placeholder:duration-200 focus:outline-none mt-5"
-          />
+          <SearchInput />
 
-          <div className="flex flex-col gap-3">
-            <Link
-              to="#"
-              className="odd:bg-light-gray/50 even:bg-light-gray py-4 px-2 rounded-lg"
-            >
-              <h3 className="font-medium text-black">First Result</h3>
-              <p className="text-gray text-sm">
-                {/* Condition here to handle the number of characters if the length of the desc > 80 character will render 80 characters with => ... */}
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Corporis, maiores!
-              </p>
-            </Link>
-          </div>
+          <ul className="flex flex-col gap-3">
+            <li className="odd:bg-light-gray/50 even:bg-light-gray py-4 px-2 rounded-lg h-fit">
+              <Link to="#" className="flex flex-col">
+                <h3 className="font-medium text-black">First Result</h3>
+                <p className="text-gray text-sm">
+                  {/* Condition here to handle the number of characters if the length of the desc > 80 character will render 80 characters with => ... */}
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Corporis, maiores!
+                </p>
+              </Link>
+            </li>
+          </ul>
         </div>
 
         <Button
