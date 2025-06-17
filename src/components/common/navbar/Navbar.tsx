@@ -35,8 +35,8 @@ const Navbar = () => {
     <nav className="w-full shadow-md bg-primary sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="text-2xl font-bold text-txt-light">
-            Caffi
+          <Link to="/" className="text-2xl font-bold text-neutral font-roboto">
+            Zayn Abayas
           </Link>
 
           {/* Desktop Navigation */}
@@ -47,7 +47,7 @@ const Navbar = () => {
 
           <button
             onClick={handleNavMenu}
-            className="md:hidden cursor-pointer text-txt-light"
+            className="md:hidden cursor-pointer text-neutral"
           >
             {isNavMenu ? <FaTimes size={20} /> : <FaBars size={20} />}
           </button>

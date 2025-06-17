@@ -39,7 +39,7 @@ const CartDropdown = () => {
     <div className="relative">
       <button
         onClick={handleCart}
-        className="flex relative cursor-pointer text-primary md:text-txt-light md:hover:text-secondary transition-colors"
+        className="flex relative cursor-pointer text-primary md:text-neutral md:hover:text-secondary transition-colors"
       >
         <FaShoppingCart size={20} />
         {totalItems > 0 && (

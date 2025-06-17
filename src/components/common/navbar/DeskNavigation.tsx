@@ -21,14 +21,14 @@ const DeskNavigation = () => {
 
   return (
     <>
-      <ul className="hidden md:flex items-center gap-5 text-txt-light">
+      <ul className="hidden md:flex items-center gap-5 text-neutral">
         {navLinks.map((link) => (
           <li
             key={link.name}
             className={`text-[1.125rem] ${
               activeLink === link.path
                 ? "text-secondary"
-                : "text-white hover:text-secondary"
+                : "text-neutral hover:text-secondary"
             } duration-200`}
           >
             <Link to={link.path}>{link.name}</Link>
@@ -39,7 +39,7 @@ const DeskNavigation = () => {
       <div className="hidden md:flex items-center gap-5">
         <button
           role="button"
-          className="cursor-pointer text-txt-light hover:text-secondary duration-200"
+          className="cursor-pointer text-neutral hover:text-secondary duration-200"
           onClick={handleOpenSearchPopup}
         >
           <FaSearch size={20} />
@@ -49,7 +49,7 @@ const DeskNavigation = () => {
 
         <button
           role="button"
-          className="cursor-pointer text-txt-light hover:text-secondary duration-200"
+          className="cursor-pointer text-neutral hover:text-secondary duration-200"
         >
           <FaUser size={20} />
         </button>

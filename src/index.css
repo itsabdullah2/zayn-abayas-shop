@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600&family=Roboto:wght@300;400;500;600&display=swap");
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -9,16 +10,24 @@ html {
 }
 
 @theme inline {
-  --color-primary: #4b2e2b; /* (Espresso) for navbar, header, buttons */
-  --color-secondary: #cbae8f; /* (Latte) for card backgrounds or hover effects */
-  --color-background: #f5f0eb; /* (Vanilla Cream) as your page background */
-  --color-accent: #a47148; /* (Cinnamon) for "Order Now" or active items */
-  --color-txt-dark: #2e1e1a; /* (Dark Roast) Main text on light backgrounds */
-  --color-txt-light: #ffffff; /* (Foam White) Text on dark elements */
-  --color-success: #6e8b3d; /* (Matcha Green) For confirmed orders or status tags */
-  --color-warning: #d2691e; /* (Burnt Sienna) For alerts or warnings */
+  /* --color-primary: #4b2e2b; (Espresso) for navbar, header, buttons */
+  /* --color-secondary: #cbae8f; (Latte) for card backgrounds or hover effects */
+  /* --color-background: #f5f0eb; (Vanilla Cream) as your page background */
+  /* --color-accent: #a47148; (Cinnamon) for "Order Now" or active items */
+  /* --color-txt-dark: #2e1e1a; (Dark Roast) Main text on light backgrounds */
+  /* --color-txt-light: #ffffff; (Foam White) Text on dark elements */
+  /* --color-success: #6e8b3d; (Matcha Green) For confirmed orders or status tags */
+  /* --color-warning: #d2691e; (Burnt Sienna) For alerts or warnings */
+  --color-primary: #1c1c1c; /*Charcoal Black*/
+  --color-secondary: #c2b280; /* Desert Sand */
+  --color-accentA: #4b3621; /* Oud Brown */
+  --color-accentB: #d4af37; /* Gold */
+  --color-neutral: #f5f5f5; /* Off-White */
+  --color-text: #6e6e6e; /* Smoky Gray */
   --color-gray: #6a7282;
   --color-light-gray: #e5e7eb;
+  --font-noto-kufi: "Noto Kufi Arabic", "sans-serif";
+  --font-roboto: "Roboto", "sans-serif";
 }
 
 :root {
@@ -91,5 +100,5 @@ html {
 }
 
 body {
-  font-family: "Quicksand", sans-serif;
+  font-family: "Roboto", sans-serif;
 }

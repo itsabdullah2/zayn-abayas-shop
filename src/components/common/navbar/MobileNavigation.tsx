@@ -27,8 +27,8 @@ const MobileNavigation = () => {
             key={link.name}
             className={`text-[1.125rem] ${
               activeLink === link.path
-                ? "text-primary"
-                : "text-secondary hover:text-primary font-medium"
+                ? "text-secondary"
+                : "text-primary hover:text-secondary font-medium"
             } duration-200`}
             onClick={() => setIsNavMenu(false)}
           >
@@ -37,7 +37,7 @@ const MobileNavigation = () => {
         ))}
       </ul>
       {/* Icons */}
-      <div className="flex items-center justify-end gap-5 pt-5 border-t border-secondary">
+      <div className="flex items-center justify-end gap-5 pt-5 border-t border-primary/40">
         <button role="button" className="cursor-pointer text-txt-dark">
           <FaSearch size={20} />
         </button>

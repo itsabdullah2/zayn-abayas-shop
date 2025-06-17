@@ -1,0 +1,93 @@
+coffee-ordering/
+├── frontend/                      # Frontend application
+│   ├── public/                    # Static files
+│   │   ├── images/               # Image assets
+│   │   ├── icons/                # Icon assets
+│   │   └── favicon.ico           # Favicon
+│   │
+│   ├── src/                      # Source code
+│   │   ├── assets/              # Additional assets (fonts, etc.)
+│   │   ├── components/          # Reusable components
+│   │   │   ├── common/         # Shared components
+│   │   │   ├── layout/         # Layout components
+│   │   │   └── features/       # Feature-specific components
+│   │   │
+│   │   ├── pages/              # Page components
+│   │   │   ├── Home/
+│   │   │   ├── Menu/
+│   │   │   ├── Cart/
+│   │   │   ├── Checkout/
+│   │   │   └── OrderStatus/
+│   │   │
+│   │   ├── hooks/              # Custom React hooks
+│   │   ├── context/            # React context providers
+│   │   ├── services/           # API services
+│   │   │   ├── api.ts         # API configuration
+│   │   │   └── endpoints/     # API endpoint definitions
+│   │   │
+│   │   ├── utils/             # Utility functions
+│   │   ├── types/             # TypeScript type definitions
+│   │   ├── constants/         # Constants and configuration
+│   │   ├── styles/            # Global styles
+│   │   │   ├── theme.ts      # Theme configuration
+│   │   │   └── global.css    # Global CSS
+│   │   │
+│   │   ├── App.tsx           # Root component
+│   │   ├── index.tsx         # Entry point
+│   │   └── routes.tsx        # Route definitions
+│   │
+│   ├── tests/                # Test files
+│   │   ├── unit/
+│   │   ├── integration/
+│   │   └── e2e/
+│   │
+│   ├── .env                  # Environment variables
+│   ├── .env.example          # Example environment variables
+│   ├── package.json          # Dependencies and scripts
+│   ├── tsconfig.json         # TypeScript configuration
+│   ├── vite.config.ts        # Vite configuration
+│   └── README.md            # Project documentation
+│
+├── backend/                   # Backend application (if needed)
+│   ├── src/
+│   │   ├── controllers/      # Request handlers
+│   │   ├── models/          # Data models
+│   │   ├── routes/          # API routes
+│   │   ├── services/        # Business logic
+│   │   ├── middleware/      # Custom middleware
+│   │   ├── utils/           # Utility functions
+│   │   └── config/          # Configuration files
+│   │
+│   ├── tests/               # Backend tests
+│   ├── .env                 # Environment variables
+│   └── package.json         # Dependencies and scripts
+│
+└── README.md                # Project root documentation
+
+Key Features of this Structure:
+
+1. Modular Organization:
+   - Components are organized by feature and reusability
+   - Clear separation of concerns between different parts of the application
+
+2. Scalability:
+   - Easy to add new features without cluttering existing code
+   - Clear places for new components, pages, and functionality
+
+3. Maintainability:
+   - Consistent organization makes it easy to find and update code
+   - Separation of business logic from UI components
+
+4. Testing:
+   - Dedicated test directories for different types of tests
+   - Easy to maintain and extend test coverage
+
+5. Asset Management:
+   - Organized static assets
+   - Clear separation of different types of assets
+
+6. Configuration:
+   - Environment variables properly managed
+   - Clear configuration files for different aspects of the application
+
+This structure follows modern React best practices and is optimized for a coffee ordering system, making it easy to maintain and scale as the application grows. 

@@ -32,7 +32,7 @@ const SearchInput = ({ onDebounceSearch }: Props) => {
       value={inputValue}
       onChange={handleChange}
       placeholder="Search..."
-      className="w-full border border-gray rounded-lg h-11 bg-light-gray focus:placeholder:opacity-0 placeholder:duration-200 focus:outline-none mt-5 focus-visible:ring-none"
+      className="w-full border border-gray rounded-lg h-11 bg-light-gray focus:placeholder:opacity-0 placeholder:duration-200 focus:outline-none mt-5 focus-visible:ring-none focus:border-none"
     />
   );
 };
