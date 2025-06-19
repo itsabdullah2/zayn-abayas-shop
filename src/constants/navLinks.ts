@@ -8,8 +8,8 @@ export const navLinks = [
     path: "/about",
   },
   {
-    name: "Menu",
-    path: "/menu",
+    name: "Shop",
+    path: "/shop",
   },
   {
     name: "All Categories",

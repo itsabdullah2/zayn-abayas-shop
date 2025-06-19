@@ -7,7 +7,7 @@ import { AppContext } from "./context/AppContext";
 
 const HomePage = lazy(() => import("./pages/Home"));
 const AboutPage = lazy(() => import("./pages/About"));
-const MenuPage = lazy(() => import("./pages/Menu"));
+const ShopPage = lazy(() => import("./pages/Shop"));
 const AllCategoriesPage = lazy(() => import("./pages/AllCategories"));
 const CheckoutPage = lazy(() => import("./pages/Checkout"));
 const OrderStatusPage = lazy(() => import("./pages/OrderStatus"));
@@ -23,13 +23,13 @@ const Root = () => {
   );
 
   return (
-    <div className="flex flex-col min-h-dvh">
+    <div className="flex flex-col min-h-dvh bg-neutral">
       <Navbar />
       {searchPopup && <SearchPopup />}
       <Routes>
         <Route path={"/"} element={<HomePage />} />
         <Route path={"/about"} element={<AboutPage />} />
-        <Route path={"/menu"} element={<MenuPage />} />
+        <Route path={"/shop"} element={<ShopPage />} />
         <Route path={"/categories"} element={<AllCategoriesPage />} />
         <Route path={"/checkout"} element={<CheckoutPage />} />
         <Route path={"/order-status"} element={<OrderStatusPage />} />
