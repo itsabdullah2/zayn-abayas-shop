@@ -1,4 +1,4 @@
-import { informationFooterLinks } from "@/constants/footerLinks";
+import { INFO_FOOTER_LINKS } from "@/constants";
 import { Link } from "react-router-dom";
 
 const Information = () => {
@@ -7,7 +7,7 @@ const Information = () => {
       <li className="uppercase text-[0.875rem] text-neutral font-medium mb-2">
         information
       </li>
-      {informationFooterLinks.map((item, i) => (
+      {INFO_FOOTER_LINKS.map((item, i) => (
         <li
           key={i}
           className="text-text hover:underline hover:hover:text-neutral duration-200"
