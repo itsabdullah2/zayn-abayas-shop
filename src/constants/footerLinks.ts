@@ -3,7 +3,7 @@ type FooterLinksType = {
   path: string;
 };
 
-export const privacyFooterLinks: FooterLinksType[] = [
+export const PRIVACY_FOOTER_LINKS: FooterLinksType[] = [
   {
     name: "Terms of use",
     path: "/",
@@ -14,7 +14,7 @@ export const privacyFooterLinks: FooterLinksType[] = [
   },
 ];
 
-export const servicesFooterLinks: FooterLinksType[] = [
+export const SERVICES_FOOTER_LINKS: FooterLinksType[] = [
   {
     name: "Shop",
     path: "/categories",
@@ -29,7 +29,7 @@ export const servicesFooterLinks: FooterLinksType[] = [
   },
 ];
 
-export const aboutUsFooterLinks: FooterLinksType[] = [
+export const ABOUT_US_FOOTER_LINKS: FooterLinksType[] = [
   {
     name: "Find information",
     path: "/about",
@@ -44,7 +44,7 @@ export const aboutUsFooterLinks: FooterLinksType[] = [
   },
 ];
 
-export const informationFooterLinks: FooterLinksType[] = [
+export const INFO_FOOTER_LINKS: FooterLinksType[] = [
   {
     name: "All Categories",
     path: "/categories",

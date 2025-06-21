@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { navLinks } from "@/constants/navLinks";
+import { NAV_LINKS } from "@/constants";
 import { FaSearch, FaUser } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useContextSelector } from "use-context-selector";
@@ -22,7 +22,7 @@ const MobileNavigation = () => {
   return (
     <div className="flex flex-col gap-5 md:hidden fixed w-full top-16 shadow-md left-0 p-5 bg-white">
       <ul className="flex flex-col gap-5">
-        {navLinks.map((link) => (
+        {NAV_LINKS.map((link) => (
           <li
             key={link.name}
             className={`text-[1.125rem] ${

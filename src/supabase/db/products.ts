@@ -1,12 +1,24 @@
 import { supabase } from "../";
 import type { ProductType } from "@/types";
 
-export const getProducts = async (): Promise<ProductType[]> => {
+type ProductOpts = {
+  limit?: number;
+  eqCol?: string;
+  eqVal?: string;
+};
+
+export const getProducts = async (
+  options: ProductOpts = {}
+): Promise<ProductType[]> => {
   try {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .overrideTypes<Array<ProductType>, { merge: false }>();
+    const { limit, eqCol, eqVal } = options;
+
+    let query = supabase.from("products").select("*");
+
+    if (limit) query = query.limit(limit);
+    if (eqVal && eqCol) query = query.eq(eqCol, eqVal);
+
+    const { data, error } = await query;
 
     if (error) throw new Error(error.message);
     if (!data) throw new Error("No Products Found :(");
