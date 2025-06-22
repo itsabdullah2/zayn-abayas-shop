@@ -2,31 +2,34 @@ import { useCallback, useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 
 type AppContextType = {
-  theme: string;
-  handleTheme: () => void;
   isNavMenu: boolean;
   setIsNavMenu: React.Dispatch<React.SetStateAction<boolean>> | undefined;
   searchPopup: boolean;
   handleCloseSearchPopup: () => void;
   handleOpenSearchPopup: () => void;
+  closeProductPopup: () => void;
+  openProductPopup: () => void;
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<string>("light");
   const [isNavMenu, setIsNavMenu] = useState<boolean>(false);
   const [searchPopup, setSearchPopup] = useState<boolean>(false);
-
-  const handleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
+  const [productPopup, setProductPopup] = useState<boolean>(false);
 
   const handleCloseSearchPopup = useCallback(() => {
     setSearchPopup(false);
   }, []);
   const handleOpenSearchPopup = () => {
     setSearchPopup(true);
+  };
+
+  const closeProductPopup = () => {
+    setProductPopup(false);
+  };
+  const openProductPopup = () => {
+    setProductPopup(true);
   };
 
   useEffect(() => {
@@ -43,16 +46,30 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [handleCloseSearchPopup]);
 
+  useEffect(() => {
+    const closeProductPopupOnPressEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeProductPopup();
+      }
+    };
+
+    document.addEventListener("keydown", closeProductPopupOnPressEsc);
+    return () => {
+      document.removeEventListener("keydown", closeProductPopupOnPressEsc);
+    };
+  }, []);
+
   const value = {
     // States
-    theme,
     isNavMenu,
     searchPopup,
+    productPopup,
     // Functions
-    handleTheme,
     setIsNavMenu,
     handleCloseSearchPopup,
     handleOpenSearchPopup,
+    closeProductPopup,
+    openProductPopup,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
