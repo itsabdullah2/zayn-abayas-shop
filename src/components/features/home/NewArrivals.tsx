@@ -1,44 +1,41 @@
-import { CATEGORY_IDS } from "@/constants";
 import { getProducts } from "@/supabase/db/products";
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
-import { useEffect, useState } from "react";
-
-import { IoIosMore } from "react-icons/io";
+import { useState, useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa";
+import { IoIosMore } from "react-icons/io";
 
-const FeaturedProducts = () => {
+const NewArrivals = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<ProductType[]>([]);
+  const [newArrivals, setNewArrivals] = useState<ProductType[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchNewArrivals = async () => {
       try {
         const products = await getProducts({
-          eqCol: "category_id",
-          eqVal: CATEGORY_IDS.classic,
+          limit: 4,
+          eqCol: "is_best_sellers",
+          eqVal: false,
         });
-        setData(products);
+        setNewArrivals(products);
       } catch (err) {
-        setError("Failed to load featured products, please try again");
+        setError("Failed to load new arrivals products. Please try again!");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchNewArrivals();
   }, []);
 
   return (
     <section>
-      <h2 className="text-primary font-bold text-3xl mb-5">
-        Featured Products
-      </h2>
+      <h2 className="text-primary font-bold text-3xl mb-5">New Arrivals</h2>
       {loading && <p className="text-center text-text">Loading Products...</p>}
       {error && <p className="text-red-500">{error}</p>}
-      <div className="flex-1 responsive-grid">
-        {data.map((item) => (
+      <div className="responsive-grid">
+        {newArrivals.map((item) => (
           <figure key={item.id} className="card-style group">
             <img
               src={item.product_img}
@@ -71,4 +68,4 @@ const FeaturedProducts = () => {
   );
 };
 
-export default FeaturedProducts;
+export default NewArrivals;

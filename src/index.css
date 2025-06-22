@@ -50,4 +50,21 @@ body {
   .secondary-btn {
     @apply text-neutral bg-accentA hover:bg-accentA/90 duration-200 h-10 rounded-md px-6 flex items-center justify-center;
   }
+
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5;
+  }
+
+  .card-style {
+    @apply bg-light-gray shadow-xl overflow-hidden rounded-xl relative;
+  }
+  .card-title {
+    @apply text-[0.9375rem] font-medium text-primary;
+  }
+  .action-btns {
+    @apply flex items-center gap-3 absolute -top-20 right-2 duration-200 ease-in-out;
+  }
+  .btn {
+    @apply text-neutral rounded-full bg-primary w-10 h-10 flex items-center justify-center cursor-pointer;
+  }
 }
