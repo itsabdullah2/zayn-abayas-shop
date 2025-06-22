@@ -4,7 +4,7 @@ import type { ProductType } from "@/types";
 type ProductOpts = {
   limit?: number;
   eqCol?: string;
-  eqVal?: string;
+  eqVal?: string | boolean;
 };
 
 export const getProducts = async (
