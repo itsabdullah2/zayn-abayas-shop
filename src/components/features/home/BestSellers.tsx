@@ -2,6 +2,8 @@ import { getProducts } from "@/supabase/db/products";
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
 import { useEffect, useState } from "react";
+import { FaShoppingCart } from "react-icons/fa";
+import { IoIosMore } from "react-icons/io";
 
 const BestSellers = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -51,8 +53,12 @@ const BestSellers = () => {
             </figcaption>
 
             <div className="action-btns group-hover:top-2">
-              <button className="btn">D</button>
-              <button className="btn">C</button>
+              <button className="btn hover:text-accentB duration-200">
+                <IoIosMore size={19} />
+              </button>
+              <button className="btn hover:text-accentB duration-200">
+                <FaShoppingCart size={19} />
+              </button>
             </div>
           </figure>
         ))}
