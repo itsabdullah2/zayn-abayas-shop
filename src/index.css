@@ -39,6 +39,10 @@ body {
     @apply flex items-center justify-center;
   }
 
+  .absolute-center {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
+
   .shine-effect {
     @apply absolute top-0 left-[-75%] w-[15%] h-full bg-white/30 skew-x-[-20deg];
   }
@@ -52,7 +56,7 @@ body {
   }
 
   .responsive-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5;
   }
 
   .card-style {
