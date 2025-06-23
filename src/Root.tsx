@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { lazy } from "react";
+import { lazy, useContext } from "react";
 import Navbar from "./components/common/navbar/Navbar";
 import Footer from "./components/common/footer/Footer";
 import { useContextSelector } from "use-context-selector";
@@ -15,17 +15,29 @@ const CartPage = lazy(() => import("./pages/Cart"));
 const SearchPopup = lazy(
   () => import("./components/common/navbar/SearchPopup")
 );
+const ProductDetailsPopup = lazy(
+  () => import("@/components/common/details_popup")
+);
 
 const Root = () => {
   const searchPopup = useContextSelector(
     AppContext,
     (value) => value?.searchPopup
   );
+  const productDetailsPopup = useContextSelector(
+    AppContext,
+    (value) => value?.productPopup
+  );
+  const productId = useContextSelector(
+    AppContext,
+    (value) => value?.productPopup
+  )!;
 
   return (
     <div className="flex flex-col min-h-dvh bg-neutral">
       <Navbar />
       {searchPopup && <SearchPopup />}
+      {productDetailsPopup && <ProductDetailsPopup productId={productId} />}
       <Routes>
         <Route path={"/"} element={<HomePage />} />
         <Route path={"/about"} element={<AboutPage />} />
