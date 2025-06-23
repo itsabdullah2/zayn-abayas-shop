@@ -6,11 +6,18 @@ import { useEffect, useState } from "react";
 
 import { IoIosMore } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
+import { useContextSelector } from "use-context-selector";
+import { AppContext } from "@/context/AppContext";
 
 const FeaturedProducts = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<ProductType[]>([]);
+
+  const openProductPopup = useContextSelector(
+    AppContext,
+    (ctx) => ctx?.openProductPopup
+  )!;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,9 +50,10 @@ const FeaturedProducts = () => {
             <img
               src={item.product_img}
               alt={item.product_name}
+              loading="lazy"
               className="w-full sm:w-[400px]"
             />
-            <figcaption className="flex justify-between items-center py-4 px-2">
+            <figcaption className="flex justify-between gap-2 items-center py-4 px-2">
               <p className="card-title">
                 {item.product_name.length > 25
                   ? item.product_name.slice(0, 25) + "..."
@@ -57,7 +65,10 @@ const FeaturedProducts = () => {
             </figcaption>
 
             <div className="action-btns group-hover:top-2">
-              <button className="btn hover:text-accentB duration-200">
+              <button
+                className="btn hover:text-accentB duration-200"
+                onClick={() => openProductPopup(item.id)}
+              >
                 <IoIosMore size={19} />
               </button>
               <button className="btn hover:text-accentB duration-200">
