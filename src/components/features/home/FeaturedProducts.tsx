@@ -1,5 +1,5 @@
 import { CATEGORY_IDS } from "@/constants";
-import { getProducts } from "@/supabase/db/products";
+import { createCartItem, getProducts } from "@/supabase/db/products";
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
 import { useEffect, useState } from "react";
@@ -18,6 +18,10 @@ const FeaturedProducts = () => {
     AppContext,
     (ctx) => ctx?.openProductPopup
   )!;
+  const setProductsIds = useContextSelector(
+    AppContext,
+    (ctx) => ctx?.setProductsIds
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +40,19 @@ const FeaturedProducts = () => {
 
     fetchData();
   }, []);
+
+  const handleCart = async (productId: string) => {
+    await createCartItem({
+      user_id: null,
+      product_id: productId,
+      quantity: 1,
+    });
+
+    if (setProductsIds)
+      setProductsIds((prev: string[]) =>
+        prev.includes(productId) ? prev : [...prev, productId]
+      );
+  };
 
   return (
     <section>
@@ -71,7 +88,10 @@ const FeaturedProducts = () => {
               >
                 <IoIosMore size={19} />
               </button>
-              <button className="btn hover:text-accentB duration-200">
+              <button
+                className="btn hover:text-accentB duration-200"
+                onClick={() => handleCart(item.id)}
+              >
                 <FaShoppingCart size={19} />
               </button>
             </div>
