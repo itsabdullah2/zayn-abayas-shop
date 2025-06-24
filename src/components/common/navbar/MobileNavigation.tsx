@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { NAV_LINKS } from "@/constants";
-import { FaSearch, FaUser } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
