@@ -10,6 +10,8 @@ type AppContextType = {
   handleOpenSearchPopup: () => void;
   closeProductPopup: () => void;
   openProductPopup: (id: string) => void;
+  setProductsIds: React.Dispatch<React.SetStateAction<string[]>>;
+  productsIds: string[];
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -18,6 +20,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isNavMenu, setIsNavMenu] = useState<boolean>(false);
   const [searchPopup, setSearchPopup] = useState<boolean>(false);
   const [productPopup, setProductPopup] = useState<string | null>(null);
+
+  const [productsIds, setProductsIds] = useState<string[]>([]);
 
   const handleCloseSearchPopup = useCallback(() => {
     setSearchPopup(false);
@@ -65,12 +69,14 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     isNavMenu,
     searchPopup,
     productPopup,
+    productsIds,
     // Functions
     setIsNavMenu,
     handleCloseSearchPopup,
     handleOpenSearchPopup,
     closeProductPopup,
     openProductPopup,
+    setProductsIds,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
