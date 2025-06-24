@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { NAV_LINKS } from "@/constants";
-import { FaSearch, FaUser } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import CartDropdown from "./CartDropdown";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
 import { Button } from "@/components/ui/button";
+import UserDropdown from "./UserDropdown";
 
 const DeskNavigation = () => {
   const location = useLocation();
@@ -62,12 +63,7 @@ const DeskNavigation = () => {
 
         <CartDropdown />
 
-        <button
-          role="button"
-          className="cursor-pointer text-neutral hover:text-secondary duration-200"
-        >
-          <FaUser size={20} />
-        </button>
+        <UserDropdown />
       </div>
     </>
   );
