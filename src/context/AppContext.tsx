@@ -3,12 +3,13 @@ import { createContext } from "use-context-selector";
 
 type AppContextType = {
   isNavMenu: boolean;
-  setIsNavMenu: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  setIsNavMenu: React.Dispatch<React.SetStateAction<boolean>>;
   searchPopup: boolean;
+  productPopup: string | null;
   handleCloseSearchPopup: () => void;
   handleOpenSearchPopup: () => void;
   closeProductPopup: () => void;
-  openProductPopup: () => void;
+  openProductPopup: (id: string) => void;
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -16,7 +17,7 @@ export const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isNavMenu, setIsNavMenu] = useState<boolean>(false);
   const [searchPopup, setSearchPopup] = useState<boolean>(false);
-  const [productPopup, setProductPopup] = useState<boolean>(false);
+  const [productPopup, setProductPopup] = useState<string | null>(null);
 
   const handleCloseSearchPopup = useCallback(() => {
     setSearchPopup(false);
@@ -26,10 +27,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const closeProductPopup = () => {
-    setProductPopup(false);
+    setProductPopup(null);
   };
-  const openProductPopup = () => {
-    setProductPopup(true);
+  const openProductPopup = (id: string) => {
+    setProductPopup(id);
   };
 
   useEffect(() => {
