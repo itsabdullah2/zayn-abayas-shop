@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { lazy, useContext } from "react";
+import { lazy } from "react";
 import Navbar from "./components/common/navbar/Navbar";
 import Footer from "./components/common/footer/Footer";
 import { useContextSelector } from "use-context-selector";
