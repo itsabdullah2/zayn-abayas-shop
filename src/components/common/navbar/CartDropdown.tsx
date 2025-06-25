@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 import useCartData from "@/hooks/useCartData";
 
 const CartDropdown = () => {
-  const { cartItems, cartProducts } = useCartData();
+  const { cartProducts, totalItems, totalPrice } = useCartData();
   const [isOpen, setIsOpen] = useState(false);
 
   const cartRef = useRef<HTMLDivElement | null>(null);
@@ -25,19 +25,6 @@ const CartDropdown = () => {
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
   };
-
-  const totalItems = useMemo(
-    () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
-    [cartItems]
-  );
-  const totalPrice = useMemo(
-    () =>
-      cartItems.reduce((sum, item) => {
-        const product = cartProducts?.find((p) => p.id === item.product_id);
-        return product ? sum + product.product_price * item.quantity : sum;
-      }, 0),
-    [cartItems, cartProducts]
-  );
 
   return (
     <div className="relative" ref={cartRef}>
