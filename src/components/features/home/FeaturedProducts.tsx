@@ -8,6 +8,7 @@ import { IoIosMore } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
+import { CartContext } from "@/context/CartContext";
 
 const FeaturedProducts = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -18,7 +19,7 @@ const FeaturedProducts = () => {
     AppContext,
     (ctx) => ctx?.openProductPopup
   )!;
-  const handleCart = useContextSelector(AppContext, (ctx) => ctx?.handleCart);
+  const handleCart = useContextSelector(CartContext, (ctx) => ctx?.handleCart);
 
   useEffect(() => {
     const fetchData = async () => {

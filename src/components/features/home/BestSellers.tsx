@@ -1,4 +1,5 @@
 import { AppContext } from "@/context/AppContext";
+import { CartContext } from "@/context/CartContext";
 import { getProducts } from "@/supabase/db/products";
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
@@ -15,7 +16,7 @@ const BestSellers = () => {
     AppContext,
     (ctx) => ctx?.openProductPopup
   )!;
-  const handleCart = useContextSelector(AppContext, (ctx) => ctx?.handleCart);
+  const handleCart = useContextSelector(CartContext, (ctx) => ctx?.handleCart);
 
   useEffect(() => {
     const fetchBestSellers = async () => {
