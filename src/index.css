@@ -35,6 +35,10 @@ body {
 }
 
 @layer utilities {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 flex flex-col gap-20 pb-10;
+  }
+
   .flex-center {
     @apply flex items-center justify-center;
   }
@@ -70,5 +74,9 @@ body {
   }
   .btn {
     @apply text-neutral rounded-full bg-primary w-10 h-10 flex items-center justify-center cursor-pointer;
+  }
+
+  h3 {
+    @apply font-bold text-primary text-[1.0625rem];
   }
 }
