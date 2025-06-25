@@ -15,6 +15,7 @@ const BestSellers = () => {
     AppContext,
     (ctx) => ctx?.openProductPopup
   )!;
+  const handleCart = useContextSelector(AppContext, (ctx) => ctx?.handleCart);
 
   useEffect(() => {
     const fetchBestSellers = async () => {
@@ -66,7 +67,10 @@ const BestSellers = () => {
               >
                 <IoIosMore size={19} />
               </button>
-              <button className="btn hover:text-accentB duration-200">
+              <button
+                className="btn hover:text-accentB duration-200"
+                onClick={() => handleCart && handleCart(item.id)}
+              >
                 <FaShoppingCart size={19} />
               </button>
             </div>

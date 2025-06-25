@@ -1,3 +1,4 @@
+import { createCartItem } from "@/supabase/db/products";
 import { useCallback, useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 
@@ -12,6 +13,7 @@ type AppContextType = {
   openProductPopup: (id: string) => void;
   setProductsIds: React.Dispatch<React.SetStateAction<string[]>>;
   productsIds: string[];
+  handleCart: (productId: string) => void;
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -64,6 +66,20 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  // Cart Functionalities
+  const handleCart = async (productId: string) => {
+    await createCartItem({
+      user_id: null,
+      product_id: productId,
+      quantity: 1,
+    });
+
+    if (setProductsIds)
+      setProductsIds((prev: string[]) =>
+        prev.includes(productId) ? prev : [...prev, productId]
+      );
+  };
+
   const value = {
     // States
     isNavMenu,
@@ -77,6 +93,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     closeProductPopup,
     openProductPopup,
     setProductsIds,
+    handleCart,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
