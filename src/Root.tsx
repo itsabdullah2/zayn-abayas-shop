@@ -18,6 +18,9 @@ const SearchPopup = lazy(
 const ProductDetailsPopup = lazy(
   () => import("@/components/common/details_popup")
 );
+const OrdersPage = lazy(() => import("./pages/Orders"));
+const WishlistPage = lazy(() => import("./pages/Wishlist"));
+const Error404Page = lazy(() => import("./pages/Error404"));
 
 const Root = () => {
   const searchPopup = useContextSelector(
@@ -46,6 +49,9 @@ const Root = () => {
         <Route path={"/checkout"} element={<CheckoutPage />} />
         <Route path={"/order-status"} element={<OrderStatusPage />} />
         <Route path={"/cart"} element={<CartPage />} />
+        <Route path={"/orders"} element={<OrdersPage />} />
+        <Route path={"/wishlist"} element={<WishlistPage />} />
+        <Route path={"*"} element={<Error404Page />} />
       </Routes>
       <Footer />
     </div>
