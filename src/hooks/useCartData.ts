@@ -6,37 +6,24 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 const useCartData = () => {
   const {
-    setProductsIds,
     productsIds,
-    cartVersion,
     setCartProducts,
     cartProducts,
-    handleCart
+    handleCart,
+    handleRemoveProduct,
+    cartItems,
   } = useContextSelector(CartContext, (ctx) => ({
     setProductsIds: ctx?.setProductsIds,
     productsIds: ctx?.productsIds,
     cartVersion: ctx?.cartVersion,
     setCartProducts: ctx?.setCartProducts,
     cartProducts: ctx?.cartProducts,
-    handleCart: ctx?.handleCart
+    handleCart: ctx?.handleCart,
+    handleRemoveProduct: ctx?.handleRemoveProduct,
+    cartItems: ctx?.cartItems,
   }));
 
-  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const data = await getCartItems();
-        const ids = data.map((item) => item.product_id);
-        if (setProductsIds) setProductsIds(ids);
-        setCartItems(data);
-      } catch (err) {
-        console.error("Failed to fetch cart items:", err);
-      }
-    };
-    fetchCartItems();
-  }, [setProductsIds, cartVersion]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,11 +40,13 @@ const useCartData = () => {
   }, [productsIds, setCartProducts]);
 
   const totalItems = useMemo(
-    () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    () =>
+      cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0,
     [cartItems]
   );
   const totalPrice = useMemo(
     () =>
+      cartItems &&
       cartItems.reduce((sum, item) => {
         const product = cartProducts?.find((p) => p.id === item.product_id);
         return product ? sum + product.product_price * item.quantity : sum;
@@ -67,7 +56,8 @@ const useCartData = () => {
 
   const getProductQuantity = useCallback(
     (productId: string) => {
-      const item = cartItems.find((item) => item.product_id === productId);
+      const item =
+        cartItems && cartItems.find((item) => item.product_id === productId);
       return item?.quantity || 1;
     },
     [cartItems]
@@ -80,7 +70,8 @@ const useCartData = () => {
     totalItems,
     isLoading,
     getProductQuantity,
-    handleCart
+    handleCart,
+    handleRemoveProduct,
   };
 };
 
