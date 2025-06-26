@@ -1,7 +1,10 @@
+import useCartData from "@/hooks/useCartData";
 import type { ProductType } from "@/types";
 import { FaTrashAlt } from "react-icons/fa";
 
-const CartItem = ({ item }: { item: ProductType }) => {
+const CartDropdownItem = ({ item }: { item: ProductType }) => {
+  const { handleRemoveProduct } = useCartData();
+
   return (
     <div className="flex items-center gap-4">
       <img
@@ -15,11 +18,14 @@ const CartItem = ({ item }: { item: ProductType }) => {
         </h3>
         <p className="text-sm text-text">{item.product_price.toFixed(2)} E.L</p>
       </div>
-      <button className="text-text hover:text-red-700 duration-200 cursor-pointer">
+      <button
+        className="text-text hover:text-red-700 duration-200 cursor-pointer"
+        onClick={() => handleRemoveProduct && handleRemoveProduct(item.id)}
+      >
         <FaTrashAlt size={16} />
       </button>
     </div>
   );
 };
 
-export default CartItem;
+export default CartDropdownItem;

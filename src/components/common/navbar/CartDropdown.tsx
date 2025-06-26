@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import CartItem from "./CartItem";
+import CartDropdownItem from "./CartDropdownItem";
 import useCartData from "@/hooks/useCartData";
 
 const CartDropdown = () => {
@@ -52,14 +52,14 @@ const CartDropdown = () => {
               <>
                 <div className="space-y-4">
                   {cartProducts.map((item) => (
-                    <CartItem key={item.id} item={item} />
+                    <CartDropdownItem key={item.id} item={item} />
                   ))}
                 </div>
                 <div className="border-t border-gray mt-4 pt-4">
                   <div className="flex justify-between items-center mb-4">
                     <span className="font-medium">Total:</span>
                     <span className="font-bold text-accentA">
-                      ${totalPrice.toFixed(2)}
+                      ${totalPrice && totalPrice.toFixed(2)}
                     </span>
                   </div>
                   <Link

@@ -4,7 +4,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const CartItem = ({ item }: { item: ProductType }) => {
-  const { totalPrice, getProductQuantity } = useCartData();
+  const { totalPrice, getProductQuantity, handleRemoveProduct } = useCartData();
 
   return (
     <div className="grid grid-cols-6 even:border-y even:border-gray even:py-5 even:my-5">
@@ -32,7 +32,10 @@ const CartItem = ({ item }: { item: ProductType }) => {
           {/* Total price in here */}
           {totalPrice} E.L
         </h4>
-        <button className="text-text hover:text-red-600 duration-200 font-medium right-0 top-1/2 -translate-y-1/2 absolute cursor-pointer">
+        <button
+          className="text-text hover:text-red-600 duration-200 font-medium right-0 top-1/2 -translate-y-1/2 absolute cursor-pointer"
+          onClick={() => handleRemoveProduct && handleRemoveProduct(item.id)}
+        >
           <FaTrashAlt size={16} />
         </button>
       </div>

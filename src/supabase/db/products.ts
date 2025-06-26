@@ -107,3 +107,20 @@ export const createCartItem = async (props: {
     throw err;
   }
 };
+
+export const removeItem = async (id: string) => {
+  try {
+    if (!id) throw new Error("Product ID is Required");
+
+    const { data, error } = await supabase
+      .from("cart")
+      .delete()
+      .eq("product_id", id);
+
+    if (error) throw new Error(error.message);
+    return data;
+  } catch (error) {
+    console.error("Delete Item Error:", error);
+    throw error;
+  }
+};

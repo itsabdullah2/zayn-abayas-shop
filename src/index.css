@@ -79,4 +79,8 @@ body {
   h3 {
     @apply font-bold text-primary text-[1.0625rem];
   }
+
+  .product-label {
+    @apply text-neutral px-4 py-1 text-sm bg-accentA rounded-lg;
+  }
 }
