@@ -59,7 +59,7 @@ const CartDropdown = () => {
                   <div className="flex justify-between items-center mb-4">
                     <span className="font-medium">Total:</span>
                     <span className="font-bold text-accentA">
-                      ${totalPrice.toFixed(2)}
+                      ${totalPrice && totalPrice.toFixed(2)}
                     </span>
                   </div>
                   <Link
