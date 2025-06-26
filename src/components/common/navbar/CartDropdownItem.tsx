@@ -1,7 +1,7 @@
 import type { ProductType } from "@/types";
 import { FaTrashAlt } from "react-icons/fa";
 
-const CartItem = ({ item }: { item: ProductType }) => {
+const CartDropdownItem = ({ item }: { item: ProductType }) => {
   return (
     <div className="flex items-center gap-4">
       <img
@@ -22,4 +22,4 @@ const CartItem = ({ item }: { item: ProductType }) => {
   );
 };
 
-export default CartItem;
+export default CartDropdownItem;
