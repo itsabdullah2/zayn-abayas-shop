@@ -11,12 +11,14 @@ const useCartData = () => {
     cartVersion,
     setCartProducts,
     cartProducts,
+    handleCart
   } = useContextSelector(CartContext, (ctx) => ({
     setProductsIds: ctx?.setProductsIds,
     productsIds: ctx?.productsIds,
     cartVersion: ctx?.cartVersion,
     setCartProducts: ctx?.setCartProducts,
     cartProducts: ctx?.cartProducts,
+    handleCart: ctx?.handleCart
   }));
 
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
@@ -78,6 +80,7 @@ const useCartData = () => {
     totalItems,
     isLoading,
     getProductQuantity,
+    handleCart
   };
 };
 
