@@ -1,5 +1,4 @@
-import { getCartItems, getProducts } from "@/supabase/db/products";
-import type { CartItemType } from "@/types";
+import { getProducts } from "@/supabase/db/products";
 import { useContextSelector } from "use-context-selector";
 import { CartContext } from "@/context/CartContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
