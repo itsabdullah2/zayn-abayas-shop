@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 import {
   createCartItem,
+  decreaseCartItemQuantity,
   getCartItems,
+  increaseCartItemQuantity,
   removeItem,
 } from "@/supabase/db/products";
 import type { CartItemType, ProductType } from "@/types";
@@ -18,6 +20,8 @@ interface CartContextType {
   setProductsIds: React.Dispatch<React.SetStateAction<string[]>>;
   handleCart: (productId: string) => void;
   incrementCartVersion: () => void;
+  handleIncreaseQuantity: (id: string) => void;
+  handleDecreaseQuantity: (id: string) => void;
 }
 
 export const CartContext = createContext<CartContextType | undefined>(
@@ -46,11 +50,29 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [setProductsIds, cartVersion]);
 
   const incrementCartVersion = () => setCartVersion((v) => v + 1);
+  const DecrementCartVersion = () => setCartVersion((v) => v - 1);
 
   const handleRemoveProduct = async (id: string) => {
     try {
       await removeItem(id);
       incrementCartVersion();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleIncreaseQuantity = async (id: string) => {
+    try {
+      await increaseCartItemQuantity(id);
+      incrementCartVersion();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleDecreaseQuantity = async (id: string) => {
+    try {
+      await decreaseCartItemQuantity(id);
+      DecrementCartVersion();
     } catch (err) {
       console.error(err);
     }
@@ -85,6 +107,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     setProductsIds,
     handleCart,
     incrementCartVersion,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
   };
 
   return <CartContext.Provider value={values}>{children}</CartContext.Provider>;

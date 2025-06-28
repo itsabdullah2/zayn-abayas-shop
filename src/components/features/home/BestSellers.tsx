@@ -48,7 +48,7 @@ const BestSellers = () => {
               src={item.product_img}
               alt={item.product_name}
               loading="lazy"
-              className="w-full sm:w-[400px]"
+              className="w-full"
             />
             <figcaption className="flex justify-between items-center py-4 px-2">
               <p className="card-title">
