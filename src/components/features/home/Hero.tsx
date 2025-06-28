@@ -10,7 +10,7 @@ const Hero = () => {
       <div className="absolute bg-black/40 w-full h-full z-10" />
 
       <div className="flex flex-col items-center absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <h1 className="text-neutral font-bold text-5xl text-center">
+        <h1 className="text-neutral font-bold text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-center">
           Wear Power. Wear Zayn.
         </h1>
         <p className="text-light-gray/70 mt-2 text-center">
