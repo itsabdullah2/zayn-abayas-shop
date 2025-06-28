@@ -4,7 +4,13 @@ import { FaTrashAlt } from "react-icons/fa";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const CartItem = ({ item }: { item: ProductType }) => {
-  const { totalPrice, getProductQuantity, handleRemoveProduct } = useCartData();
+  const {
+    getProductTotalPrice,
+    getProductQuantity,
+    handleRemoveProduct,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
+  } = useCartData();
 
   return (
     <div className="grid grid-cols-6 even:border-y even:border-gray even:py-5 even:my-5">
@@ -20,17 +26,26 @@ const CartItem = ({ item }: { item: ProductType }) => {
           {item.product_price} E.L
         </h4>
         <div className="gap-2 col-span-1 flex-center">
-          <button className="h-6 w-6 flex-center rounded-md border border-gray cursor-pointer">
+          <button
+            className="h-6 w-6 flex-center rounded-md border border-gray cursor-pointer"
+            onClick={() =>
+              handleDecreaseQuantity && handleDecreaseQuantity(item.id)
+            }
+          >
             <FaMinus />
           </button>
           <h4>{getProductQuantity(item.id)}</h4>
-          <button className="h-6 w-6 flex-center rounded-md border border-gray cursor-pointer">
+          <button
+            className="h-6 w-6 flex-center rounded-md border border-gray cursor-pointer"
+            onClick={() =>
+              handleIncreaseQuantity && handleIncreaseQuantity(item.id)
+            }
+          >
             <FaPlus />
           </button>
         </div>
         <h4 className="col-span-1 font-medium text-[0.9375rem] text-accentB text-center flex-center">
-          {/* Total price in here */}
-          {totalPrice} E.L
+          {getProductTotalPrice(item.id)} E.L
         </h4>
         <button
           className="text-text hover:text-red-600 duration-200 font-medium right-0 top-1/2 -translate-y-1/2 absolute cursor-pointer"
