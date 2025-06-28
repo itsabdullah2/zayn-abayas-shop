@@ -36,7 +36,7 @@ body {
 
 @layer utilities {
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 flex flex-col gap-20 pb-10;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pb-10;
   }
 
   .flex-center {
@@ -82,5 +82,9 @@ body {
 
   .product-label {
     @apply text-neutral px-4 py-1 text-sm bg-accentA rounded-lg;
+  }
+
+  .input {
+    @apply focus:outline-none focus:placeholder:opacity-0 placeholder:duration-200;
   }
 }
