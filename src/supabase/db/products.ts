@@ -124,3 +124,70 @@ export const removeItem = async (id: string) => {
     throw error;
   }
 };
+
+export const increaseCartItemQuantity = async (productId: string) => {
+  try {
+    if (!productId) throw new Error("Product ID is Required");
+
+    // First, get the current cart item
+    const { data: existingItem, error: fetchError } = await supabase
+      .from("cart")
+      .select("*")
+      .eq("product_id", productId)
+      .maybeSingle();
+
+    if (fetchError) throw new Error(fetchError.message);
+    if (!existingItem) throw new Error("Cart item not found");
+
+    // Update the quantity by incrementing it
+    const { data, error: updateError } = await supabase
+      .from("cart")
+      .update({ quantity: existingItem.quantity + 1 })
+      .eq("product_id", productId)
+      .select();
+
+    if (updateError) throw new Error(updateError.message);
+    if (!data) throw new Error("Failed to update cart item quantity");
+
+    return data;
+  } catch (err) {
+    console.error("Failed to increase cart item quantity:", err);
+    throw err;
+  }
+};
+
+export const decreaseCartItemQuantity = async (productId: string) => {
+  try {
+    if (!productId) throw new Error("Product ID is Required");
+
+    // First, get the current cart item
+    const { data: existingItem, error: fetchError } = await supabase
+      .from("cart")
+      .select("*")
+      .eq("product_id", productId)
+      .maybeSingle();
+
+    if (fetchError) throw new Error(fetchError.message);
+    if (!existingItem) throw new Error("Cart item not found");
+
+    // If quantity is 1, remove the item from cart
+    if (existingItem.quantity <= 1) {
+      return await removeItem(productId);
+    }
+
+    // Update the quantity by decrementing it
+    const { data, error: updateError } = await supabase
+      .from("cart")
+      .update({ quantity: existingItem.quantity - 1 })
+      .eq("product_id", productId)
+      .select();
+
+    if (updateError) throw new Error(updateError.message);
+    if (!data) throw new Error("Failed to update cart item quantity");
+
+    return data;
+  } catch (err) {
+    console.error("Failed to decrease cart item quantity:", err);
+    throw err;
+  }
+};
