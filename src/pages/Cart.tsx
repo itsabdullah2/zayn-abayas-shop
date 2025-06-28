@@ -1,4 +1,6 @@
-import Cart from "@/components/features/cart";
+import { lazy } from "react";
+
+const Cart = lazy(() => import("@/components/features/cart"));
 
 const CartPage = () => {
   return (
