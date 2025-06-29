@@ -40,13 +40,11 @@ export const getCartItems = async (
     const { eqCol, eqVal } = options;
 
     let query = supabase.from("cart").select("*");
-
     if (eqCol && eqVal) query = query.eq(eqCol, eqVal);
-
     const { data, error } = await query;
 
     if (error) throw new Error(error.message);
-    if (!data) throw new Error("No Cart Items Found :)");
+    if (!data) return []; // Return empty array instead of throwing error
 
     return data;
   } catch (err) {
@@ -56,18 +54,19 @@ export const getCartItems = async (
 };
 
 export const createCartItem = async (props: {
-  user_id: string | null;
+  user_id: string;
   product_id: string;
   quantity: number;
 }) => {
   try {
     const { user_id, product_id, quantity } = props;
 
-    // Check if item already exists in the cart
+    // Check if item already exists in the cart for this specific user
     const { data: existingItem, error: fetchError } = await supabase
       .from("cart")
       .select("*")
       .eq("product_id", product_id)
+      .eq("user_id", user_id)
       .maybeSingle(); // allows null if not found
 
     if (fetchError) throw new Error(fetchError.message);
@@ -90,7 +89,7 @@ export const createCartItem = async (props: {
         .from("cart")
         .insert([
           {
-            user_id: user_id || null,
+            user_id,
             product_id,
             quantity,
           },
@@ -108,14 +107,16 @@ export const createCartItem = async (props: {
   }
 };
 
-export const removeItem = async (id: string) => {
+export const removeItem = async (productId: string, userId: string) => {
   try {
-    if (!id) throw new Error("Product ID is Required");
+    if (!productId) throw new Error("Product ID is Required");
+    if (!userId) throw new Error("User ID is Required");
 
     const { data, error } = await supabase
       .from("cart")
       .delete()
-      .eq("product_id", id);
+      .eq("product_id", productId)
+      .eq("user_id", userId);
 
     if (error) throw new Error(error.message);
     return data;
@@ -125,15 +126,20 @@ export const removeItem = async (id: string) => {
   }
 };
 
-export const increaseCartItemQuantity = async (productId: string) => {
+export const increaseCartItemQuantity = async (
+  productId: string,
+  userId: string
+) => {
   try {
     if (!productId) throw new Error("Product ID is Required");
+    if (!userId) throw new Error("User ID is Required");
 
-    // First, get the current cart item
+    // First, get the current cart item for this specific user
     const { data: existingItem, error: fetchError } = await supabase
       .from("cart")
       .select("*")
       .eq("product_id", productId)
+      .eq("user_id", userId)
       .maybeSingle();
 
     if (fetchError) throw new Error(fetchError.message);
@@ -144,6 +150,7 @@ export const increaseCartItemQuantity = async (productId: string) => {
       .from("cart")
       .update({ quantity: existingItem.quantity + 1 })
       .eq("product_id", productId)
+      .eq("user_id", userId)
       .select();
 
     if (updateError) throw new Error(updateError.message);
@@ -156,15 +163,20 @@ export const increaseCartItemQuantity = async (productId: string) => {
   }
 };
 
-export const decreaseCartItemQuantity = async (productId: string) => {
+export const decreaseCartItemQuantity = async (
+  productId: string,
+  userId: string
+) => {
   try {
     if (!productId) throw new Error("Product ID is Required");
+    if (!userId) throw new Error("User ID is Required");
 
-    // First, get the current cart item
+    // First, get the current cart item for this specific user
     const { data: existingItem, error: fetchError } = await supabase
       .from("cart")
       .select("*")
       .eq("product_id", productId)
+      .eq("user_id", userId)
       .maybeSingle();
 
     if (fetchError) throw new Error(fetchError.message);
@@ -172,7 +184,7 @@ export const decreaseCartItemQuantity = async (productId: string) => {
 
     // If quantity is 1, remove the item from cart
     if (existingItem.quantity <= 1) {
-      return await removeItem(productId);
+      return await removeItem(productId, userId);
     }
 
     // Update the quantity by decrementing it
@@ -180,6 +192,7 @@ export const decreaseCartItemQuantity = async (productId: string) => {
       .from("cart")
       .update({ quantity: existingItem.quantity - 1 })
       .eq("product_id", productId)
+      .eq("user_id", userId)
       .select();
 
     if (updateError) throw new Error(updateError.message);

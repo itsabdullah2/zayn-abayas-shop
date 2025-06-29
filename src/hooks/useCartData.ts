@@ -140,7 +140,7 @@ const useCartData = () => {
           return { discount: 0, shippingDiscount: 0 };
       }
     },
-    [shippingFee]
+    [shippingFee, promoCodes]
   );
 
   const getTotalPriceAfterDiscount = useCallback(
