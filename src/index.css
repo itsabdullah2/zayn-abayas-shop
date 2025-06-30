@@ -87,4 +87,8 @@ body {
   .input {
     @apply focus:outline-none focus:placeholder:opacity-0 placeholder:duration-200;
   }
+
+  .filter-btn {
+    @apply cursor-pointer py-1 px-3 rounded-sm font-medium text-[0.9375rem] hover:bg-light-gray duration-200 flex-1;
+  }
 }
