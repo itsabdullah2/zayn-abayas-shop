@@ -24,7 +24,7 @@ const CartDropdownItem = ({ item }: { item: ProductType }) => {
       </div>
       <button
         className="text-text hover:text-red-700 duration-200 cursor-pointer"
-        onClick={() => handleRemoveProduct && handleRemoveProduct(item.id)}
+        onClick={() => handleRemoveProduct?.(item.id)}
       >
         <FaTrashAlt size={16} />
       </button>
