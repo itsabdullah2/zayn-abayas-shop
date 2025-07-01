@@ -4,8 +4,8 @@ import ListItem from "./ListItem";
 const ProductsList = ({ products }: { products: ProductType[] }) => {
   return (
     <div className="responsive-grid">
-      {products.map((p) => (
-        <ListItem key={p.id} product={p} />
+      {products.map((p, i) => (
+        <ListItem key={p.id} product={p} index={i} />
       ))}
     </div>
   );
