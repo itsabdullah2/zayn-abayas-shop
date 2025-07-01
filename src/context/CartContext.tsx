@@ -17,6 +17,7 @@ import {
   updateGuestCartItemQuantity,
   migrateGuestCartToUser,
 } from "@/utils/localStorage";
+import { toast } from "sonner";
 
 interface CartContextType {
   cartProducts: ProductType[];
@@ -175,6 +176,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       );
 
       incrementCartVersion();
+      toast.success("Product added to cart", {
+        description: "You can view it in the cart page",
+        className: "bg-primary! text-neutral!",
+        descriptionClassName: "text-text!",
+      });
     } catch (err) {
       console.error(err);
     }
