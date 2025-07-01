@@ -1,7 +1,10 @@
+import { AppContext } from "@/context/AppContext";
+import useCartData from "@/hooks/useCartData";
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
 import { FaShoppingCart } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
+import { useContextSelector } from "use-context-selector";
 
 const ListItem = ({
   product,
@@ -10,6 +13,12 @@ const ListItem = ({
   product: ProductType;
   index: number;
 }) => {
+  const openProductPopup = useContextSelector(
+    AppContext,
+    (ctx) => ctx?.openProductPopup
+  );
+  const { handleCart } = useCartData();
+
   return (
     <figure
       key={product.id}
@@ -36,13 +45,13 @@ const ListItem = ({
       <div className="action-btns group-hover:top-2">
         <button
           className="btn hover:text-accentB duration-200"
-          // onClick={() => openProductPopup(product.id)}
+          onClick={() => openProductPopup?.(product.id)}
         >
           <IoIosMore size={19} />
         </button>
         <button
           className="btn hover:text-accentB duration-200"
-          // onClick={() => handleCart && handleCart(product.id)}
+          onClick={() => handleCart?.(product.id)}
         >
           <FaShoppingCart size={19} />
         </button>
