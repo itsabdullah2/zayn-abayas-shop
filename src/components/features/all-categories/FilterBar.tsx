@@ -1,49 +1,54 @@
-import { useState } from "react";
+import { AppContext } from "@/context/AppContext";
+import { useContextSelector } from "use-context-selector";
 
 const FilterBar = () => {
-  const [activeFilter, setActiveFilter] = useState<string>("all");
-
-  const handleActiveFilter = (filter: string) => {
-    setActiveFilter(filter);
-  };
+  const { selectedCategory, handleSelectedCategory } = useContextSelector(
+    AppContext,
+    (ctx) => ({
+      selectedCategory: ctx?.selectedCategory,
+      handleSelectedCategory: ctx?.handleSelectedCategory,
+    })
+  );
 
   return (
     <div className="border border-gray rounded-xl py-2 px-3 flex items-center gap-3 w-full sm:w-fit">
       <button
         className={`filter-btn ${
-          activeFilter === "all" ? "text-primary bg-light-gray" : "text-accentA"
+          selectedCategory === "all"
+            ? "text-primary bg-light-gray"
+            : "text-accentA"
         }`}
-        onClick={() => handleActiveFilter("all")}
+        onClick={() => handleSelectedCategory?.("all")}
       >
         All
       </button>
       <button
         className={`filter-btn ${
-          activeFilter === "classic"
+          selectedCategory === "classic"
             ? "text-primary bg-light-gray"
             : "text-accentA"
         }`}
-        onClick={() => handleActiveFilter("classic")}
+        onClick={() => handleSelectedCategory?.("classic")}
       >
         Classic
       </button>
       <button
         className={`filter-btn ${
-          activeFilter === "modern"
+          selectedCategory === "modern"
             ? "text-primary bg-light-gray"
             : "text-accentA"
         }`}
-        onClick={() => handleActiveFilter("modern")}
+        onClick={() => handleSelectedCategory?.("modern")}
       >
         Modern
       </button>
       <button
         className={`filter-btn ${
-          activeFilter === "luxury"
+          selectedCategory === "luxury"
             ? "text-primary bg-light-gray"
             : "text-accentA"
         }`}
-        onClick={() => handleActiveFilter("luxury")}
+        onClick={() => handleSelectedCategory?.("luxury")}
       >
         Luxury
       </button>
