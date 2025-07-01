@@ -43,8 +43,12 @@ const NewArrivals = () => {
       {loading && <p className="text-center text-text">Loading Products...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <div className="responsive-grid">
-        {newArrivals.map((item) => (
-          <figure key={item.id} className="card-style group">
+        {newArrivals.map((item, i) => (
+          <figure
+            key={item.id}
+            className="card-style group animate-appear"
+            style={{ animationDelay: `${i * 0.1}s` }}
+          >
             <img
               src={item.product_img}
               alt={item.product_name}
