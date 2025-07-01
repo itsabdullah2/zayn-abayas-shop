@@ -47,8 +47,12 @@ const FeaturedProducts = () => {
       {loading && <p className="text-center text-text">Loading Products...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <div className="flex-1 responsive-grid">
-        {data.map((item) => (
-          <figure key={item.id} className="card-style group">
+        {data.map((item, i) => (
+          <figure
+            key={item.id}
+            className="card-style group animate-appear"
+            style={{ animationDelay: `${i * 0.1}s` }}
+          >
             <img
               src={item.product_img}
               alt={item.product_name}
