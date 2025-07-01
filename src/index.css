@@ -20,12 +20,24 @@ html {
   --font-roboto: "Roboto", "sans-serif";
 
   --animate-shine: shine 0.8s ease-in-out;
+  --animate-appear: appear 0.5s ease-in-out;
+
   @keyframes shine {
     0% {
       left: -75%;
     }
     100% {
       left: 125%;
+    }
+  }
+  @keyframes appear {
+    0% {
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
     }
   }
 }

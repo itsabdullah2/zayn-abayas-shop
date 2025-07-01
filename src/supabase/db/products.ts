@@ -1,5 +1,6 @@
 import { supabase } from "../";
 import type { CartItemType, ProductType } from "@/types";
+import type { CategoriesTableType } from "../types";
 
 type ProductOpts = {
   limit?: number;
@@ -201,6 +202,19 @@ export const decreaseCartItemQuantity = async (
     return data;
   } catch (err) {
     console.error("Failed to decrease cart item quantity:", err);
+    throw err;
+  }
+};
+
+export const getCategories = async (): Promise<CategoriesTableType[]> => {
+  try {
+    const { data, error } = await supabase.from("categories").select("*");
+    if (error) throw new Error(error.message);
+    if (!data) throw new Error("No Categories Found!");
+
+    return data;
+  } catch (err) {
+    console.error("Failed to get categories:", err);
     throw err;
   }
 };
