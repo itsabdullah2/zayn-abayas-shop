@@ -3,9 +3,19 @@ import { PriceFormatter } from "@/utils/formatePrice";
 import { FaShoppingCart } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 
-const ListItem = ({ product }: { product: ProductType }) => {
+const ListItem = ({
+  product,
+  index,
+}: {
+  product: ProductType;
+  index: number;
+}) => {
   return (
-    <figure key={product.id} className="card-style group">
+    <figure
+      key={product.id}
+      className="card-style group animate-appear"
+      style={{ animationDelay: `${index * 0.1}s` }}
+    >
       <img
         src={product.product_img}
         alt={product.product_name}
