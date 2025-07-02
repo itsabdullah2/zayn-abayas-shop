@@ -1,12 +1,14 @@
 import { useState } from "react";
 import useCartData from "@/hooks/useCartData";
 import PriceRow from "./PriceRow";
+import { useNavigate } from "react-router-dom";
 
 const CartSidebar = () => {
   const { getTotalPriceAfterDiscount } = useCartData();
   const [promoCode, setPromoCode] = useState<string>("");
   const [appliedPromo, setAppliedPromo] = useState<string>("");
   const [promoError, setPromoError] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleApplyPromo = () => {
     const normalized = promoCode.trim().toUpperCase();
@@ -100,7 +102,10 @@ const CartSidebar = () => {
         </div>
       </div>
 
-      <button className="w-full relative group overflow-hidden primary-btn rounded-xl! cursor-pointer">
+      <button
+        className="w-full relative group overflow-hidden primary-btn rounded-xl! cursor-pointer"
+        onClick={() => navigate("/checkout")}
+      >
         Continue to checkout
         <span className="shine-effect group-hover:animate-shine" />
       </button>
