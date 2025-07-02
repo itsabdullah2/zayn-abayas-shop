@@ -6,17 +6,20 @@ import App from "./App";
 import { AppProvider } from "./context/AppContext";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { StripeProvider } from "./context/StripeContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <AppProvider>
-          <CartProvider>
-            <App />
-          </CartProvider>
-        </AppProvider>
-      </AuthProvider>
+      <StripeProvider>
+        <AuthProvider>
+          <AppProvider>
+            <CartProvider>
+              <App />
+            </CartProvider>
+          </AppProvider>
+        </AuthProvider>
+      </StripeProvider>
     </BrowserRouter>
   </StrictMode>
 );
