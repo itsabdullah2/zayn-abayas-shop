@@ -104,11 +104,14 @@ const useCartData = () => {
   const shippingFee = 15;
 
   // Promo codes configuration
-  const promoCodes: Record<string, PromoCode> = {
-    SAVE10: { type: "percentage", value: 10 },
-    GET5: { type: "fixed", value: 5 },
-    FREESHIP: { type: "shipping", value: 0 },
-  };
+  const promoCodes: Record<string, PromoCode> = useMemo(
+    () => ({
+      SAVE10: { type: "percentage", value: 10 },
+      GET5: { type: "fixed", value: 5 },
+      FREESHIP: { type: "shipping", value: 0 },
+    }),
+    []
+  );
 
   const normalizeCode = (code: string) => code.trim().toUpperCase();
 
