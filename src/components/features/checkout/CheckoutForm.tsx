@@ -1,9 +1,11 @@
+import useCartData from "@/hooks/useCartData";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { type FormEvent, useState } from "react";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const { getTotalPriceAfterDiscount } = useCartData();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -52,8 +54,10 @@ const CheckoutForm = () => {
     );
   }
 
+  const totalPrice = getTotalPriceAfterDiscount();
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
+    <form onSubmit={handleSubmit} className="col-span-3">
       <input
         type="text"
         placeholder="Full Name"
@@ -90,9 +94,10 @@ const CheckoutForm = () => {
       <button
         type="submit"
         disabled={!stripe}
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+        className="bg-primary text-white px-4 py-2 rounded w-full overflow-hidden relative group cursor-pointer"
       >
-        Pay Now
+        Pay {totalPrice.total} E.L
+        <span className="shine-effect group-hover:animate-shine" />
       </button>
       {error && <p className="text-red-500">{error}</p>}
     </form>
