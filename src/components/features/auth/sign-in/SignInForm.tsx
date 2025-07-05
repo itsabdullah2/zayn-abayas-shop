@@ -1,4 +1,5 @@
 import InputField from "@/components/common/InputField";
+import { useState } from "react";
 
 const SignInForm = ({
   loading,
@@ -7,10 +8,18 @@ const SignInForm = ({
   loading?: boolean;
   error?: string;
 }) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleToggle = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
     <div className="p-8 flex flex-col justify-center">
       <div className="max-w-md w-full mx-auto">
-        <h2 className={`text-large text-primary mb-2`}>Welcome Back</h2>
+        <h2 className={`text-large text-primary font-medium mb-2`}>
+          Welcome Back
+        </h2>
         <p className="text-text mb-8">
           Enter your email and password to access your account
         </p>
@@ -25,6 +34,9 @@ const SignInForm = ({
             label="Password"
             type="password"
             placeholder="Enter your password"
+            showPassWBtn
+            showPasswordFn={handleToggle}
+            toggleIcon={showPassword}
           />
 
           <div className="flex items-center justify-between">
@@ -42,7 +54,7 @@ const SignInForm = ({
             disabled={loading}
             className={`relative group overflow-hidden w-full bg-primary text-neutral py-3 rounded-lg font-medium hover:bg-blueberry duration-200 cursor-pointer`}
           >
-            {loading ? "Signing In..." : "Sign In"} Sign In
+            {loading ? "Signing In..." : "Sign In"}
             <span className="shine-effect group-hover:animate-shine" />
           </button>
 
