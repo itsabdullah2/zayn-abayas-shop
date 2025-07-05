@@ -2,13 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { FaUser, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { IoIosHelpCircle } from "react-icons/io";
 import { PiSignInBold } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const UserDropdown = () => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
 
   const handleToggleUserDropdown = () => setDropdown((prev) => !prev);
+  const handleNavigate = () => {
+    navigate("/sign-up");
+    handleToggleUserDropdown();
+  };
 
   useEffect(() => {
     const closeOnClickOutside = (event: MouseEvent) => {
@@ -61,7 +66,10 @@ const UserDropdown = () => {
           </ul>
 
           <div className="border-t border-gray-300 pt-2">
-            <button className="flex items-center gap-1 w-full text-gray hover:text-primary text-left p-2 hover:bg-light-gray cursor-pointer rounded-md px-2 duration-150">
+            <button
+              className="flex items-center gap-1 w-full text-gray hover:text-primary text-left p-2 hover:bg-light-gray cursor-pointer rounded-md px-2 duration-150"
+              onClick={handleNavigate}
+            >
               <PiSignInBold size={16} /> Register
             </button>
           </div>

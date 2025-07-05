@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CartDropdownItem from "./CartDropdownItem";
 import useCartData from "@/hooks/useCartData";
 
 const CartDropdown = () => {
   const { cartProducts, totalItems, totalPrice } = useCartData();
   const [isOpen, setIsOpen] = useState(false);
-
   const cartRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const closeDropdownOnClickOutside = (event: MouseEvent) => {
@@ -24,6 +24,10 @@ const CartDropdown = () => {
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
+  };
+  const handleNavigate = () => {
+    navigate("/cart");
+    handleToggle();
   };
 
   return (
@@ -62,13 +66,13 @@ const CartDropdown = () => {
                       ${totalPrice && totalPrice.toFixed(2)}
                     </span>
                   </div>
-                  <Link
-                    to="/cart"
-                    className="primary-btn relative group overflow-hidden"
+                  <button
+                    className="primary-btn relative group overflow-hidden w-full cursor-pointer"
+                    onClick={handleNavigate}
                   >
                     View Cart
                     <span className="shine-effect group-hover:animate-shine" />
-                  </Link>
+                  </button>
                 </div>
               </>
             )}
