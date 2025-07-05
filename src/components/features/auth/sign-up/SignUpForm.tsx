@@ -1,7 +1,8 @@
 import InputField from "@/components/common/InputField";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const SignInForm = ({
+const SignUpForm = ({
   loading,
   error,
 }: {
@@ -18,13 +19,16 @@ const SignInForm = ({
     <div className="p-8 flex flex-col justify-center">
       <div className="max-w-md w-full mx-auto">
         <h2 className={`text-large text-primary font-medium mb-2`}>
-          Welcome Back
+          Create Account
         </h2>
-        <p className="text-text mb-8">
-          Enter your email and password to access your account
-        </p>
+        <p className="text-text mb-8">Join our community today</p>
 
         <form className="flex flex-col gap-3">
+          <InputField
+            label="Full Name"
+            type="text"
+            placeholder="Enter your full name"
+          />
           <InputField
             label="Email"
             type="email"
@@ -33,28 +37,17 @@ const SignInForm = ({
           <InputField
             label="Password"
             type={showPassword ? "text" : "password"}
-            placeholder="Enter your password"
+            placeholder="Enter your email"
             showPassWBtn
             showPasswordFn={handleToggle}
             toggleIcon={showPassword}
           />
-
-          <div className="flex items-center justify-between">
-            <label className="flex items-center">
-              <input type="checkbox" />
-              <span className={`ml-2 text-sm text-neutral`}>Remember me</span>
-            </label>
-            <a href="#" className="text-sm text-purple/80 hover:text-purple">
-              Forgot Password?
-            </a>
-          </div>
-
           <button
             type="submit"
             disabled={loading}
             className={`relative group overflow-hidden w-full bg-primary text-neutral py-3 rounded-lg font-medium hover:bg-blueberry duration-200 cursor-pointer`}
           >
-            {loading ? "Signing In..." : "Sign In"}
+            {loading ? "Creating Account..." : "Create Account"}
             <span className="shine-effect group-hover:animate-shine" />
           </button>
 
@@ -72,9 +65,16 @@ const SignInForm = ({
             Sign in with Google
           </button>
         </form>
+
+        <p className="text-center mt-6 text-gray">
+          Already have an account?{" "}
+          <Link to="/sign-in" className="text-primary/80 hover:text-primary">
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
