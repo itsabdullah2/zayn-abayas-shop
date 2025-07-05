@@ -32,7 +32,7 @@ const SignInForm = ({
           />
           <InputField
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
             showPassWBtn
             showPasswordFn={handleToggle}

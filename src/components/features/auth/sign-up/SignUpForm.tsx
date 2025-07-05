@@ -36,7 +36,7 @@ const SignUpForm = ({
           />
           <InputField
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Enter your email"
             showPassWBtn
             showPasswordFn={handleToggle}
