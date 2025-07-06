@@ -4,7 +4,7 @@ const Checkout = lazy(() => import("@/components/features/checkout"));
 
 const CheckoutPage = () => {
   return (
-    <section className="flex-1 bg-neutral flex items-center justify-center w-full">
+    <section className="flex-1 bg-neutral">
       <Checkout />
     </section>
   );
