@@ -1,17 +1,45 @@
 import InputField from "@/components/common/InputField";
-import { useState } from "react";
+import { signInWithPassword } from "@/supabase";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const SignInForm = ({
-  loading,
-  error,
-}: {
-  loading?: boolean;
-  error?: string;
-}) => {
+const SignInForm = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setShowPassword((prev) => !prev);
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      setError("All fields are required");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // 1. Sign the user in
+      await signInWithPassword(formData.email, formData.password);
+      navigate("/");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -24,19 +52,27 @@ const SignInForm = ({
           Enter your email and password to access your account
         </p>
 
-        <form className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           <InputField
             label="Email"
             type="email"
+            id="email"
+            name="email"
             placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
           />
           <InputField
             label="Password"
             type={showPassword ? "text" : "password"}
+            id="password"
+            name="password"
             placeholder="Enter your password"
             showPassWBtn
             showPasswordFn={handleToggle}
             toggleIcon={showPassword}
+            value={formData.password}
+            onChange={handleChange}
           />
 
           <div className="flex items-center justify-between">

@@ -1,18 +1,58 @@
 import InputField from "@/components/common/InputField";
+import { signUpWithEmail } from "@/supabase";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const SignUpForm = ({
-  loading,
-  error,
-}: {
-  loading?: boolean;
-  error?: string;
-}) => {
+const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setShowPassword((prev) => !prev);
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!formData.username || !formData.email || !formData.password) {
+      setError("All fields are required");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // 1. Sign up the user and get their ID directly
+      await signUpWithEmail(
+        formData.email,
+        formData.password,
+        formData.username
+      );
+
+      navigate("/sign-in");
+
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -23,24 +63,36 @@ const SignUpForm = ({
         </h2>
         <p className="text-text mb-8">Join our community today</p>
 
-        <form className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           <InputField
             label="Full Name"
+            name="username"
+            id="username"
             type="text"
             placeholder="Enter your full name"
+            value={formData.username}
+            onChange={handleChange}
           />
           <InputField
             label="Email"
+            name="email"
+            id="email"
             type="email"
             placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
           />
           <InputField
             label="Password"
             type={showPassword ? "text" : "password"}
+            name="password"
+            id="password"
             placeholder="Enter your email"
             showPassWBtn
             showPasswordFn={handleToggle}
             toggleIcon={showPassword}
+            value={formData.password}
+            onChange={handleChange}
           />
           <button
             type="submit"
