@@ -42,7 +42,7 @@ const CartSidebar = () => {
   const priceBreakdown = getTotalPriceAfterDiscount(appliedPromo);
 
   return (
-    <aside className="col-span-2 bg-neutral rounded-xl p-5 flex flex-col gap-5">
+    <aside className="xl:col-span-2 bg-neutral rounded-xl p-5 flex flex-col gap-5">
       <h3 className="h3">Promo code</h3>
 
       <div className="flex flex-col gap-2">
@@ -103,7 +103,7 @@ const CartSidebar = () => {
       </div>
 
       <button
-        className="w-full relative group overflow-hidden primary-btn rounded-xl! cursor-pointer"
+        className="w-full relative group overflow-hidden primary-btn rounded-lg cursor-pointer"
         onClick={() => navigate("/checkout")}
       >
         Continue to checkout
