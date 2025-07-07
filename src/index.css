@@ -89,7 +89,7 @@ body {
   }
 
   h3 {
-    @apply font-bold text-primary text-[1.0625rem];
+    @apply font-bold text-primary text-[15px] md:text-[1.0625rem];
   }
 
   .product-label {
