@@ -1,18 +1,38 @@
+import { AuthContext } from "@/context/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { FaUser, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { IoIosHelpCircle } from "react-icons/io";
-import { PiSignInBold } from "react-icons/pi";
+import { PiSignInBold, PiSignOutBold } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
+import { useContextSelector } from "use-context-selector";
+import { signOut } from "@/supabase/auth/signOut";
 
 const UserDropdown = () => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useContextSelector(AuthContext, (ctx) => ({
+    user: ctx?.user,
+    isAuthenticated: ctx?.isAuthenticated,
+  }));
+
+  const username = user?.user_metadata?.username;
+  const email = user?.user_metadata?.email;
 
   const handleToggleUserDropdown = () => setDropdown((prev) => !prev);
   const handleNavigate = () => {
     navigate("/sign-up");
     handleToggleUserDropdown();
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setDropdown(false);
+    } catch (error) {
+      // Optionally handle error (e.g., show toast)
+      console.error("Logout failed", error);
+    }
   };
 
   useEffect(() => {
@@ -41,11 +61,18 @@ const UserDropdown = () => {
       </button>
 
       {dropdown && (
-        <div className="absolute right-0 top-11 rounded-xl bg-neutral w-50 z-50 py-2 px-2 shadow-lg flex flex-col gap-2">
-          <div className="border-b border-gray-300 pb-2 px-2">
-            <p className="font-semibold text-primary">Hello, Abdullah</p>
-            <p className="text-sm text-text">abdullah@example.com</p>
-          </div>
+        <div className="absolute right-0 top-11 rounded-xl bg-neutral w-60 z-50 py-2 px-2 shadow-lg flex flex-col gap-2">
+          {isAuthenticated && (
+            <div className="border-b border-gray-300 pb-2 px-2">
+              <p className="font-semibold text-primary">
+                Hello,{" "}
+                <span className="">
+                  {username.slice(0, 1).toUpperCase() + username.slice(1)}
+                </span>
+              </p>
+              <p className="text-sm text-text">{email}</p>
+            </div>
+          )}
 
           <ul className="flex flex-col">
             <MenuItem
@@ -66,12 +93,21 @@ const UserDropdown = () => {
           </ul>
 
           <div className="border-t border-gray-300 pt-2">
-            <button
-              className="flex items-center gap-1 w-full text-gray hover:text-primary text-left p-2 hover:bg-light-gray cursor-pointer rounded-md px-2 duration-150"
-              onClick={handleNavigate}
-            >
-              <PiSignInBold size={16} /> Register
-            </button>
+            {isAuthenticated ? (
+              <button
+                className="auth-btn text-red-800 hover:text-white hover:bg-red-600"
+                onClick={handleLogout}
+              >
+                <PiSignOutBold size={16} /> Logout
+              </button>
+            ) : (
+              <button
+                className="auth-btn text-gray hover:text-primary hover:bg-light-gray"
+                onClick={handleNavigate}
+              >
+                <PiSignInBold size={16} /> Register
+              </button>
+            )}
           </div>
         </div>
       )}
