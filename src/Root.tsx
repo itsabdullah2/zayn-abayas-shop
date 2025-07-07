@@ -4,6 +4,7 @@ import Navbar from "./components/common/navbar/Navbar";
 import Footer from "./components/common/footer/Footer";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "./context/AppContext";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 
 const HomePage = lazy(() => import("./pages/Home"));
 const AboutPage = lazy(() => import("./pages/About"));
@@ -19,7 +20,6 @@ const ProductDetailsPopup = lazy(
   () => import("@/components/common/details_popup")
 );
 const OrdersPage = lazy(() => import("./pages/Orders"));
-const WishlistPage = lazy(() => import("./pages/Wishlist"));
 const Error404Page = lazy(() => import("./pages/Error404"));
 const SignInPage = lazy(() => import("./pages/SignIn"));
 const SignUpPage = lazy(() => import("./pages/SignUp"));
@@ -48,11 +48,31 @@ const Root = () => {
         <Route path={"/about"} element={<AboutPage />} />
         <Route path={"/shop"} element={<ShopPage />} />
         <Route path={"/categories"} element={<AllCategoriesPage />} />
-        <Route path={"/checkout"} element={<CheckoutPage />} />
-        <Route path={"/order-status"} element={<OrderStatusPage />} />
+        <Route
+          path={"/checkout"}
+          element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={"/order-status"}
+          element={
+            <ProtectedRoute>
+              <OrderStatusPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path={"/cart"} element={<CartPage />} />
-        <Route path={"/orders"} element={<OrdersPage />} />
-        <Route path={"/wishlist"} element={<WishlistPage />} />
+        <Route
+          path={"/orders"}
+          element={
+            <ProtectedRoute>
+              <OrdersPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path={"/sign-in"} element={<SignInPage />} />
         <Route path={"/sign-up"} element={<SignUpPage />} />
         <Route path={"*"} element={<Error404Page />} />
