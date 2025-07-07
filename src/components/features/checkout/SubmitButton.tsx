@@ -12,13 +12,14 @@ const SubmitButton = ({
   <button
     type="submit"
     disabled={!stripeAvailable || loading}
-    className={`w-full py-3 rounded text-white font-semibold transition-all ${
+    className={`w-full py-3 rounded-lg text-white font-semibold cursor-pointer ${
       loading
         ? "bg-gray-400 cursor-not-allowed"
-        : "bg-primary hover:bg-primary/90"
+        : "bg-primary relative overflow-hidden group"
     }`}
   >
     {loading ? "Processing..." : `Pay ${total} E.L`}
+    <span className="shine-effect group-hover:animate-shine" />
   </button>
 );
 
