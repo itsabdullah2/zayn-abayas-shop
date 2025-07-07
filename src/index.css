@@ -103,4 +103,8 @@ body {
   .filter-btn {
     @apply cursor-pointer py-1 px-3 rounded-sm font-medium text-[0.9375rem] hover:bg-light-gray duration-200 flex-1;
   }
+
+  .auth-btn {
+    @apply flex items-center gap-1 w-full text-left p-2 cursor-pointer rounded-md px-2 duration-150;
+  }
 }
