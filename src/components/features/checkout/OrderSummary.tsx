@@ -1,22 +1,25 @@
 import { CheckoutContext } from "@/context/CheckoutContext";
 import useCartData from "@/hooks/useCartData";
+import { getTotalPriceAfterDiscount } from "@/utils/promoUtils";
+import { useMemo } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { useContextSelector } from "use-context-selector";
 
 const OrderSummary = () => {
   const { cartProducts, getProductQuantity, handleRemoveProduct, totalPrice } =
     useCartData();
-  const { handleApplyPromo } = useContextSelector(CheckoutContext, (ctx) => ({
-    // appliedPromo: ctx?.appliedPromo,
-    // promoCode: ctx?.promoCode,
-    // setPromoCode: ctx?.setPromoCode,
-    handleApplyPromo: ctx?.handleApplyPromo,
-  }))!;
+  const { appliedPromo, promoCode, setPromoCode, handleApplyPromo } =
+    useContextSelector(CheckoutContext, (ctx) => ({
+      appliedPromo: ctx?.appliedPromo,
+      promoCode: ctx?.promoCode,
+      setPromoCode: ctx?.setPromoCode,
+      handleApplyPromo: ctx?.handleApplyPromo,
+    }))!;
 
-  // const priceBreakdown = useMemo(
-  //   () => getTotalPriceAfterDiscount(totalPrice, appliedPromo ?? ""),
-  //   [totalPrice, appliedPromo]
-  // );
+  const priceBreakdown = useMemo(
+    () => getTotalPriceAfterDiscount(totalPrice, appliedPromo ?? ""),
+    [totalPrice, appliedPromo]
+  );
 
   return (
     <div className="col-span-2 bg-neutral w-full rounded-xl p-5">
@@ -52,14 +55,13 @@ const OrderSummary = () => {
         <div className="flex items-center justify-between">
           <span className="text-sm text-text">Delivery</span>
           <span className="text-sm text-text">
-            {/* {priceBreakdown.shippingFee.toFixed(2)} E.L */}
-            15.00 E.L
+            {priceBreakdown.shippingFee.toFixed(2)} E.L
           </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm text-text">Discount</span>
           <span className="text-sm text-text">
-            {/* {priceBreakdown.discount.toFixed(2)} E.L */}0 E.L
+            {priceBreakdown.discount.toFixed(2)} E.L
           </span>
         </div>
       </div>
@@ -68,8 +70,7 @@ const OrderSummary = () => {
         <div className="flex items-center justify-between">
           <span className=" text-primary font-medium">Total</span>
           <span className=" text-primary font-medium">
-            {/* {priceBreakdown.total.toFixed(2)} E.L */}
-            {totalPrice.toFixed(2)} E.L
+            {priceBreakdown.total.toFixed(2)} E.L
           </span>
         </div>
       </div>
@@ -79,8 +80,8 @@ const OrderSummary = () => {
           <input
             type="text"
             placeholder="Type here..."
-            // value={promoCode}
-            // onChange={(e) => setPromoCode?.(e.target.value)}
+            value={promoCode}
+            onChange={(e) => setPromoCode?.(e.target.value)}
             className="flex-1 pl-3 input"
           />
           <button
