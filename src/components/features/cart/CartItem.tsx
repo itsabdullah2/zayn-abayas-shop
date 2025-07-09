@@ -28,9 +28,7 @@ const CartItem = ({ item }: { item: ProductType }) => {
         <div className="gap-2 col-span-1 flex-center">
           <button
             className="h-4 w-4 md:h-6 md:w-6 flex-center rounded md:rounded-md border border-gray cursor-pointer text-xs"
-            onClick={() =>
-              handleDecreaseQuantity && handleDecreaseQuantity(item.id)
-            }
+            onClick={() => handleDecreaseQuantity?.(item.id)}
           >
             <FaMinus />
           </button>
@@ -39,9 +37,7 @@ const CartItem = ({ item }: { item: ProductType }) => {
           </h4>
           <button
             className="h-4 w-4 md:h-6 md:w-6 flex-center rounded md:rounded-md border border-gray cursor-pointer text-xs"
-            onClick={() =>
-              handleIncreaseQuantity && handleIncreaseQuantity(item.id)
-            }
+            onClick={() => handleIncreaseQuantity?.(item.id)}
           >
             <FaPlus />
           </button>
@@ -51,7 +47,7 @@ const CartItem = ({ item }: { item: ProductType }) => {
         </h4>
         <button
           className="text-text hover:text-red-600 duration-200 font-medium bottom-0 md:bottom-auto right-0 md:top-1/2 md:-translate-y-1/2 absolute cursor-pointer"
-          onClick={() => handleRemoveProduct && handleRemoveProduct(item.id)}
+          onClick={() => handleRemoveProduct?.(item.id)}
         >
           <FaTrashAlt size={16} />
         </button>

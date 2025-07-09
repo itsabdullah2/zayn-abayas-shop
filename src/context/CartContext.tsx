@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createContext } from "use-context-selector";
 import {
   createCartItem,
@@ -24,6 +24,7 @@ interface CartContextType {
   productsIds: string[];
   cartVersion: number;
   cartItems: CartItemType[];
+  totalPrice: number;
   // Functions
   setCartProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
   handleRemoveProduct: (id: string) => void;
@@ -157,6 +158,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Wrap the function with useCallback if needed
   const handleCart = async (productId: string) => {
     try {
       if (isAuthenticated && user) {
@@ -186,11 +188,21 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const totalPrice = useMemo(() => {
+    if (!cartItems || !cartProducts) return 0;
+
+    return cartItems.reduce((sum, item) => {
+      const product = cartProducts.find((p) => p.id === item.product_id);
+      return product ? sum + product.product_price * item.quantity : sum;
+    }, 0);
+  }, [cartItems, cartProducts]);
+
   const values: CartContextType = {
     cartProducts,
     productsIds,
     cartVersion,
     cartItems,
+    totalPrice,
     // Functions
     setCartProducts,
     handleRemoveProduct,

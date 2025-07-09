@@ -7,6 +7,7 @@ import { AppProvider } from "./context/AppContext";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import { StripeProvider } from "./context/StripeContext";
+import { CheckoutProvider } from "./context/CheckoutContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,9 +15,11 @@ createRoot(document.getElementById("root")!).render(
       <StripeProvider>
         <AuthProvider>
           <AppProvider>
-            <CartProvider>
-              <App />
-            </CartProvider>
+            <CheckoutProvider>
+              <CartProvider>
+                <App />
+              </CartProvider>
+            </CheckoutProvider>
           </AppProvider>
         </AuthProvider>
       </StripeProvider>
