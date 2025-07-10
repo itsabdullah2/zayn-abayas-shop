@@ -3,27 +3,6 @@ import { useContextSelector } from "use-context-selector";
 import { CartContext } from "@/context/CartContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-// Types for promo codes
-type PromoType = "percentage" | "fixed" | "shipping";
-
-interface PromoCode {
-  type: PromoType;
-  value: number;
-}
-
-interface DiscountResult {
-  discount: number;
-  shippingDiscount: number;
-}
-
-interface TotalPriceResult {
-  subtotal: number;
-  discount: number;
-  shippingDiscount: number;
-  shippingFee: number;
-  total: number;
-}
-
 const useCartData = () => {
   const {
     productsIds,
@@ -68,20 +47,19 @@ const useCartData = () => {
       cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0,
     [cartItems]
   );
-  const totalPrice = useMemo(
-    () =>
-      cartItems &&
-      cartItems.reduce((sum, item) => {
-        const product = cartProducts?.find((p) => p.id === item.product_id);
-        return product ? sum + product.product_price * item.quantity : sum;
-      }, 0),
-    [cartItems, cartProducts]
-  );
+
+  const totalPrice = useMemo(() => {
+    if (!cartItems || !cartProducts) return 0;
+
+    return cartItems.reduce((sum, item) => {
+      const product = cartProducts.find((p) => p.id === item.product_id);
+      return product ? sum + product.product_price * item.quantity : sum;
+    }, 0);
+  }, [cartItems, cartProducts]);
 
   const getProductQuantity = useCallback(
     (productId: string) => {
-      const item =
-        cartItems && cartItems.find((item) => item.product_id === productId);
+      const item = cartItems?.find((item) => item.product_id === productId);
       return item?.quantity || 1;
     },
     [cartItems]
@@ -89,8 +67,7 @@ const useCartData = () => {
 
   const getProductTotalPrice = useCallback(
     (productId: string) => {
-      const item =
-        cartItems && cartItems.find((item) => item.product_id === productId);
+      const item = cartItems?.find((item) => item.product_id === productId);
       const product = cartProducts?.find((p) => p.id === productId);
 
       if (item && product) {
@@ -101,82 +78,6 @@ const useCartData = () => {
     [cartItems, cartProducts]
   );
 
-  const shippingFee = 15;
-
-  // Promo codes configuration
-  const promoCodes: Record<string, PromoCode> = useMemo(
-    () => ({
-      SAVE10: { type: "percentage", value: 10 },
-      GET5: { type: "fixed", value: 5 },
-      FREESHIP: { type: "shipping", value: 0 },
-    }),
-    []
-  );
-
-  const normalizeCode = (code: string) => code.trim().toUpperCase();
-
-  const getProductDiscount = useCallback(
-    (promoCode: string, subtotal: number): DiscountResult => {
-      const promo = promoCodes[normalizeCode(promoCode)];
-
-      if (!promo) {
-        return { discount: 0, shippingDiscount: 0 };
-      }
-
-      switch (promo.type) {
-        case "percentage":
-          return {
-            discount: (subtotal * promo.value) / 100,
-            shippingDiscount: 0,
-          };
-        case "fixed":
-          return {
-            discount: Math.min(promo.value, subtotal), // Don't discount more than subtotal
-            shippingDiscount: 0,
-          };
-        case "shipping":
-          return {
-            discount: 0,
-            shippingDiscount: shippingFee,
-          };
-        default:
-          return { discount: 0, shippingDiscount: 0 };
-      }
-    },
-    [shippingFee, promoCodes]
-  );
-
-  const getTotalPriceAfterDiscount = useCallback(
-    (promoCode?: string): TotalPriceResult => {
-      const subtotal = totalPrice || 0;
-
-      if (!promoCode) {
-        return {
-          subtotal,
-          discount: 0,
-          shippingDiscount: 0,
-          shippingFee,
-          total: subtotal + shippingFee,
-        };
-      }
-
-      const { discount, shippingDiscount } = getProductDiscount(
-        promoCode,
-        subtotal
-      );
-      const finalShippingFee = shippingFee - shippingDiscount;
-
-      return {
-        subtotal,
-        discount,
-        shippingDiscount,
-        shippingFee: finalShippingFee,
-        total: subtotal - discount + finalShippingFee,
-      };
-    },
-    [totalPrice, shippingFee, getProductDiscount]
-  );
-
   return {
     cartItems,
     cartProducts,
@@ -185,9 +86,6 @@ const useCartData = () => {
     isLoading,
     getProductQuantity,
     getProductTotalPrice,
-    getProductDiscount,
-    getTotalPriceAfterDiscount,
-    shippingFee,
     handleCart,
     handleRemoveProduct,
     handleIncreaseQuantity,

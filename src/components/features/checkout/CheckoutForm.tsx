@@ -1,13 +1,17 @@
 import { useStripe, useElements } from "@stripe/react-stripe-js";
-import { useState, type FormEvent } from "react";
-import useCartData from "@/hooks/useCartData";
+import { useMemo, useState, type FormEvent } from "react";
 import CheckoutInputs from "./CheckoutInputs";
 import SubmitButton from "./SubmitButton";
+import useCheckout from "@/hooks/useCheckout";
+import { getTotalPriceAfterDiscount } from "@/utils/promoUtils";
+import { useContextSelector } from "use-context-selector";
+import { CartContext } from "@/context/CartContext";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const { getTotalPriceAfterDiscount } = useCartData();
+  const { appliedPromo } = useCheckout();
+  const totalPrice = useContextSelector(CartContext, (ctx) => ctx?.totalPrice)!;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,6 +25,10 @@ const CheckoutForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const priceBreakdown = useMemo(() => {
+    return getTotalPriceAfterDiscount(totalPrice, appliedPromo ?? "");
+  }, [totalPrice, appliedPromo]);
 
   const handleChange =
     (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,16 +86,17 @@ const CheckoutForm = () => {
     );
   }
 
-  const totalPrice = getTotalPriceAfterDiscount();
-
   return (
-    <form onSubmit={handleSubmit} className="col-span-3 space-y-5">
+    <form
+      onSubmit={handleSubmit}
+      className="col-span-3 flex flex-col gap-4 bg-neutral rounded-xl p-5"
+    >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <CheckoutInputs formData={formData} handleChange={handleChange} />
       </div>
       <SubmitButton
         loading={loading}
-        total={totalPrice.total}
+        total={priceBreakdown.total}
         stripeAvailable={!!stripe}
       />
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
