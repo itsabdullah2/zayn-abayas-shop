@@ -14,10 +14,10 @@ const CheckoutPage = lazy(() => import("./pages/Checkout"));
 const OrderStatusPage = lazy(() => import("./pages/OrderStatus"));
 const CartPage = lazy(() => import("./pages/Cart"));
 const SearchPopup = lazy(
-  () => import("./components/common/navbar/SearchPopup")
+  () => import("./components/common/search/SearchPopup")
 );
 const ProductDetailsPopup = lazy(
-  () => import("@/components/common/details_popup")
+  () => import("./components/common/details_popup")
 );
 const OrdersPage = lazy(() => import("./pages/Orders"));
 const Error404Page = lazy(() => import("./pages/Error404"));
