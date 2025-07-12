@@ -15,7 +15,10 @@ const CartSidebar = () => {
   }, [getTotalPriceAfterDiscount, totalPrice]);
 
   return (
-    <aside className="xl:col-span-2 bg-neutral rounded-xl p-5 flex flex-col gap-5">
+    <aside
+      className="w-full xl:basis-80 xl:col-span2 bg-neutral rounded-xl p-5 flex flex-col gap-5"
+      // style={{ flexBasis: content }} /* uncomment this after adding a content if there later */
+    >
       <div className="flex flex-col gap-2">
         <PriceRow label="Subtotal" value={priceBreakdown.total.toFixed(2)} />
 

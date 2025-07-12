@@ -14,8 +14,8 @@ const Cart = () => {
           in you bag.
         </span>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 gap-5 xl:gap-10">
-        <div className="lg:col-span-2 xl:col-span-4 flex flex-col gap-10">
+      <div className="flex items-start flex-col xl:flex-row gap-5 xl:gap-10">
+        <div className="flex-1 w-full lg:col-span2 xl:col-span4 flex flex-col gap-10">
           <div className="bg-neutral rounded-xl p-5">
             <div className="grid grid-cols-4 xl:grid-cols-6 mb-10">
               <h3 className="col-span-1 md:col-span-2 xl:col-span-3 h3">
