@@ -1,5 +1,13 @@
-const Shop = () => {
-  return <div className="flex-1">Shop</div>;
+import { lazy } from "react";
+
+const Shop = lazy(() => import("@/components/features/shop"));
+
+const ShopPage = () => {
+  return (
+    <div className="flex-1 bg-neutral">
+      <Shop />
+    </div>
+  );
 };
 
-export default Shop;
+export default ShopPage;
