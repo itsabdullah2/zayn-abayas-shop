@@ -89,9 +89,9 @@ const CheckoutForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="col-span-3 flex flex-col gap-4 bg-neutral rounded-xl p-5"
+      className="flex-1 flex flex-col gap-4 bg-neutral rounded-xl p-5 w-full"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4">
         <CheckoutInputs formData={formData} handleChange={handleChange} />
       </div>
       <SubmitButton
