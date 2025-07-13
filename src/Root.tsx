@@ -1,28 +1,26 @@
 import { Routes, Route } from "react-router-dom";
-import { lazy } from "react";
-import Navbar from "./components/common/navbar/Navbar";
-import Footer from "./components/common/footer/Footer";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "./context/AppContext";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
-const HomePage = lazy(() => import("./pages/Home"));
-const AboutPage = lazy(() => import("./pages/About"));
-const ShopPage = lazy(() => import("./pages/Shop"));
-const AllCategoriesPage = lazy(() => import("./pages/AllCategories"));
-const CheckoutPage = lazy(() => import("./pages/Checkout"));
-const OrderStatusPage = lazy(() => import("./pages/OrderStatus"));
-const CartPage = lazy(() => import("./pages/Cart"));
-const SearchPopup = lazy(
-  () => import("./components/common/search/SearchPopup")
-);
-const ProductDetailsPopup = lazy(
-  () => import("./components/common/details_popup")
-);
-const OrdersPage = lazy(() => import("./pages/Orders"));
-const Error404Page = lazy(() => import("./pages/Error404"));
-const SignInPage = lazy(() => import("./pages/SignIn"));
-const SignUpPage = lazy(() => import("./pages/SignUp"));
+import {
+  Navbar,
+  Footer,
+  AboutPage,
+  AllCategoriesPage,
+  CartPage,
+  CheckoutPage,
+  Error404Page,
+  HomePage,
+  OrdersPage,
+  OrderStatusPage,
+  ProductDetailsPage,
+  ProductDetailsPopup,
+  SearchPopup,
+  ShopPage,
+  SignInPage,
+  SignUpPage,
+} from "./";
 
 const Root = () => {
   const searchPopup = useContextSelector(
@@ -75,6 +73,7 @@ const Root = () => {
         />
         <Route path={"/sign-in"} element={<SignInPage />} />
         <Route path={"/sign-up"} element={<SignUpPage />} />
+        <Route path={"/products/:id"} element={<ProductDetailsPage />} />
         <Route path={"*"} element={<Error404Page />} />
       </Routes>
       <Footer />
