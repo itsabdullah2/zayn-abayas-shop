@@ -33,8 +33,8 @@ const ListItem = ({
       />
       <figcaption className="flex justify-between gap-2 items-center py-4 px-2">
         <p className="card-title">
-          {product.product_name.length > 25
-            ? product.product_name.slice(0, 25) + "..."
+          {product.product_name.length > 20
+            ? product.product_name.slice(0, 20) + "..."
             : product.product_name}
         </p>
         <span className="font-medium text-accentA">
