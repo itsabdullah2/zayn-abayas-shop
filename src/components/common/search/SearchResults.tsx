@@ -67,22 +67,19 @@ const SearchResults = ({
         {products.map((p) => (
           <li
             key={p.id}
-            className="odd:bg-light-gray/50 even:bg-light-gray py-4 px-2 rounded-lg h-fit"
+            className="odd:bg-light-gray/50 even:bg-light-gray py-3 px-2 rounded-lg h-fit"
           >
             <Link
               to={`/products/${p.id}`}
               className="flex flex-col hover:opacity-80 transition-opacity"
               onClick={onResultClick}
             >
-              <h3 className="font-medium text-black">{p.product_name}</h3>
-              <p className="text-gray text-sm">
-                {p.product_desc || "No description available"}
+              <h3 className="font-medium text-primary">{p.product_name}</h3>
+              <p className="text-text text-sm">
+                {p.product_desc.length > 80
+                  ? p.product_desc.slice(0, 80) + "..."
+                  : p.product_desc}
               </p>
-              {p.product_price && (
-                <p className="text-primary font-semibold mt-1">
-                  ${p.product_price}
-                </p>
-              )}
             </Link>
           </li>
         ))}
