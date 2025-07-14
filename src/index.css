@@ -3,6 +3,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+::selection {
+  background-color: var(--color-accentA);
+  color: var(--color-neutral);
+}
 html {
   scroll-behavior: smooth;
 }
@@ -16,7 +20,7 @@ html {
   --color-text: #6e6e6e; /* Smoky Gray */
   --color-gray: #6a7282;
   --color-light-gray: #e5e7eb;
-  --font-noto-kufi: "Noto Kufi Arabic", "sans-serif";
+  --font-noto-kufi: "Noto Kufi Arabic", Arial, "sans-serif";
   --font-roboto: "Roboto", "sans-serif";
 
   --animate-shine: shine 0.8s ease-in-out;
@@ -43,7 +47,7 @@ html {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 @layer utilities {
