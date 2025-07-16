@@ -8,6 +8,7 @@ import CartBtns from "./CartBtns";
 import QuantityBtns from "./QuantityBtns";
 import ColorSelector from "./ColorSelector";
 import Stars from "./Stars";
+import Reviews from "./Reviews";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -50,7 +51,7 @@ const ProductDetails = () => {
   }
 
   return (
-    <section className="section-container flex-1 bg-neutral">
+    <section className="section-container flex-1 bg-neutral flex flex-col gap-5 md:gap-10 lg:gap-15 xl:gap-20">
       <h1 className="text-2xl font-semibold text-primary">Product Details</h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
         <div className="lg:col-span-1">
@@ -66,7 +67,7 @@ const ProductDetails = () => {
             {product.product_name}
           </h4>
 
-          <Stars />
+          <Stars className="text-xl" />
 
           <div className="flex flex-col mt-2">
             <h4 className="font-medium text-primary text-3xl">
@@ -82,6 +83,8 @@ const ProductDetails = () => {
           <p className="text-text text-[15px]">{product.product_desc}</p>
         </div>
       </div>
+
+        <Reviews />
     </section>
   );
 };
