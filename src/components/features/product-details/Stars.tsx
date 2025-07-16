@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
-const Stars = () => {
+const Stars = ({ className }: { className?: string }) => {
   const [hover, setHover] = useState(0);
   const [rating, setRating] = useState(0);
 
   return (
-    <div className="flex items-center gap-1">
+    <div className={`flex gap-1 ${className}`}>
       {Array.from({ length: 5 }).map((_, i) => {
         const star = i + 1;
         return (
