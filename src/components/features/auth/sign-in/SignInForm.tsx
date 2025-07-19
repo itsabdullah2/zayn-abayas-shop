@@ -1,5 +1,6 @@
 import InputField from "@/components/common/InputField";
 import { signInWithPassword } from "@/supabase";
+import { createUser, getAuthenticatedUser } from "@/supabase/db/users";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -33,6 +34,13 @@ const SignInForm = () => {
 
       // 1. Sign the user in
       await signInWithPassword(formData.email, formData.password);
+
+      const { user: signedInUser } = await getAuthenticatedUser();
+      const username = signedInUser?.user_metadata?.username;
+      if (signedInUser && username) {
+        await createUser(signedInUser.id, username, formData.email);
+      }
+
       navigate("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
