@@ -84,6 +84,7 @@ const useCartData = () => {
     totalPrice,
     totalItems,
     isLoading,
+    productsIds,
     getProductQuantity,
     getProductTotalPrice,
     handleCart,
