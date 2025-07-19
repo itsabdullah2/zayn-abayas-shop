@@ -8,6 +8,7 @@ const QuantityBtns = ({ productId }: { productId: string }) => {
     handleIncreaseQuantity,
     getProductQuantity,
     handleCart,
+    productsIds,
   } = useCartData();
 
   return (
@@ -24,8 +25,11 @@ const QuantityBtns = ({ productId }: { productId: string }) => {
       <button
         className="h-8 w-8 flex-center rounded bg-light-gray cursor-pointer text-xs"
         onClick={() => {
-          handleCart?.(productId);
-          handleIncreaseQuantity?.(productId);
+          if (productsIds?.includes(productId)) {
+            handleIncreaseQuantity?.(productId);
+          } else {
+            handleCart?.(productId);
+          }
         }}
       >
         <FaPlus />
