@@ -1,9 +1,5 @@
 import { useState } from "react";
 import { FaStar, FaThumbsUp } from "react-icons/fa";
-// import ReplyField from "./ReplyField";
-// import { useContextSelector } from "use-context-selector";
-// import { AuthContext } from "@/context/AuthContext";
-// import { useNavigate } from "react-router-dom";
 
 type Props = {
   reviews: string[];
@@ -12,30 +8,6 @@ type Props = {
 
 const PlacedReviews = ({ reviews, username }: Props) => {
   const [like, setLike] = useState(false);
-  // const [reply, setReply] = useState(false);
-  // const [replyVal, setReplyVal] = useState("");
-  // const isAuthenticated = useContextSelector(
-  //   AuthContext,
-  //   (ctx) => ctx?.isAuthenticated
-  // );
-  // const navigate = useNavigate();
-
-  // const handleReplyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setReplyVal(e.target.value);
-  // };
-  // const handleReplySubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   if (!isAuthenticated) {
-  //     navigate("/sign-in");
-  //     return;
-  //   }
-  //   if (replyVal.trim() === "") {
-  //     return;
-  //   }
-
-  //   setReplyVal("");
-  // };
 
   return reviews.length <= 0 ? (
     <div className="text-text text-xl text-center">No Reviews Placed</div>
@@ -62,12 +34,6 @@ const PlacedReviews = ({ reviews, username }: Props) => {
           </p>
 
           <div className="flex items-center gap-5 mt-3">
-            {/* <button
-              className="cursor-pointer text-text font-medium text-sm hover:text-primary duration-200"
-              onClick={() => setReply((prev) => !prev)}
-            >
-              Reply
-            </button> */}
             <button
               className={`cursor-pointer ${
                 like
@@ -79,14 +45,6 @@ const PlacedReviews = ({ reviews, username }: Props) => {
               <FaThumbsUp />
             </button>
           </div>
-
-          {/* {reply && (
-            <ReplyField
-              value={replyVal}
-              onChange={handleReplyChange}
-              onSubmit={handleReplySubmit}
-            />
-          )} */}
         </div>
       </div>
     </section>
