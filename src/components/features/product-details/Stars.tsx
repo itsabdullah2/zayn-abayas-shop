@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
 const Stars = ({ className }: { className?: string }) => {
@@ -19,7 +19,7 @@ const Stars = ({ className }: { className?: string }) => {
               // Send to the backend
             }}
             className={`${
-              star <= (hover || rating) ? "text-yellow-400" : "text-gray-400"
+              star <= (hover || rating) ? "text-yellow-400" : "text-soft-gray"
             } cursor-pointer duration-200`}
           />
         );
@@ -28,4 +28,4 @@ const Stars = ({ className }: { className?: string }) => {
   );
 };
 
-export default Stars;
+export default React.memo(Stars);
