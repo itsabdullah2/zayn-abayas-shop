@@ -7,8 +7,8 @@ import { useParams } from "react-router-dom";
 import CartBtns from "./CartBtns";
 import QuantityBtns from "./QuantityBtns";
 import ColorSelector from "./ColorSelector";
-import Stars from "./Stars";
 import Reviews from "./Reviews";
+import { FaStar } from "react-icons/fa";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -67,7 +67,11 @@ const ProductDetails = () => {
             {product.product_name}
           </h4>
 
-          <Stars className="text-xl" />
+          <div className="flex items-center gap-1 text-xl -mt-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <FaStar key={i} className="text-soft-gray" />
+            ))}
+          </div>
 
           <div className="flex flex-col mt-2">
             <h4 className="font-medium text-primary text-3xl">
@@ -84,7 +88,7 @@ const ProductDetails = () => {
         </div>
       </div>
 
-        <Reviews />
+      <Reviews productId={product.id} />
     </section>
   );
 };
