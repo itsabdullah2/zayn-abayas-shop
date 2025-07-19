@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
-const Stars = ({ className }: { className?: string }) => {
+type Props = {
+  className?: string;
+  onClick?: (star: number) => void;
+  rating?: number;
+};
+
+const Stars = ({ className, onClick, rating = 0 }: Props) => {
   const [hover, setHover] = useState(0);
-  const [rating, setRating] = useState(0);
 
   return (
     <div className={`flex gap-1 ${className}`}>
@@ -14,10 +19,7 @@ const Stars = ({ className }: { className?: string }) => {
             key={i}
             onMouseEnter={() => setHover(star)}
             onMouseLeave={() => setHover(0)}
-            onClick={() => {
-              setRating(star);
-              // Send to the backend
-            }}
+            onClick={() => onClick?.(star)}
             className={`${
               star <= (hover || rating) ? "text-yellow-400" : "text-soft-gray"
             } cursor-pointer duration-200`}
