@@ -19,6 +19,7 @@ html {
   --color-neutral: #f5f5f5; /* Off-White */
   --color-text: #6e6e6e; /* Smoky Gray */
   --color-gray: #6a7282;
+  --color-soft-gray: #99a1af;
   --color-light-gray: #e5e7eb;
   --font-noto-kufi: "Noto Kufi Arabic", Arial, "sans-serif";
   --font-roboto: "Roboto", "sans-serif";
