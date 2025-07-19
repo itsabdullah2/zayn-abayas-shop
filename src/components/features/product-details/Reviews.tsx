@@ -1,21 +1,39 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PlacedReviews from "./PlacedReviews";
 import AddReview from "./AddReview";
 import { useContextSelector } from "use-context-selector";
 import { AuthContext } from "@/context/AuthContext";
+import type { ReviewsTableType } from "@/supabase/types";
+import { getReviews } from "@/supabase";
 
-const Reviews = () => {
+const Reviews = ({ productId }: { productId: string }) => {
   const [isReviews, setIsReviews] = useState("reviews");
+  const [reviewsData, setReviewsData] = useState<ReviewsTableType[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
 
-  const reviews: string[] = []; // Just a Placeholder til connecting to DB
+  const fetchReviews = useCallback(async () => {
+    try {
+      const result = await getReviews(productId);
+      setReviewsData(result);
+    } catch (err) {
+      console.error("Error fetching reviews:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [productId]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
   let content;
   if (isReviews === "reviews") {
     const username = user?.user_metadata?.username;
-    content = <PlacedReviews reviews={reviews} username={username} />;
+    content = <PlacedReviews reviews={reviewsData} userId={user?.id} />;
   } else if (isReviews === "add-review") {
-    content = <AddReview />;
+    content = <AddReview productId={productId} refreshReviews={fetchReviews} />;
   }
 
   return (
