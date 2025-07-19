@@ -1,5 +1,5 @@
 import { supabase } from "../client";
-import type { SigningResult } from "../types";
+import type { SigningResult, UserTableType } from "../types";
 
 type UserOpts = {
   limit?: number;
@@ -26,29 +26,32 @@ export const createUser = async (
   if (!userId) throw new Error("User ID is required to create a user.");
   if (!username || !email) throw new Error("Username and email are required.");
 
-  const { data, error } = await supabase.from("users").insert([
-    {
+  const { data, error } = await supabase
+    .from("users")
+    .insert({
       id: userId,
       username,
       email,
-    },
-  ]);
+    })
+    .single();
 
   if (error) throw new Error(`Failed to insert user: ${error.message}`);
 
   return data;
 };
 
-export const getUsers = async (options: UserOpts = {}) => {
+export const getUsers = async <T = UserTableType>(
+  options: UserOpts = {},
+  column: string = "*"
+): Promise<T[]> => {
   const { limit, eqCol, eqVal, inCol, inVal } = options;
 
-  let query = supabase.from("users").select("*");
-
+  let query = supabase.from("users").select(column);
   if (limit) query = query.limit(limit);
   if (eqVal && eqCol) query = query.eq(eqCol, eqVal);
   if (inCol && inVal) query = query.in(inCol, inVal);
 
-  const { data, error } = await query;
+  const { data, error } = await supabase.from("users").select(column);
 
   if (error) {
     console.error("Failed to fetch users:", error.message);
@@ -58,5 +61,5 @@ export const getUsers = async (options: UserOpts = {}) => {
     throw new Error("No Users Found");
   }
 
-  return data;
+  return data as T[];
 };
