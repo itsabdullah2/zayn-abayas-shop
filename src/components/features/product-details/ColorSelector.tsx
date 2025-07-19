@@ -3,11 +3,11 @@ import { useState } from "react";
 const sharedSizeStyles =
   "py-1 px-3 rounded-full border w-15 cursor-pointer text-sm";
 const activeSizeStyle = "text-neutral bg-primary border-primary";
-const inactiveSizeStyle = "text-primary border-gray-400";
+const inactiveSizeStyle = "text-primary border-soft-gray";
 const sharedColorStyles =
-  "h-4 w-4 border rounded-full cursor-pointer bg-gray-400";
+  "h-4 w-4 border rounded-full cursor-pointer bg-soft-gray";
 const activeColorStyle = "border-primary p-[3px]";
-const inactiveColorStyle = "bg-light-gray border-gray-400 p-[2px]";
+const inactiveColorStyle = "bg-light-gray border-soft-gray p-[2px]";
 
 const ColorSelector = () => {
   const [size, setSize] = useState("l");
