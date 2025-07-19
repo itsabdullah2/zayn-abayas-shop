@@ -1,4 +1,5 @@
 import useCartData from "@/hooks/useCartData";
+import React from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 const QuantityBtns = ({ productId }: { productId: string }) => {
@@ -33,4 +34,4 @@ const QuantityBtns = ({ productId }: { productId: string }) => {
   );
 };
 
-export default QuantityBtns;
+export default React.memo(QuantityBtns);
