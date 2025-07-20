@@ -12,5 +12,8 @@ export const signInWithPassword = async (
 
   if (error) throw error;
 
+  // Ensure session is properly set
+  await supabase.auth.getSession();
+
   return data;
 };
