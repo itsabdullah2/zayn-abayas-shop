@@ -28,11 +28,14 @@ export const createUser = async (
 
   const { data, error } = await supabase
     .from("users")
-    .insert({
-      id: userId,
-      username,
-      email,
-    })
+    .upsert(
+      {
+        id: userId,
+        username,
+        email,
+      },
+      { onConflict: "id", ignoreDuplicates: false }
+    )
     .single();
 
   if (error) throw new Error(`Failed to insert user: ${error.message}`);
