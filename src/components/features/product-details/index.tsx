@@ -1,35 +1,53 @@
 import Loading from "@/components/layout/Loading";
-import { supabase } from "@/supabase";
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CartBtns from "./CartBtns";
 import QuantityBtns from "./QuantityBtns";
-import ColorSelector from "./ColorSelector";
 import Reviews from "./Reviews";
 import { FaStar } from "react-icons/fa";
+import { getColors, getProducts, getSizes, getVariants } from "@/supabase";
+import type { ColorsAndSizesType, VariantsTableType } from "@/supabase/types";
+import ColorSelection from "@/components/common/ColorSelection";
+import SizeSelection from "@/components/common/SizeSelection";
+import useCartData from "@/hooks/useCartData";
+import { useContextSelector } from "use-context-selector";
+import { AppContext } from "@/context/AppContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState<ProductType | null>(null);
+  const [variants, setVariants] = useState<VariantsTableType[]>([]);
+  const [colors, setColors] = useState<ColorsAndSizesType[]>([]);
+  const [sizes, setSizes] = useState<ColorsAndSizesType[]>([]);
   const [loading, setLoading] = useState(false);
+  const { handleCart } = useCartData();
+  const closeProductPopup = useContextSelector(
+    AppContext,
+    (ctx) => ctx?.closeProductPopup
+  );
+
+  // state for selected color and size
+  const [selectedColorId, setSelectedColorId] = useState<string>("");
+  const [selectedSizeId, setSelectedSizeId] = useState<string>("");
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from("products")
-          .select("*")
-          .eq("id", id)
-          .single();
+        const [productRes, variantsRes, colorsRes, sizesRes] =
+          await Promise.all([
+            getProducts({ eqCol: "id", eqVal: id }),
+            getVariants({ productId: id }),
+            getColors(),
+            getSizes(),
+          ]);
 
-        if (error) {
-          throw new Error(error.message);
-        } else {
-          setProduct(data);
-        }
+        setProduct(productRes[0]);
+        setVariants(variantsRes);
+        setColors(colorsRes);
+        setSizes(sizesRes);
       } catch (err) {
         console.error(err);
         throw err;
@@ -41,13 +59,22 @@ const ProductDetails = () => {
     if (id) fetchProduct();
   }, [id]);
 
+  // Find the current variant based on selection
+  const currentVariant = variants.find(
+    (v) => v.color_id === selectedColorId && v.size_id === selectedSizeId
+  );
+
+  const handleAddToCart = () => {
+    if (currentVariant) {
+      handleCart?.(currentVariant.id);
+      closeProductPopup?.();
+    }
+  };
+
   if (loading) return <Loading />;
-  if (!product) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-2xl text-text">Product Not Found!</p>
-      </div>
-    );
+
+  if (variants.length === 0 || colors.length === 0 || sizes.length === 0) {
+    return <Loading />;
   }
 
   return (
@@ -56,15 +83,15 @@ const ProductDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
         <div className="lg:col-span-1">
           <img
-            src={product.product_img}
-            alt={product.product_name}
+            src={product?.product_img}
+            alt={product?.product_name}
             className="rounded-lg"
           />
         </div>
 
         <div className="lg:col-span-1 flex flex-col gap-5">
           <h4 className="text-2xl text-primary font-">
-            {product.product_name}
+            {product?.product_name}
           </h4>
 
           <div className="flex items-center gap-1 text-xl -mt-3">
@@ -75,20 +102,32 @@ const ProductDetails = () => {
 
           <div className="flex flex-col mt-2">
             <h4 className="font-medium text-primary text-3xl">
-              {PriceFormatter(product.product_price, "en-EG")} L.E
+              {PriceFormatter(variants[0]?.price, "en-EG")} L.E
             </h4>
 
-            <ColorSelector />
+            <div className="flex gap-3 mt-5">
+              <ColorSelection
+                colors={colors}
+                selectedColorId={selectedColorId}
+                onColorChange={setSelectedColorId}
+              />
+              <SizeSelection
+                sizes={sizes}
+                selectedSizeId={selectedSizeId}
+                onSizeChange={setSelectedSizeId}
+              />
+            </div>
+            {/* <ColorSelector sizes={sizes} colors={colors} /> */}
           </div>
 
-          <QuantityBtns productId={product.id} />
-          <CartBtns productId={product.id} />
+          <QuantityBtns variantId={variants[0]?.id} />
+          <CartBtns handleAddToCart={handleAddToCart} />
 
-          <p className="text-text text-[15px]">{product.product_desc}</p>
+          <p className="text-text text-[15px]">{product?.product_desc}</p>
         </div>
       </div>
 
-      <Reviews productId={product.id} />
+      {product?.id && <Reviews productId={product.id} />}
     </section>
   );
 };

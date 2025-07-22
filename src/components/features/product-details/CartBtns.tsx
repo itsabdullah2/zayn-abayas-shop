@@ -1,8 +1,6 @@
-import useCartData from "@/hooks/useCartData";
 import React from "react";
 
-const CartBtns = ({ productId }: { productId: string }) => {
-  const { handleCart } = useCartData();
+const CartBtns = ({ handleAddToCart }: { handleAddToCart: () => void }) => {
   return (
     <div className="flex items-center gap-3 w-full pb-5 border-b border-soft-gray">
       <button className="flex-1 border border-primary text-primary font-medium rounded-none px-3 h-auto py-1 text-[15px] hover:bg-primary hover:text-neutral duration-200 cursor-pointer">
@@ -10,7 +8,7 @@ const CartBtns = ({ productId }: { productId: string }) => {
       </button>
       <button
         className="flex-1 border border-primary primary-btn rounded-none! px-3! h-auto! py-1 text-[15px] relative overflow-hidden group cursor-pointer"
-        onClick={() => handleCart?.(productId)}
+        onClick={handleAddToCart}
       >
         Add to cart
         <span className="shine-effect group-hover:animate-shine" />

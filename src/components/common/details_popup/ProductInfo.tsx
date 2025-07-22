@@ -1,31 +1,72 @@
 import useCartData from "@/hooks/useCartData";
+import type { ColorsAndSizesType, VariantsTableType } from "@/supabase/types";
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
+import ColorSelection from "../ColorSelection";
+import SizeSelection from "../SizeSelection";
+import { useState } from "react";
 
-const ProductInfo = ({ product }: { product: ProductType }) => {
+type Props = {
+  product: ProductType;
+  variants: VariantsTableType[];
+  colors: ColorsAndSizesType[];
+  sizes: ColorsAndSizesType[];
+  close: () => void;
+};
+
+const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
   const { handleCart } = useCartData();
+
+  // state for selected color and size
+  const [selectedColorId, setSelectedColorId] = useState<string>(
+    colors[0].id || ""
+  );
+  const [selectedSizeId, setSelectedSizeId] = useState<string>(
+    sizes[0].id || ""
+  );
+  // Find the current variant based on selection
+  const currentVariant = variants.find(
+    (v) => v.color_id === selectedColorId && v.size_id === selectedSizeId
+  );
+
+  const handleAddToCart = () => {
+    if (currentVariant) {
+      handleCart?.(currentVariant.id);
+      close();
+    }
+  };
 
   return (
     <div className="col-span-2">
-      <h4 className="font-bold mb-2 text-[1.125rem]">Product Details</h4>
-
-      <div className="flex flex-col gap-1 pb-2 border-b-2 border-text">
+      <div className="flex flex-col gap-1 pb-2 border-b border-soft-gray">
         <p className="text-text font-sm">{product?.product_desc}</p>
-
-        <div className="flex items-center gap-2 mt-2">
-          <span className="product-label">Luxury</span>
-          <span className="product-label">White</span>
-        </div>
       </div>
 
-      <div className="flex items-center justify-between gap-2 mt-5">
-        <span className="font-medium text-primary inline-block">
-          Price: {product ? PriceFormatter(product.product_price, "en-EG") : ""}{" "}
+      <div className="flex flex-col gap-2 mt-2">
+        <div className="flex-1 font-medium text-primary">
+          Price:{" "}
+          {currentVariant
+            ? PriceFormatter(currentVariant.price, "en-EG")
+            : "N/A"}{" "}
           E.L
-        </span>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <ColorSelection
+            colors={colors}
+            selectedColorId={selectedColorId}
+            onColorChange={setSelectedColorId}
+          />
+          <SizeSelection
+            sizes={sizes}
+            selectedSizeId={selectedSizeId}
+            onSizeChange={setSelectedSizeId}
+          />
+        </div>
+
         <button
-          className="h-9 flex-center rounded-md text-neutral bg-primary px-5 cursor-pointer group relative overflow-hidden"
-          onClick={() => product && handleCart?.(product.id)}
+          className="flex-1 border border-primary primary-btn rounded-none! px-3! h-auto! py-1 text-[15px] relative overflow-hidden group cursor-pointer mt-1"
+          onClick={handleAddToCart}
         >
           Add to cart
           <span className="shine-effect group-hover:animate-shine" />

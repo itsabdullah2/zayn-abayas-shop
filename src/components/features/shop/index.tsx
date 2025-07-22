@@ -1,4 +1,8 @@
-import { getCategories, getProducts } from "@/supabase/db/products";
+import {
+  getCategories,
+  getProducts,
+  getVariants,
+} from "@/supabase/db/products";
 import type { ProductType } from "@/types";
 import { useEffect, useState } from "react";
 import ProductsList from "./ProductsList";
@@ -7,8 +11,12 @@ import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
 import type { CategoriesTableType } from "@/supabase/types";
 
+type EnrichedProductType = ProductType & {
+  price?: number;
+};
+
 const Shop = () => {
-  const [data, setData] = useState<ProductType[]>([]);
+  const [data, setData] = useState<EnrichedProductType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [categories, setCategories] = useState<CategoriesTableType[]>([]);
   const selectedCategory = useContextSelector(
@@ -34,9 +42,10 @@ const Shop = () => {
 
     const fetchProducts = async () => {
       try {
+        let products = [];
+
         if (selectedCategory === "all") {
-          const result = await getProducts();
-          setData(result);
+          products = await getProducts();
         } else {
           const selected = categories.find(
             (cat) =>
@@ -45,15 +54,30 @@ const Shop = () => {
           );
 
           if (selected) {
-            const result = await getProducts({
+            products = await getProducts({
               eqCol: "category_id",
               eqVal: selected.id,
             });
-            setData(result);
           } else {
             setData([]);
+            return;
           }
         }
+
+        // Enrich products with their first variant's price
+        const enriched: EnrichedProductType[] = await Promise.all(
+          products.map(async (product) => {
+            try {
+              const variants = await getVariants({ productId: product.id });
+              const price = variants[0]?.price;
+
+              return { ...product, price };
+            } catch (err) {
+              return { ...product };
+            }
+          })
+        );
+        setData(enriched);
       } catch (err) {
         console.error("Failed to fetch the products");
         return [];

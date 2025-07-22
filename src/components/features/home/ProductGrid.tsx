@@ -1,4 +1,3 @@
-import { CATEGORY_IDS } from "@/constants";
 import { getProducts, getVariants } from "@/supabase/db/products";
 import { PriceFormatter } from "@/utils/formatePrice";
 import { useEffect, useState } from "react";
@@ -7,16 +6,24 @@ import { IoIosMore } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
+
 import type { ProductType } from "@/types";
-import { useNavigate } from "react-router-dom";
 import type { VariantsTableType } from "@/supabase/types";
+import { useNavigate } from "react-router-dom";
 
 type EnrichedProductType = ProductType & {
   price?: number;
 };
 
-const FeaturedProducts = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+type ProductGridProps = {
+  title: string;
+  eqCol: string;
+  eqVal: string | boolean;
+  limit?: number;
+};
+
+const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<EnrichedProductType[]>([]);
 
@@ -30,12 +37,12 @@ const FeaturedProducts = () => {
     const fetchData = async () => {
       try {
         const products = await getProducts({
-          eqCol: "category_id",
-          eqVal: CATEGORY_IDS.classic,
+          eqCol,
+          eqVal,
+          limit,
         });
 
-        // Enrich product with their first variant's price
-        const enriched: EnrichedProductType[] = await Promise.all(
+        const enriched = await Promise.all(
           products.map(async (product) => {
             try {
               const variants: VariantsTableType[] = await getVariants({
@@ -43,32 +50,29 @@ const FeaturedProducts = () => {
               });
               const price = variants[0]?.price;
               return { ...product, price };
-            } catch (err) {
+            } catch {
               return { ...product };
             }
           })
         );
 
-        console.log(enriched);
         setData(enriched);
-      } catch (err) {
-        setError("Failed to load featured products, please try again");
+      } catch {
+        setError("Failed to load products.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [eqCol, eqVal, limit]);
 
   return (
     <section>
-      <h2 className="text-primary font-bold text-3xl mb-5">
-        Featured Products
-      </h2>
+      <h2 className="text-primary font-bold text-3xl mb-5">{title}</h2>
       {loading && <p className="text-center text-text">Loading Products...</p>}
       {error && <p className="text-red-500">{error}</p>}
-      <div className="flex-1 responsive-grid">
+      <div className="responsive-grid">
         {data.map((item, i) => (
           <figure
             key={item.id}
@@ -81,7 +85,7 @@ const FeaturedProducts = () => {
               loading="lazy"
               className="w-full"
             />
-            <figcaption className="flex justify-between gap-2 items-center py-4 px-2">
+            <figcaption className="flex justify-between items-center py-4 px-2">
               <p className="card-title">
                 {item.product_name.length > 25
                   ? item.product_name.slice(0, 25) + "..."
@@ -115,4 +119,4 @@ const FeaturedProducts = () => {
   );
 };
 
-export default FeaturedProducts;
+export default ProductGrid;

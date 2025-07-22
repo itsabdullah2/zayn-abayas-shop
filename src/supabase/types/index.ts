@@ -34,3 +34,16 @@ export type ReviewLikesTableType = {
   likes: number;
   created_at?: Date;
 };
+
+export type VariantsTableType = {
+  id: string;
+  product_id: string;
+  color_id: string;
+  size_id: string;
+  price: number;
+  created_at: Date;
+};
+export type ColorsAndSizesType = {
+  id: string;
+  name: string;
+};

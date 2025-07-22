@@ -1,8 +1,8 @@
 import useCartData from "@/hooks/useCartData";
-import type { ProductType } from "@/types";
+import type { EnrichedProductType } from "@/types";
 import { FaTrashAlt } from "react-icons/fa";
 
-const CartDropdownItem = ({ item }: { item: ProductType }) => {
+const CartDropdownItem = ({ item }: { item: EnrichedProductType }) => {
   const { handleRemoveProduct, getProductTotalPrice, getProductQuantity } =
     useCartData();
 
@@ -24,7 +24,13 @@ const CartDropdownItem = ({ item }: { item: ProductType }) => {
       </div>
       <button
         className="text-text hover:text-red-700 duration-200 cursor-pointer"
-        onClick={() => handleRemoveProduct?.(item.id)}
+        onClick={() => {
+          if (item.id) {
+            handleRemoveProduct?.(item.id);
+          }
+          console.log("Product is deleted, Variant id is:", item.id);
+        }}
+        disabled={!item.id}
       >
         <FaTrashAlt size={16} />
       </button>

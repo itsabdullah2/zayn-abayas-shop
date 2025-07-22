@@ -9,6 +9,11 @@ import { getReviews } from "./db/reviews";
 import { addReview } from "./db/reviews";
 import { updateReview } from "./db/reviews";
 
+import { getProducts } from "./db/products";
+import { getVariants } from "./db/products";
+import { getColors } from "./db/products";
+import { getSizes } from "./db/products";
+
 export {
   supabase,
   signInWithPassword,
@@ -18,4 +23,8 @@ export {
   getReviews,
   addReview,
   updateReview,
+  getProducts,
+  getVariants,
+  getColors,
+  getSizes,
 };

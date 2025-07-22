@@ -1,11 +1,11 @@
-import { getProducts } from "@/supabase/db/products";
+import { getProducts, getVariants } from "@/supabase/db/products";
 import { useContextSelector } from "use-context-selector";
 import { CartContext } from "@/context/CartContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 const useCartData = () => {
   const {
-    productsIds,
+    variantsIds,
     setCartProducts,
     cartProducts,
     handleCart,
@@ -14,8 +14,8 @@ const useCartData = () => {
     handleIncreaseQuantity,
     handleDecreaseQuantity,
   } = useContextSelector(CartContext, (ctx) => ({
-    setProductsIds: ctx?.setProductsIds,
-    productsIds: ctx?.productsIds,
+    setVariantsIds: ctx?.setVariantsIds,
+    variantsIds: ctx?.variantsIds,
     cartVersion: ctx?.cartVersion,
     setCartProducts: ctx?.setCartProducts,
     cartProducts: ctx?.cartProducts,
@@ -29,22 +29,42 @@ const useCartData = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchCartData = async () => {
       try {
-        const result = await getProducts({ inCol: "id", inVal: productsIds });
-        if (setCartProducts) setCartProducts(result);
+        const variantIds = cartItems?.map((item) => item.variant_id);
+        const variants = await getVariants({ inCol: "id", inVal: variantIds });
+
+        const productIds = [...new Set(variants.map((v) => v.product_id))];
+        const products = await getProducts({ inCol: "id", inVal: productIds });
+
+        const enrichedCart = variants.map((variant) => {
+          const product = products.find((p) => p.id === variant.product_id);
+          return {
+            ...variant,
+            product_name: product?.product_name,
+            product_desc: product?.product_desc,
+            product_img: product?.product_img,
+          };
+        });
+
+        setCartProducts?.(enrichedCart);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        console.error("Failed to fetch cart data:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchProducts();
-  }, [productsIds, setCartProducts]);
+
+    if (cartItems?.length) {
+      fetchCartData();
+    } else {
+      setCartProducts?.([]);
+      setIsLoading(false);
+    }
+  }, [cartItems, setCartProducts]);
 
   const totalItems = useMemo(
-    () =>
-      cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0,
+    () => cartItems?.reduce((sum, item) => sum + item.quantity, 0) ?? 0,
     [cartItems]
   );
 
@@ -52,26 +72,26 @@ const useCartData = () => {
     if (!cartItems || !cartProducts) return 0;
 
     return cartItems.reduce((sum, item) => {
-      const product = cartProducts.find((p) => p.id === item.product_id);
-      return product ? sum + product.product_price * item.quantity : sum;
+      const product = cartProducts.find((p) => p.id === item.variant_id);
+      return product ? sum + (product.price ?? 0) * item.quantity : sum;
     }, 0);
   }, [cartItems, cartProducts]);
 
   const getProductQuantity = useCallback(
-    (productId: string) => {
-      const item = cartItems?.find((item) => item.product_id === productId);
-      return item?.quantity || 1;
+    (variantId: string) => {
+      const item = cartItems?.find((item) => item.variant_id === variantId);
+      return item?.quantity || 0;
     },
     [cartItems]
   );
 
   const getProductTotalPrice = useCallback(
-    (productId: string) => {
-      const item = cartItems?.find((item) => item.product_id === productId);
-      const product = cartProducts?.find((p) => p.id === productId);
+    (variantId: string) => {
+      const item = cartItems?.find((item) => item.variant_id === variantId);
+      const product = cartProducts?.find((p) => p.id === variantId);
 
       if (item && product) {
-        return product.product_price * item.quantity;
+        return product.price * item.quantity;
       }
       return 0;
     },
@@ -84,7 +104,7 @@ const useCartData = () => {
     totalPrice,
     totalItems,
     isLoading,
-    productsIds,
+    variantsIds,
     getProductQuantity,
     getProductTotalPrice,
     handleCart,

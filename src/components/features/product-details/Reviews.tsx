@@ -30,7 +30,6 @@ const Reviews = ({ productId }: { productId: string }) => {
 
   let content;
   if (isReviews === "reviews") {
-    const username = user?.user_metadata?.username;
     content = <PlacedReviews reviews={reviewsData} userId={user?.id} />;
   } else if (isReviews === "add-review") {
     content = <AddReview productId={productId} refreshReviews={fetchReviews} />;

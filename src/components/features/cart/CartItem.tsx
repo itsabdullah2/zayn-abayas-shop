@@ -1,9 +1,14 @@
 import useCartData from "@/hooks/useCartData";
-import type { ProductType } from "@/types";
+import { getColors, getSizes } from "@/supabase";
+import type { ColorsAndSizesType } from "@/supabase/types";
+import type { EnrichedProductType } from "@/types";
+import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
-const CartItem = ({ item }: { item: ProductType }) => {
+const CartItem = ({ item }: { item: EnrichedProductType }) => {
+  const [color, setColor] = useState<ColorsAndSizesType | null>(null);
+  const [size, setSize] = useState<ColorsAndSizesType | null>(null);
   const {
     getProductTotalPrice,
     getProductQuantity,
@@ -11,6 +16,23 @@ const CartItem = ({ item }: { item: ProductType }) => {
     handleIncreaseQuantity,
     handleDecreaseQuantity,
   } = useCartData();
+
+  useEffect(() => {
+    const fetchColor = async () => {
+      try {
+        const [cRes, sRes] = await Promise.all([
+          getColors(item.color_id),
+          getSizes(item.size_id),
+        ]);
+        setColor(cRes[0]);
+        setSize(sRes[0]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchColor();
+  }, [item.color_id, item.size_id]);
 
   return (
     <div className="grid grid-cols-4 xl:grid-cols-6 even:border-y even:border-gray even:py-5 even:my-5">
@@ -23,7 +45,7 @@ const CartItem = ({ item }: { item: ProductType }) => {
       </div>
       <div className="col-span-3 md:col-span-2 xl:col-span-3 grid grid-cols-3 relative">
         <h4 className="col-span-1 font-medium text-sm md:text-[0.9375rem] text-primary flex-center">
-          {item.product_price} E.L
+          {item.price} E.L
         </h4>
         <div className="gap-2 col-span-1 flex-center">
           <button

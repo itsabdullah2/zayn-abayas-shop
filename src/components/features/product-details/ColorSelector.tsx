@@ -1,3 +1,4 @@
+import type { ColorsAndSizesType } from "@/supabase/types";
 import { useState } from "react";
 
 const sharedSizeStyles =
@@ -9,7 +10,12 @@ const sharedColorStyles =
 const activeColorStyle = "border-primary p-[3px]";
 const inactiveColorStyle = "bg-light-gray border-soft-gray p-[2px]";
 
-const ColorSelector = () => {
+type Props = {
+  sizes: ColorsAndSizesType[];
+  colors: ColorsAndSizesType[];
+};
+
+const ColorSelector = ({ sizes, colors }: Props) => {
   const [size, setSize] = useState("l");
   const [color, setColor] = useState("white");
 
@@ -18,68 +24,38 @@ const ColorSelector = () => {
       <div className="flex-1 flex flex-col gap-1">
         <h4 className="text-primary font-medium text-[15px]">Select Color</h4>
         <div className="flex items-center gap-1">
-          <button
-            className={`${sharedColorStyles} ${
-              color === "white" ? activeColorStyle : inactiveColorStyle
-            }`}
-            onClick={() => setColor("white")}
-          >
-            <span className={`bg-neutral h-full w-full block rounded-full`} />
-          </button>
-          <button
-            className={`${sharedColorStyles} ${
-              color === "black" ? activeColorStyle : inactiveColorStyle
-            }`}
-            onClick={() => setColor("black")}
-          >
-            <span className={`bg-primary h-full w-full block rounded-full`} />
-          </button>
+          {colors.map((c) => (
+            <button
+              key={c.id}
+              className={`${sharedColorStyles} ${
+                color === c.name ? activeColorStyle : inactiveColorStyle
+              }`}
+              onClick={() => setColor(c.name)}
+            >
+              <span
+                className={`${
+                  c.name === "white" ? "bg-neutral" : "bg-primary"
+                } h-full w-full block rounded-full`}
+              />
+            </button>
+          ))}
         </div>
       </div>
 
       <div className="flex-1 flex flex-col gap-1">
         <h4 className="text-primary font-medium text-[15px]">Select Size</h4>
         <div className="flex items-center gap-2">
-          <button
-            className={`${sharedSizeStyles} ${
-              size === "xs" ? activeSizeStyle : inactiveSizeStyle
-            }`}
-            onClick={() => setSize("xs")}
-          >
-            XS
-          </button>
-          <button
-            className={`${sharedSizeStyles} ${
-              size === "s" ? activeSizeStyle : inactiveSizeStyle
-            }`}
-            onClick={() => setSize("s")}
-          >
-            S
-          </button>
-          <button
-            className={`${sharedSizeStyles} ${
-              size === "m" ? activeSizeStyle : inactiveSizeStyle
-            }`}
-            onClick={() => setSize("m")}
-          >
-            M
-          </button>
-          <button
-            className={`${sharedSizeStyles} ${
-              size === "l" ? activeSizeStyle : inactiveSizeStyle
-            }`}
-            onClick={() => setSize("l")}
-          >
-            L
-          </button>
-          <button
-            className={`${sharedSizeStyles} ${
-              size === "xl" ? activeSizeStyle : inactiveSizeStyle
-            }`}
-            onClick={() => setSize("xl")}
-          >
-            XL
-          </button>
+          {sizes.map((s) => (
+            <button
+              key={s.id}
+              className={`${sharedSizeStyles} ${
+                size === s.name ? activeSizeStyle : inactiveSizeStyle
+              }`}
+              onClick={() => setSize(s.name)}
+            >
+              {s.name}
+            </button>
+          ))}
         </div>
       </div>
     </div>

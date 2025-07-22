@@ -1,6 +1,10 @@
 import { supabase } from "../";
 import type { CartItemType, ProductType } from "@/types";
-import type { CategoriesTableType } from "../types";
+import type {
+  CategoriesTableType,
+  ColorsAndSizesType,
+  VariantsTableType,
+} from "../types";
 
 type ProductOpts = {
   limit?: number;
@@ -54,19 +58,21 @@ export const getCartItems = async (
   }
 };
 
-export const createCartItem = async (props: {
+type CreateCartItemsProps = {
   user_id: string;
-  product_id: string;
+  variant_id: string;
   quantity: number;
-}) => {
+};
+
+export const createCartItem = async (options: CreateCartItemsProps) => {
   try {
-    const { user_id, product_id, quantity } = props;
+    const { user_id, variant_id, quantity } = options;
 
     // Check if item already exists in the cart for this specific user
     const { data: existingItem, error: fetchError } = await supabase
       .from("cart")
       .select("*")
-      .eq("product_id", product_id)
+      .eq("variant_id", variant_id)
       .eq("user_id", user_id)
       .maybeSingle(); // allows null if not found
 
@@ -91,7 +97,7 @@ export const createCartItem = async (props: {
         .insert([
           {
             user_id,
-            product_id,
+            variant_id,
             quantity,
           },
         ])
@@ -108,16 +114,16 @@ export const createCartItem = async (props: {
   }
 };
 
-export const removeItem = async (productId: string, userId: string) => {
+export const removeItem = async (variantId: string, userId: string) => {
   try {
-    if (!productId) throw new Error("Product ID is Required");
+    if (!variantId) throw new Error("Variant ID is Required");
     if (!userId) throw new Error("User ID is Required");
 
     const { data, error } = await supabase
       .from("cart")
       .delete()
-      .eq("product_id", productId)
-      .eq("user_id", userId);
+      .eq("user_id", userId)
+      .eq("variant_id", variantId);
 
     if (error) throw new Error(error.message);
     return data;
@@ -128,18 +134,18 @@ export const removeItem = async (productId: string, userId: string) => {
 };
 
 export const increaseCartItemQuantity = async (
-  productId: string,
+  variantId: string,
   userId: string
 ) => {
   try {
-    if (!productId) throw new Error("Product ID is Required");
+    if (!variantId) throw new Error("Variant ID is Required");
     if (!userId) throw new Error("User ID is Required");
 
     // First, get the current cart item for this specific user
     const { data: existingItem, error: fetchError } = await supabase
       .from("cart")
       .select("*")
-      .eq("product_id", productId)
+      .eq("variant_id", variantId)
       .eq("user_id", userId)
       .maybeSingle();
 
@@ -150,7 +156,7 @@ export const increaseCartItemQuantity = async (
     const { data, error: updateError } = await supabase
       .from("cart")
       .update({ quantity: existingItem.quantity + 1 })
-      .eq("product_id", productId)
+      .eq("variant_id", variantId)
       .eq("user_id", userId)
       .select();
 
@@ -165,18 +171,18 @@ export const increaseCartItemQuantity = async (
 };
 
 export const decreaseCartItemQuantity = async (
-  productId: string,
+  variantId: string,
   userId: string
 ) => {
   try {
-    if (!productId) throw new Error("Product ID is Required");
+    if (!variantId) throw new Error("Variant ID is Required");
     if (!userId) throw new Error("User ID is Required");
 
     // First, get the current cart item for this specific user
     const { data: existingItem, error: fetchError } = await supabase
       .from("cart")
       .select("*")
-      .eq("product_id", productId)
+      .eq("variant_id", variantId)
       .eq("user_id", userId)
       .maybeSingle();
 
@@ -185,14 +191,14 @@ export const decreaseCartItemQuantity = async (
 
     // If quantity is 1, remove the item from cart
     if (existingItem.quantity <= 1) {
-      return await removeItem(productId, userId);
+      return await removeItem(variantId, userId);
     }
 
     // Update the quantity by decrementing it
     const { data, error: updateError } = await supabase
       .from("cart")
       .update({ quantity: existingItem.quantity - 1 })
-      .eq("product_id", productId)
+      .eq("variant_id", variantId)
       .eq("user_id", userId)
       .select();
 
@@ -215,6 +221,79 @@ export const getCategories = async (): Promise<CategoriesTableType[]> => {
     return data;
   } catch (err) {
     console.error("Failed to get categories:", err);
+    throw err;
+  }
+};
+
+type VariantsOpts = {
+  productId?: string;
+  inCol?: string;
+  inVal?: string[];
+};
+
+export const getVariants = async (
+  options: VariantsOpts = {}
+): Promise<VariantsTableType[]> => {
+  try {
+    const { productId, inCol, inVal } = options;
+    let query = supabase.from("product_variants").select("*");
+
+    if (productId) {
+      query = query.eq("product_id", productId);
+    }
+    if (inCol && inVal) {
+      query = query.in(inCol, inVal);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw new Error(`Supabase error: ${error.message}`);
+
+    return data;
+  } catch (err) {
+    console.error(`Failed to get variants ${err}`);
+    throw err;
+  }
+};
+
+export const getColors = async (
+  colorId: string = ""
+): Promise<ColorsAndSizesType[]> => {
+  try {
+    let query = supabase.from("colors").select("*");
+
+    if (colorId) {
+      query = query.eq("id", colorId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw new Error(`Supabase error: ${error.message}`);
+
+    return data;
+  } catch (err) {
+    console.error(`Failed to get colors ${err}`);
+    throw err;
+  }
+};
+
+export const getSizes = async (
+  sizeId: string = ""
+): Promise<ColorsAndSizesType[]> => {
+  try {
+    let query = supabase.from("sizes").select("*");
+
+    if (sizeId) {
+      query = query.eq("id", sizeId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw new Error(`Supabase error: ${error.message}`);
+
+    return data;
+  } catch (err) {
+    console.error(`Failed to get sizes ${err}`);
     throw err;
   }
 };

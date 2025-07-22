@@ -21,12 +21,12 @@ export const setGuestCart = (cartItems: CartItemType[]): void => {
 };
 
 export const addToGuestCart = (
-  productId: string,
+  variantId: string,
   quantity: number = 1
 ): CartItemType[] => {
   const currentCart = getGuestCart();
   const existingItemIndex = currentCart.findIndex(
-    (item) => item.product_id === productId
+    (item) => item.variant_id === variantId
   );
 
   if (existingItemIndex !== -1) {
@@ -37,7 +37,7 @@ export const addToGuestCart = (
     currentCart.push({
       id: `guest_${Date.now()}_${Math.random()}`, // Generate unique ID for guest items
       user_id: undefined, // Use undefined instead of null to match the type
-      product_id: productId,
+      variant_id: variantId,
       quantity,
       created_at: new Date(), // Use created_at to match the interface
     });
@@ -47,28 +47,28 @@ export const addToGuestCart = (
   return currentCart;
 };
 
-export const removeFromGuestCart = (productId: string): CartItemType[] => {
+export const removeFromGuestCart = (variantId: string): CartItemType[] => {
   const currentCart = getGuestCart();
   const updatedCart = currentCart.filter(
-    (item) => item.product_id !== productId
+    (item) => item.variant_id !== variantId
   );
   setGuestCart(updatedCart);
   return updatedCart;
 };
 
 export const updateGuestCartItemQuantity = (
-  productId: string,
+  variantId: string,
   quantity: number
 ): CartItemType[] => {
   const currentCart = getGuestCart();
   const itemIndex = currentCart.findIndex(
-    (item) => item.product_id === productId
+    (item) => item.variant_id === variantId
   );
 
   if (itemIndex !== -1) {
     if (quantity <= 0) {
       // Remove item if quantity is 0 or negative
-      return removeFromGuestCart(productId);
+      return removeFromGuestCart(variantId);
     } else {
       // Update quantity
       currentCart[itemIndex].quantity = quantity;
@@ -90,9 +90,9 @@ export const clearGuestCart = (): void => {
 // Function to migrate guest cart to user cart
 export const migrateGuestCartToUser = async (
   userId: string,
-  createCartItemFunction: (props: {
+  createCartItemFunction: (options: {
     user_id: string;
-    product_id: string;
+    variant_id: string;
     quantity: number;
   }) => Promise<CartItemType[]>
 ): Promise<void> => {
@@ -108,11 +108,11 @@ export const migrateGuestCartToUser = async (
       try {
         await createCartItemFunction({
           user_id: userId,
-          product_id: item.product_id,
+          variant_id: item.variant_id,
           quantity: item.quantity,
         });
       } catch (error) {
-        console.error(`Failed to migrate cart item ${item.product_id}:`, error);
+        console.error(`Failed to migrate cart item ${item.variant_id}:`, error);
         // Continue with other items even if one fails
       }
     }

@@ -7,7 +7,7 @@ import {
   increaseCartItemQuantity,
   removeItem,
 } from "@/supabase/db/products";
-import type { CartItemType, ProductType } from "@/types";
+import type { CartItemType, EnrichedProductType } from "@/types";
 import { useContextSelector } from "use-context-selector";
 import { AuthContext } from "./AuthContext";
 import {
@@ -20,15 +20,15 @@ import {
 import { toast } from "sonner";
 
 interface CartContextType {
-  cartProducts: ProductType[];
-  productsIds: string[];
+  cartProducts: EnrichedProductType[];
+  variantsIds: string[];
   cartVersion: number;
   cartItems: CartItemType[];
   totalPrice: number;
   // Functions
-  setCartProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  setCartProducts: React.Dispatch<React.SetStateAction<EnrichedProductType[]>>;
   handleRemoveProduct: (id: string) => void;
-  setProductsIds: React.Dispatch<React.SetStateAction<string[]>>;
+  setVariantsIds: React.Dispatch<React.SetStateAction<string[]>>;
   handleCart: (productId: string) => void;
   incrementCartVersion: () => void;
   handleIncreaseQuantity: (id: string) => void;
@@ -40,8 +40,8 @@ export const CartContext = createContext<CartContextType | undefined>(
 );
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  const [cartProducts, setCartProducts] = useState<ProductType[]>([]);
-  const [productsIds, setProductsIds] = useState<string[]>([]);
+  const [cartProducts, setCartProducts] = useState<EnrichedProductType[]>([]);
+  const [variantsIds, setVariantsIds] = useState<string[]>([]);
   const [cartVersion, setCartVersion] = useState<number>(0);
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [hasMigratedCart, setHasMigratedCart] = useState<boolean>(false);
@@ -85,14 +85,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
             eqCol: "user_id",
             eqVal: user.id,
           });
-          const ids = data.map((item) => item.product_id);
-          setProductsIds(ids);
+          const ids = data.map((item) => item.variant_id);
+          setVariantsIds(ids);
           setCartItems(data);
         } else if (!loading) {
           // Load from localStorage for guest users
           const guestCart = getGuestCart();
-          const ids = guestCart.map((item) => item.product_id);
-          setProductsIds(ids);
+          const ids = guestCart.map((item) => item.variant_id);
+          setVariantsIds(ids);
           setCartItems(guestCart);
         }
       } catch (err) {
@@ -128,7 +128,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         // Update in localStorage for guest users
         const currentCart = getGuestCart();
-        const item = currentCart.find((cartItem) => cartItem.product_id === id);
+        const item = currentCart.find((cartItem) => cartItem.variant_id === id);
         if (item) {
           updateGuestCartItemQuantity(id, item.quantity + 1);
         }
@@ -147,7 +147,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         // Update in localStorage for guest users
         const currentCart = getGuestCart();
-        const item = currentCart.find((cartItem) => cartItem.product_id === id);
+        const item = currentCart.find((cartItem) => cartItem.variant_id === id);
         if (item) {
           updateGuestCartItemQuantity(id, item.quantity - 1);
         }
@@ -159,22 +159,22 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Wrap the function with useCallback if needed
-  const handleCart = async (productId: string) => {
+  const handleCart = async (variantId: string) => {
     try {
       if (isAuthenticated && user) {
         // Add to database for authenticated users
         await createCartItem({
           user_id: user.id,
-          product_id: productId,
+          variant_id: variantId,
           quantity: 1,
         });
       } else {
         // Add to localStorage for guest users
-        addToGuestCart(productId, 1);
+        addToGuestCart(variantId, 1);
       }
 
-      setProductsIds((prev: string[]) =>
-        prev.includes(productId) ? prev : [...prev, productId]
+      setVariantsIds((prev: string[]) =>
+        prev.includes(variantId) ? prev : [...prev, variantId]
       );
 
       incrementCartVersion();
@@ -192,21 +192,21 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     if (!cartItems || !cartProducts) return 0;
 
     return cartItems.reduce((sum, item) => {
-      const product = cartProducts.find((p) => p.id === item.product_id);
-      return product ? sum + product.product_price * item.quantity : sum;
+      const product = cartProducts.find((p) => p.id === item.variant_id);
+      return product ? sum + product.price * item.quantity : sum;
     }, 0);
   }, [cartItems, cartProducts]);
 
   const values: CartContextType = {
     cartProducts,
-    productsIds,
+    variantsIds,
     cartVersion,
     cartItems,
     totalPrice,
     // Functions
     setCartProducts,
     handleRemoveProduct,
-    setProductsIds,
+    setVariantsIds,
     handleCart,
     incrementCartVersion,
     handleIncreaseQuantity,
