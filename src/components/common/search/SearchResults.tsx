@@ -30,7 +30,7 @@ const SearchResults = ({
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-500">Error: {error}</p>
+        <p className="text-red-500">حطأ: {error}</p>
       </div>
     );
   }
@@ -38,7 +38,7 @@ const SearchResults = ({
   if (!hasSearched) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray">Start typing to search for products...</p>
+        <p className="text-gray">ابدأ بالكتابة للبحث عن المنتجات...</p>
       </div>
     );
   }
@@ -47,7 +47,7 @@ const SearchResults = ({
     return (
       <div className="text-center py-8">
         <p className="text-gray">
-          No products found {searchQuery && `for "${searchQuery}"`}
+          لا توجد منتجات {searchQuery && `لـ "${searchQuery}"`}
         </p>
       </div>
     );
@@ -58,8 +58,8 @@ const SearchResults = ({
       {products.length > 0 && (
         <div className="-mt-3 text-sm">
           <p className="text-gray">
-            Found {products.length} product{products.length !== 1 ? "s" : ""}{" "}
-            for "{searchQuery}"
+            تم العثور على {products.length}
+            {products.length === 1 ? "منتج" : "منتجًا"} لـ "{searchQuery}"
           </p>
         </div>
       )}

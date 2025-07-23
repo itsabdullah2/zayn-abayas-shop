@@ -59,35 +59,35 @@ const SignUpForm = () => {
     <div className="p-8 flex flex-col justify-center">
       <div className="max-w-md w-full mx-auto">
         <h2 className={`text-large text-primary font-medium mb-2`}>
-          Create Account
+          إنشاء حساب
         </h2>
-        <p className="text-text mb-8">Join our community today</p>
+        <p className="text-text mb-8">انضم إلى مجتمعنا اليوم</p>
 
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           <InputField
-            label="Full Name"
+            label=" الاسم الكامل"
             name="username"
             id="username"
             type="text"
-            placeholder="Enter your full name"
+            placeholder="أدخل اسمك الكامل"
             value={formData.username}
             onChange={handleChange}
           />
           <InputField
-            label="Email"
+            label="البريد الإلكتروني"
             name="email"
             id="email"
             type="email"
-            placeholder="Enter your email"
+            placeholder="أدخل بريدك الإلكتروني"
             value={formData.email}
             onChange={handleChange}
           />
           <InputField
-            label="Password"
+            label="كلمة المرور"
             type={showPassword ? "text" : "password"}
             name="password"
             id="password"
-            placeholder="Enter your email"
+            placeholder=" أدخل كلمة المرور"
             showPassWBtn
             showPasswordFn={handleToggle}
             toggleIcon={showPassword}
@@ -99,7 +99,7 @@ const SignUpForm = () => {
             disabled={loading}
             className={`relative group overflow-hidden w-full bg-primary text-neutral py-3 rounded-lg font-medium hover:bg-blueberry duration-200 cursor-pointer`}
           >
-            {loading ? "Creating Account..." : "Create Account"}
+            {loading ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
             <span className="shine-effect group-hover:animate-shine" />
           </button>
 
@@ -114,14 +114,14 @@ const SignUpForm = () => {
               alt="Google"
               className="w-4 h-4 mr-2"
             />
-            Sign in with Google
+            تسجيل الدخول باستخدام جوجل
           </button>
         </form>
 
         <p className="text-center mt-6 text-gray">
-          Already have an account?{" "}
+          هل لديك حساب بالفعل؟{" "}
           <Link to="/sign-in" className="text-primary/80 hover:text-primary">
-            Sign in
+            تسجيل الدخول
           </Link>
         </p>
       </div>

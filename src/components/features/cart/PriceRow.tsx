@@ -13,7 +13,7 @@ const PriceRow = ({
       <span
         className={isDiscount ? "text-red-600" : "text-primary font-medium"}
       >
-        {value} L.E
+        ج.م {value}
       </span>
     </div>
   );

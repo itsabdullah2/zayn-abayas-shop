@@ -39,8 +39,10 @@ const NewArrivals = () => {
 
   return (
     <section>
-      <h2 className="text-primary font-bold text-3xl mb-5">New Arrivals</h2>
-      {loading && <p className="text-center text-text">Loading Products...</p>}
+      <h2 className="text-primary font-bold text-3xl mb-5">المنتجات الجديدة</h2>
+      {loading && (
+        <p className="text-center text-text">جارٍ تحميل المنتجات...</p>
+      )}
       {error && <p className="text-red-500">{error}</p>}
       <div className="responsive-grid">
         {newArrivals.map((item, i) => (

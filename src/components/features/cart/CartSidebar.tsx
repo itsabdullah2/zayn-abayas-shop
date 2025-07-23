@@ -20,11 +20,14 @@ const CartSidebar = () => {
       // style={{ flexBasis: content }} /* uncomment this after adding a content if there later */
     >
       <div className="flex flex-col gap-2">
-        <PriceRow label="Subtotal" value={priceBreakdown.total.toFixed(2)} />
+        <PriceRow
+          label="الإجمالي الفرعي"
+          value={priceBreakdown.total.toFixed(2)}
+        />
 
         {priceBreakdown.discount > 0 && (
           <PriceRow
-            label="Discount"
+            label="خصم"
             value={`-${priceBreakdown.discount.toFixed(2)}`}
             isDiscount
           />
@@ -32,28 +35,25 @@ const CartSidebar = () => {
 
         {priceBreakdown.shippingDiscount > 0 && (
           <PriceRow
-            label="Shipping Discount"
+            label="خصم الشحن"
             value={`-${priceBreakdown.shippingDiscount.toFixed(2)}`}
             isDiscount
           />
         )}
 
-        <PriceRow
-          label="Shipping"
-          value={priceBreakdown.shippingFee.toFixed(2)}
-        />
+        <PriceRow label="الشحن" value={priceBreakdown.shippingFee.toFixed(2)} />
 
         <div className="flex items-center justify-between font-semibold text-base">
-          <span>Total</span>
-          <span>{priceBreakdown.total.toFixed(2)} L.E</span>
+          <span>الإجمالي</span>
+          <span>ج.م {priceBreakdown.total.toFixed(2)}</span>
         </div>
       </div>
 
       <button
-        className="w-full relative group overflow-hidden primary-btn rounded-lg cursor-pointer"
+        className="w-full relative group overflow-hidden primary-btn rounded-none! cursor-pointer"
         onClick={() => navigate("/checkout")}
       >
-        Continue to checkout
+        متابعة إلى الدفع
         <span className="shine-effect group-hover:animate-shine" />
       </button>
     </aside>

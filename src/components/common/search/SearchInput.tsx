@@ -35,7 +35,7 @@ const SearchInput = ({
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       disabled={loading}
-      placeholder="Search..."
+      placeholder="بحث..."
       className="w-full border border-gray rounded-lg h-11 bg-light-gray focus:placeholder:opacity-0 placeholder:duration-200 focus:outline-none mt-5 focus-visible:ring-none focus:border-none"
       aria-label="Search products"
       autoFocus

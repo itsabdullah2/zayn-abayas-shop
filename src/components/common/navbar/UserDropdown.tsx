@@ -61,7 +61,7 @@ const UserDropdown = () => {
       </button>
 
       {dropdown && (
-        <div className="absolute right-0 top-11 rounded-xl bg-neutral w-60 z-50 py-2 px-2 shadow-lg flex flex-col gap-2">
+        <div className="absolute left-0 top-11 rounded-xl bg-neutral w-60 z-50 py-2 px-2 shadow-lg flex flex-col gap-2">
           {isAuthenticated && (
             <div className="border-b border-gray-300 pb-2 px-2">
               <p className="font-semibold text-primary">
@@ -78,17 +78,17 @@ const UserDropdown = () => {
             <MenuItem
               to="/orders"
               icon={<FaShoppingCart size={16} />}
-              label="My Orders"
+              label="طلباتي"
             />
             <MenuItem
               to="/wishlist"
               icon={<FaHeart size={16} />}
-              label="Wishlist"
+              label="قائمة الرغبات"
             />
             <MenuItem
               to="/help"
               icon={<IoIosHelpCircle size={16} />}
-              label="Help & Support"
+              label="المساعدة والدعم"
             />
           </ul>
 
@@ -98,14 +98,14 @@ const UserDropdown = () => {
                 className="auth-btn text-red-800 hover:text-white hover:bg-red-600"
                 onClick={handleLogout}
               >
-                <PiSignOutBold size={16} /> Logout
+                <PiSignOutBold size={16} /> تسجيل الخروج
               </button>
             ) : (
               <button
                 className="auth-btn text-gray hover:text-primary hover:bg-light-gray"
                 onClick={handleNavigate}
               >
-                <PiSignInBold size={16} /> Register
+                <PiSignInBold size={16} /> تسجيل
               </button>
             )}
           </div>

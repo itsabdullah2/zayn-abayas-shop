@@ -1,18 +1,14 @@
 export const NAV_LINKS: { name: string; path: string }[] = [
   {
-    name: "Home",
+    name: "الرئيسية",
     path: "/",
   },
   {
-    name: "About",
+    name: "من نحن",
     path: "/about",
   },
   {
-    name: "Shop",
+    name: "المتجر",
     path: "/shop",
-  },
-  {
-    name: "All Categories",
-    path: "/categories",
   },
 ];

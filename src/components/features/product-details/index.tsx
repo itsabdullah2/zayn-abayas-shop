@@ -79,7 +79,7 @@ const ProductDetails = () => {
 
   return (
     <section className="section-container flex-1 bg-neutral flex flex-col gap-5 md:gap-10 lg:gap-15 xl:gap-20">
-      <h1 className="text-2xl font-semibold text-primary">Product Details</h1>
+      <h1 className="text-2xl font-semibold text-primary">تفاصيل المنتج</h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
         <div className="lg:col-span-1">
           <img
@@ -117,7 +117,6 @@ const ProductDetails = () => {
                 onSizeChange={setSelectedSizeId}
               />
             </div>
-            {/* <ColorSelector sizes={sizes} colors={colors} /> */}
           </div>
 
           <QuantityBtns variantId={variants[0]?.id} />

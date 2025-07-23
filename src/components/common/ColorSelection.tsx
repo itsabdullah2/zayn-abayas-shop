@@ -15,7 +15,7 @@ const inactiveColorStyle = "bg-light-gray border-soft-gray p-[2px]";
 const ColorSelection = ({ colors, selectedColorId, onColorChange }: Props) => {
   return (
     <div className="flex-1 flex flex-col gap-1">
-      <h4 className="text-primary font-medium text-[15px]">Select Color</h4>
+      <h4 className="text-primary font-medium text-[15px]">اختر اللون</h4>
       <div className="flex items-center gap-1">
         {colors.map((c) => (
           <button

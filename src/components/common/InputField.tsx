@@ -41,7 +41,7 @@ const InputField = ({
           <button
             type="button"
             onClick={showPasswordFn}
-            className="absolute top-1/2 right-2 -translate-y-1/2 text-primary cursor-pointer"
+            className="absolute top-1/2 left-2 -translate-y-1/2 text-primary cursor-pointer"
           >
             {toggleIcon ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
           </button>

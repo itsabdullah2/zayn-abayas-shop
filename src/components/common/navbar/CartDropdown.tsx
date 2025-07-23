@@ -48,10 +48,10 @@ const CartDropdown = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-10 rounded-xl bg-neutral w-80 z-50 py-2 px-2 shadow-lg flex flex-col gap-2">
+        <div className="absolute left-0 top-10 rounded-xl bg-neutral w-80 z-50 py-2 px-2 shadow-lg flex flex-col gap-2">
           <div className="max-h-96 overflow-y-auto">
             {!cartProducts?.length ? (
-              <p className="text-center text-gray py-4">Your cart is empty</p>
+              <p className="text-center text-gray py-4">سلة التسوق فارغة</p>
             ) : (
               <>
                 <div className="space-y-4">
@@ -61,16 +61,16 @@ const CartDropdown = () => {
                 </div>
                 <div className="border-t border-gray mt-4 pt-4">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="font-medium">Total:</span>
+                    <span className="font-medium">الإجمالي:</span>
                     <span className="font-bold text-accentA">
-                      ${totalPrice?.toFixed(2)}
+                      ج.م {totalPrice?.toFixed(2)}
                     </span>
                   </div>
                   <button
                     className="primary-btn relative group overflow-hidden w-full cursor-pointer"
                     onClick={handleNavigate}
                   >
-                    View Cart
+                    عرض السلة
                     <span className="shine-effect group-hover:animate-shine" />
                   </button>
                 </div>

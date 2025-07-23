@@ -47,11 +47,10 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
 
       <div className="flex flex-col gap-2 mt-2">
         <div className="flex-1 font-medium text-primary">
-          Price:{" "}
+          السعر: ج.م{" "}
           {currentVariant
             ? PriceFormatter(currentVariant.price, "en-EG")
             : "N/A"}{" "}
-          E.L
         </div>
 
         <div className="flex flex-col gap-2">
@@ -71,7 +70,7 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
           className="flex-1 border border-primary primary-btn rounded-none! px-3! h-auto! py-1 text-[15px] relative overflow-hidden group cursor-pointer mt-1"
           onClick={handleAddToCart}
         >
-          Add to cart
+          أضف إلى السلة
           <span className="shine-effect group-hover:animate-shine" />
         </button>
       </div>

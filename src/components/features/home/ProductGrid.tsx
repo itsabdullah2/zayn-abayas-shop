@@ -70,7 +70,9 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
   return (
     <section>
       <h2 className="text-primary font-bold text-3xl mb-5">{title}</h2>
-      {loading && <p className="text-center text-text">Loading Products...</p>}
+      {loading && (
+        <p className="text-center text-text">جارٍ تحميل المنتجات...</p>
+      )}
       {error && <p className="text-red-500">{error}</p>}
       <div className="responsive-grid">
         {data.map((item, i) => (
@@ -88,12 +90,12 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
             <figcaption className="flex justify-between items-center py-4 px-2">
               <p className="card-title">
                 {item.product_name.length > 25
-                  ? item.product_name.slice(0, 25) + "..."
+                  ? "..." + item.product_name.slice(0, 20)
                   : item.product_name}
               </p>
               <span className="font-medium text-accentA">
                 {item.price
-                  ? `${PriceFormatter(item.price, "en-EG")} L.E`
+                  ? `ج.م ${PriceFormatter(item.price, "en-EG")}`
                   : "N/A"}
               </span>
             </figcaption>

@@ -69,7 +69,7 @@ const AddReview = ({ productId, refreshReviews }: Props) => {
     <div className="flex flex-col md:flex-row gap-4 xl:gap-10">
       <form className="md:flex-1 flex flex-col gap-2" onSubmit={handleSubmit}>
         <textarea
-          placeholder="Add a review..."
+          placeholder="أضف تقييم..."
           maxLength={600}
           className="bg-light-gray h-[180px] resize-none py-2 px-4 focus:outline-none focus:placeholder:opacity-0 placeholder:duration-200 caret-accentA text-primary text-[15px]"
           value={reviewData.reviewVal}
@@ -83,7 +83,7 @@ const AddReview = ({ productId, refreshReviews }: Props) => {
           type="submit"
           className="py-2 px-12 w-fit text-medium text-neutral cursor-pointer bg-primary ml-auto overflow-hidden relative group"
         >
-          Submit
+          إرسال
           <span className="shine-effect group-hover:animate-shine" />
         </button>
       </form>

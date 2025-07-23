@@ -66,7 +66,7 @@ const useSearch = () => {
         ...prev,
         products: [],
         loading: false,
-        error: err instanceof Error ? err.message : "Search failed",
+        error: err instanceof Error ? err.message : "البحث فشل",
         hasSearched: false,
       }));
     }

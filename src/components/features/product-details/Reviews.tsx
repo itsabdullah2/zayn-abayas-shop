@@ -44,7 +44,7 @@ const Reviews = ({ productId }: { productId: string }) => {
           }`}
           onClick={() => setIsReviews("reviews")}
         >
-          Reviews
+          التقييمات
         </button>
         <button
           className={`text-[15px] cursor-pointer ${
@@ -54,7 +54,7 @@ const Reviews = ({ productId }: { productId: string }) => {
           }`}
           onClick={() => setIsReviews("add-review")}
         >
-          Add a Review
+          أضف تقييم
         </button>
       </div>
 

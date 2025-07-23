@@ -92,15 +92,15 @@ const Shop = () => {
   return (
     <section className="section-container flex flex-col gap-10">
       <div className="flex flex-col gap-5">
-        <h1 className="text-primary font-bold text-2xl">All Categories</h1>
+        <h1 className="text-primary font-bold text-2xl">جميع الأقسام</h1>
 
         <FilterBar />
       </div>
 
       {isLoading ? (
-        <p>Products Loading...</p>
+        <p>جارٍ تحميل المنتجات...</p>
       ) : data.length === 0 ? (
-        <p>not products found</p>
+        <p>لم يتم العثور على منتجات</p>
       ) : (
         <ProductsList products={data} />
       )}

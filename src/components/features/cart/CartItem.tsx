@@ -45,7 +45,7 @@ const CartItem = ({ item }: { item: EnrichedProductType }) => {
       </div>
       <div className="col-span-3 md:col-span-2 xl:col-span-3 grid grid-cols-3 relative">
         <h4 className="col-span-1 font-medium text-sm md:text-[0.9375rem] text-primary flex-center">
-          {item.price} E.L
+          ج.م {item.price}
         </h4>
         <div className="gap-2 col-span-1 flex-center">
           <button
@@ -65,14 +65,19 @@ const CartItem = ({ item }: { item: EnrichedProductType }) => {
           </button>
         </div>
         <h4 className="col-span-1 font-medium text-sm md:text-[15px] text-accentB text-center flex-center">
-          {getProductTotalPrice(item.id)} E.L
+          ج.م {getProductTotalPrice(item.id)}
         </h4>
         <button
-          className="text-text hover:text-red-600 duration-200 font-medium bottom-0 md:bottom-auto right-0 md:top-1/2 md:-translate-y-1/2 absolute cursor-pointer"
+          className="text-text hover:text-red-600 duration-200 font-medium bottom-0 md:bottom-auto left-0 md:top-1/2 md:-translate-y-1/2 absolute cursor-pointer"
           onClick={() => handleRemoveProduct?.(item.id)}
         >
           <FaTrashAlt size={16} />
         </button>
+
+        <div className="flex items-center gap-3 absolute bottom-5 left-1/2 -translate-x-1/2">
+          <span>{color?.name}</span>
+          <span>{size?.name}</span>
+        </div>
       </div>
     </div>
   );

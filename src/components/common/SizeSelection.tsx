@@ -15,7 +15,7 @@ const inactiveSizeStyle = "text-primary border-soft-gray";
 const SizeSelection = ({ sizes, selectedSizeId, onSizeChange }: Props) => {
   return (
     <div className="flex-1 flex flex-col gap-1">
-      <h4 className="text-primary font-medium text-[15px]">Select Size</h4>
+      <h4 className="text-primary font-medium text-[15px]">اختر المقاس</h4>
       <div className="flex items-center gap-2">
         {sizes.map((size) => (
           <button

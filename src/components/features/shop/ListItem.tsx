@@ -43,7 +43,7 @@ const ListItem = ({
         </p>
         <span className="font-medium text-accentA">
           {product.price
-            ? `${PriceFormatter(product.price, "en-EG")} L.E`
+            ? `ج.م ${PriceFormatter(product.price, "en-EG")}`
             : "N/A"}
         </span>
       </figcaption>

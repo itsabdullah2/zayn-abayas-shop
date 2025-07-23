@@ -2,7 +2,7 @@ import InputField from "@/components/common/InputField";
 import { signInWithPassword } from "@/supabase";
 import { createUser, getAuthenticatedUser } from "@/supabase/db/users";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({
@@ -54,28 +54,28 @@ const SignInForm = () => {
     <div className="p-8 flex flex-col justify-center">
       <div className="max-w-md w-full mx-auto">
         <h2 className={`text-large text-primary font-medium mb-2`}>
-          Welcome Back
+          مرحبًا بعودتك
         </h2>
         <p className="text-text mb-8">
-          Enter your email and password to access your account
+          أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك
         </p>
 
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           <InputField
-            label="Email"
+            label="البريد الإلكتروني"
             type="email"
             id="email"
             name="email"
-            placeholder="Enter your email"
+            placeholder="أدخل بريدك الإلكتروني"
             value={formData.email}
             onChange={handleChange}
           />
           <InputField
-            label="Password"
+            label="كلمة المرور"
             type={showPassword ? "text" : "password"}
             id="password"
             name="password"
-            placeholder="Enter your password"
+            placeholder="أدخل كلمة المرور"
             showPassWBtn
             showPasswordFn={handleToggle}
             toggleIcon={showPassword}
@@ -84,12 +84,12 @@ const SignInForm = () => {
           />
 
           <div className="flex items-center justify-between">
-            <label className="flex items-center">
+            <label className="flex items-center gap-1">
               <input type="checkbox" />
-              <span className={`ml-2 text-sm text-neutral`}>Remember me</span>
+              <span className={`ml-2 text-sm text-primary`}>تذكرني</span>
             </label>
             <a href="#" className="text-sm text-purple/80 hover:text-purple">
-              Forgot Password?
+              هل نسيت كلمة المرور؟
             </a>
           </div>
 
@@ -98,7 +98,7 @@ const SignInForm = () => {
             disabled={loading}
             className={`relative group overflow-hidden w-full bg-primary text-neutral py-3 rounded-lg font-medium hover:bg-blueberry duration-200 cursor-pointer`}
           >
-            {loading ? "Signing In..." : "Sign In"}
+            {loading ? "جارٍ تسجيل الدخول..." : "تسجيل الدخول"}
             <span className="shine-effect group-hover:animate-shine" />
           </button>
 
@@ -113,9 +113,15 @@ const SignInForm = () => {
               alt="Google"
               className="w-4 h-4 mr-2"
             />
-            Sign in with Google
+            تسجيل الدخول باستخدام جوجل
           </button>
         </form>
+        <p className="text-center mt-6 text-gray">
+          لا تملك حساباٌ؟{" "}
+          <Link to="/sign-up" className="text-primary/80 hover:text-primary">
+            إنشاء حساب
+          </Link>
+        </p>
       </div>
     </div>
   );

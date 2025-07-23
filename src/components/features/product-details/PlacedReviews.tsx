@@ -22,7 +22,7 @@ const PlacedReviews = ({ reviews }: Props) => {
   }, []);
 
   return reviews.length <= 0 ? (
-    <div className="text-text text-xl text-center">No Reviews Placed</div>
+    <div className="text-text text-xl text-center">لا يوجد تقييمات</div>
   ) : (
     <section className="grid grid-cols-1 lg:grid-cols-2 gap-5">
       {reviews.map((r) => (

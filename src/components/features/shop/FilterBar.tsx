@@ -20,7 +20,7 @@ const FilterBar = () => {
         }`}
         onClick={() => handleSelectedCategory?.("all")}
       >
-        All
+        الكل
       </button>
       <button
         className={`filter-btn ${
@@ -30,7 +30,7 @@ const FilterBar = () => {
         }`}
         onClick={() => handleSelectedCategory?.("classic")}
       >
-        Classic
+        كلاسيكي
       </button>
       <button
         className={`filter-btn ${
@@ -40,7 +40,7 @@ const FilterBar = () => {
         }`}
         onClick={() => handleSelectedCategory?.("modern")}
       >
-        Modern
+        عصري
       </button>
       <button
         className={`filter-btn ${
@@ -50,7 +50,7 @@ const FilterBar = () => {
         }`}
         onClick={() => handleSelectedCategory?.("luxury")}
       >
-        Luxury
+        فاخر
       </button>
     </div>
   );

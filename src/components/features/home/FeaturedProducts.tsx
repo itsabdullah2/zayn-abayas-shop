@@ -62,10 +62,10 @@ const FeaturedProducts = () => {
 
   return (
     <section>
-      <h2 className="text-primary font-bold text-3xl mb-5">
-        Featured Products
-      </h2>
-      {loading && <p className="text-center text-text">Loading Products...</p>}
+      <h2 className="text-primary font-bold text-3xl mb-5">منتجات مميزة</h2>
+      {loading && (
+        <p className="text-center text-text">جارٍ تحميل المنتجات...</p>
+      )}
       {error && <p className="text-red-500">{error}</p>}
       <div className="flex-1 responsive-grid">
         {data.map((item, i) => (

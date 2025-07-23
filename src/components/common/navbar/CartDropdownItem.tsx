@@ -18,7 +18,7 @@ const CartDropdownItem = ({ item }: { item: EnrichedProductType }) => {
           {item.product_name}
         </h3>
         <p className="text-sm text-text">
-          {getProductTotalPrice(item.id).toFixed(2)} E.L (Qty:{" "}
+          ج.م {getProductTotalPrice(item.id).toFixed(2)} (كمية:{" "}
           {getProductQuantity(item.id)})
         </p>
       </div>
