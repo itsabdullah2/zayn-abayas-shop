@@ -8,7 +8,6 @@ export { default as Footer } from "./components/common/footer/Footer";
 export const HomePage = lazy(() => import("./pages/Home"));
 export const AboutPage = lazy(() => import("./pages/About"));
 export const ShopPage = lazy(() => import("./pages/Shop"));
-export const AllCategoriesPage = lazy(() => import("./pages/AllCategories"));
 export const CheckoutPage = lazy(() => import("./pages/Checkout"));
 export const OrderStatusPage = lazy(() => import("./pages/OrderStatus"));
 export const CartPage = lazy(() => import("./pages/Cart"));
