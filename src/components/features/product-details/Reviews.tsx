@@ -35,6 +35,10 @@ const Reviews = ({ productId }: { productId: string }) => {
     content = <AddReview productId={productId} refreshReviews={fetchReviews} />;
   }
 
+  if (loading) {
+    return <p>جارٍ تحميل التقييمات...</p>;
+  }
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center pb-2 border-b border-soft-gray gap-4">

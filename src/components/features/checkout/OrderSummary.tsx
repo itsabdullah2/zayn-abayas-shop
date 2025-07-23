@@ -25,7 +25,7 @@ const OrderSummary = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray font-medium text-sm">
-                {p.product_price.toFixed(2)} E.L
+                {p.price.toFixed(2)} E.L
               </span>
               <button
                 className="text-text hover:text-red-600 duration-200 font-medium cursor-pointer"
