@@ -49,7 +49,6 @@ const FeaturedProducts = () => {
           })
         );
 
-        console.log(enriched);
         setData(enriched);
       } catch (err) {
         setError("Failed to load featured products, please try again");

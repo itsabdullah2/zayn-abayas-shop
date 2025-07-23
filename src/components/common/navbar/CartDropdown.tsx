@@ -9,7 +9,6 @@ const CartDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const cartRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
-  // console.log(cartProducts);
 
   useEffect(() => {
     const closeDropdownOnClickOutside = (event: MouseEvent) => {

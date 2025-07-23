@@ -24,12 +24,7 @@ const CartDropdownItem = ({ item }: { item: EnrichedProductType }) => {
       </div>
       <button
         className="text-text hover:text-red-700 duration-200 cursor-pointer"
-        onClick={() => {
-          if (item.id) {
-            handleRemoveProduct?.(item.id);
-          }
-          console.log("Product is deleted, Variant id is:", item.id);
-        }}
+        onClick={() => handleRemoveProduct?.(item.id)}
         disabled={!item.id}
       >
         <FaTrashAlt size={16} />
