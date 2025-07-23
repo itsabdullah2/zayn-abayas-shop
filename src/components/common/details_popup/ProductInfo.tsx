@@ -26,7 +26,10 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
   );
   // Find the current variant based on selection
   const currentVariant = variants.find(
-    (v) => v.color_id === selectedColorId && v.size_id === selectedSizeId
+    (v) =>
+      v.color_id === selectedColorId &&
+      v.size_id === selectedSizeId &&
+      v.product_id === product.id
   );
 
   const handleAddToCart = () => {
