@@ -28,7 +28,7 @@ const ProductDetailsPopup = ({ productId }: { productId: string }) => {
         setLoading(true);
         const [pRes, vRes, colorsRes, sizesRes] = await Promise.all([
           getProducts({ eqCol: "id", eqVal: productId }),
-          getVariants(),
+          getVariants({ productId: productId }),
           getColors(),
           getSizes(),
         ]);
