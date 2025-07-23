@@ -7,7 +7,6 @@ import {
   Navbar,
   Footer,
   AboutPage,
-  AllCategoriesPage,
   CartPage,
   CheckoutPage,
   Error404Page,
@@ -45,7 +44,6 @@ const Root = () => {
         <Route path={"/"} element={<HomePage />} />
         <Route path={"/about"} element={<AboutPage />} />
         <Route path={"/shop"} element={<ShopPage />} />
-        <Route path={"/categories"} element={<AllCategoriesPage />} />
         <Route
           path={"/checkout"}
           element={
