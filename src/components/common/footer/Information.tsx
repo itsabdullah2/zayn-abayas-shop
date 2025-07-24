@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const Information = () => {
   return (
     <ul className={`flex flex-col gap-2`}>
-      <li className="uppercase text-[0.875rem] text-neutral font-medium mb-2">
-        information
+      <li className="text-[0.875rem] text-neutral font-medium mb-2">
+        المعلومات
       </li>
       {INFO_FOOTER_LINKS.map((item, i) => (
         <li

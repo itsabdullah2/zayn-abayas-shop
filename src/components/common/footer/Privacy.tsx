@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const Privacy = () => {
   return (
     <ul className={`flex flex-col gap-2`}>
-      <li className="uppercase text-[0.875rem] text-neutral font-medium mb-2">
-        privacy
+      <li className="text-[0.875rem] text-neutral font-medium mb-2">
+        الخصوصية
       </li>
       {PRIVACY_FOOTER_LINKS.map((item, i) => (
         <li

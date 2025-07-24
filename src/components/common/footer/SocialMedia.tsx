@@ -6,16 +6,25 @@ const SocialMedia = () => {
   return (
     <ul className={`flex flex-col gap-2`}>
       <li className="uppercase text-[0.875rem] text-neutral font-medium mb-2">
-        social media
+        وسائل التواصل الاجتماعي
       </li>
       <li className="flex items-center gap-2">
-        <Link to="/" className="text-text hover:text-secondary duration-200">
+        <Link
+          to="/"
+          className="text-text hover:hover:text-neutral duration-200"
+        >
           <RiYoutubeFill size={25} />
         </Link>
-        <Link to="/" className="text-text hover:text-secondary duration-200">
+        <Link
+          to="/"
+          className="text-text hover:hover:text-neutral duration-200"
+        >
           <RiInstagramFill size={25} />
         </Link>
-        <Link to="/" className="text-text hover:text-secondary duration-200">
+        <Link
+          to="/"
+          className="text-text hover:hover:text-neutral duration-200"
+        >
           <RiTwitterFill size={25} />
         </Link>
       </li>
