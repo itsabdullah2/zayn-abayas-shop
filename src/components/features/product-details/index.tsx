@@ -78,9 +78,9 @@ const ProductDetails = () => {
   }
 
   return (
-    <section className="section-container flex-1 bg-neutral flex flex-col gap-5 md:gap-10 lg:gap-15 xl:gap-20">
+    <section className="section-container flex-1 bg-neutral flex flex-col gap-5 lg:gap-8 xl:gap-10">
       <h1 className="text-2xl font-semibold text-primary">تفاصيل المنتج</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="lg:col-span-1">
           <img
             src={product?.product_img}
