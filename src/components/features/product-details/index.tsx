@@ -1,63 +1,34 @@
 import Loading from "@/components/layout/Loading";
-import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import CartBtns from "./CartBtns";
 import QuantityBtns from "./QuantityBtns";
 import Reviews from "./Reviews";
 import { FaStar } from "react-icons/fa";
-import { getColors, getProducts, getSizes, getVariants } from "@/supabase";
-import type { ColorsAndSizesType, VariantsTableType } from "@/supabase/types";
 import ColorSelection from "@/components/common/ColorSelection";
 import SizeSelection from "@/components/common/SizeSelection";
 import useCartData from "@/hooks/useCartData";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
+import { toast } from "sonner";
+import useBuyNow from "@/hooks/useBuyNow";
+import useProductDetails from "@/hooks/useProductDetails";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState<ProductType | null>(null);
-  const [variants, setVariants] = useState<VariantsTableType[]>([]);
-  const [colors, setColors] = useState<ColorsAndSizesType[]>([]);
-  const [sizes, setSizes] = useState<ColorsAndSizesType[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { product, variants, colors, sizes, loading } = useProductDetails(id);
   const { handleCart } = useCartData();
   const closeProductPopup = useContextSelector(
     AppContext,
     (ctx) => ctx?.closeProductPopup
   );
 
+  const buyNow = useBuyNow();
+
   // state for selected color and size
   const [selectedColorId, setSelectedColorId] = useState<string>("");
   const [selectedSizeId, setSelectedSizeId] = useState<string>("");
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        const [productRes, variantsRes, colorsRes, sizesRes] =
-          await Promise.all([
-            getProducts({ eqCol: "id", eqVal: id }),
-            getVariants({ productId: id }),
-            getColors(),
-            getSizes(),
-          ]);
-
-        setProduct(productRes[0]);
-        setVariants(variantsRes);
-        setColors(colorsRes);
-        setSizes(sizesRes);
-      } catch (err) {
-        console.error(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) fetchProduct();
-  }, [id]);
 
   // Find the current variant based on selection
   const currentVariant = variants.find(
@@ -65,9 +36,25 @@ const ProductDetails = () => {
   );
 
   const handleAddToCart = () => {
-    if (currentVariant) {
+    if (!currentVariant) {
+      toast.error("يرجى اختيار اللون والمقاس أولاً", {
+        className: "bg-primary! text-neutral! w-fit!",
+      });
+      return;
+    } else {
       handleCart?.(currentVariant.id);
       closeProductPopup?.();
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (!currentVariant) {
+      toast.error("يرجى اختيار اللون والمقاس أولاً", {
+        className: "bg-primary! text-neutral! w-fit!",
+      });
+      return;
+    } else {
+      buyNow(currentVariant?.id);
     }
   };
 
@@ -120,7 +107,10 @@ const ProductDetails = () => {
           </div>
 
           <QuantityBtns variantId={variants[0]?.id} />
-          <CartBtns handleAddToCart={handleAddToCart} />
+          <CartBtns
+            handleAddToCart={handleAddToCart}
+            handleBuyNow={handleBuyNow}
+          />
 
           <p className="text-text text-[15px]">{product?.product_desc}</p>
         </div>
