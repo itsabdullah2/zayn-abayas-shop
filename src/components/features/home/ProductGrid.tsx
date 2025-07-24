@@ -90,7 +90,7 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
             <figcaption className="flex justify-between items-center py-4 px-2">
               <p className="card-title">
                 {item.product_name.length > 25
-                  ? "..." + item.product_name.slice(0, 20)
+                  ? item.product_name.slice(0, 20) + "..."
                   : item.product_name}
               </p>
               <span className="font-medium text-accentA">
