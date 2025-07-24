@@ -17,35 +17,40 @@ interface CheckoutInputsProps {
 
 const inputFields = [
   {
-    label: "Full Name",
+    label: "الاسم الكامل",
     name: "name",
     type: "text",
-    placeholder: "Enter your name",
+    placeholder: "أدخل اسمك",
   },
   {
-    label: "Email",
+    label: "البريد الإلكتروني",
     name: "email",
     type: "email",
-    placeholder: "Enter your email",
+    placeholder: "أدخل بريدك الإلكتروني",
   },
   {
-    label: "Address Line 1",
+    label: "العنوان الأول",
     name: "address1",
     type: "text",
-    placeholder: "Enter your primary address",
+    placeholder: "أدخل عنوانك الأساسي",
   },
   {
-    label: "Address Line 2",
+    label: "العنوان الثاني",
     name: "address2",
     type: "text",
-    placeholder: "Optional address line",
+    placeholder: "سطر عنوان إضافي (اختياري)",
   },
-  { label: "City", name: "city", type: "text", placeholder: "City name" },
   {
-    label: "Country",
+    label: "المدينة",
+    name: "city",
+    type: "text",
+    placeholder: "اسم المدينة",
+  },
+  {
+    label: "الدولة",
     name: "country",
     type: "text",
-    placeholder: "Country (e.g., US, EG, DE)",
+    placeholder: "الدولة (مثل: EG، US، DE)",
   },
 ];
 
@@ -68,7 +73,7 @@ const CheckoutInputs = ({ formData, handleChange }: CheckoutInputsProps) => {
           htmlFor="card-field"
           className="text-sm text-primary font-medium"
         >
-          Card Number
+          رقم البطاقة
         </label>
         <CardElement
           id="card-field"

@@ -84,7 +84,7 @@ const CheckoutForm = () => {
   if (submitted) {
     return (
       <p className="text-green-600 text-center text-lg font-medium">
-        ✅ Thank you for your order!
+        ✅ شكرًا لطلبك!
       </p>
     );
   }

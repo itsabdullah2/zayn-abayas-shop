@@ -10,7 +10,7 @@ const OrderSummary = () => {
       className="bg-neutral w-full rounded-xl p-5"
       style={{ flexBasis: "content" }}
     >
-      <h3 className="h3 font-medium">Order Summary</h3>
+      <h3 className="h3 font-medium">ملخص الطلب</h3>
 
       <div className="flex flex-col gap-2 mt-4 pb-2 mb-2 border-b border-light-gray">
         {cartProducts?.map((p) => (
@@ -25,7 +25,7 @@ const OrderSummary = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray font-medium text-sm">
-                {p.price.toFixed(2)} E.L
+                {p.price.toFixed(2)} ج.م
               </span>
               <button
                 className="text-text hover:text-red-600 duration-200 font-medium cursor-pointer"
@@ -40,20 +40,20 @@ const OrderSummary = () => {
 
       <div className="pb-2 mb-2 border-b border-light-gray flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-text">Shipping</span>
-          <span className="text-sm text-text">15.00 E.L</span>
+          <span className="text-sm text-text">الشحن</span>
+          <span className="text-sm text-text">15.00 ج.م</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-text">Discount</span>
-          <span className="text-sm text-text">00.00 E.L</span>
+          <span className="text-sm text-text">الخصم</span>
+          <span className="text-sm text-text">00.00 ج.م</span>
         </div>
       </div>
 
       <div className="pb-2 mb-2 border-b border-light-gray flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className=" text-primary font-medium">Total</span>
-          <span className=" text-primary font-medium">
-            {(totalPrice + 15).toFixed(2)} E.L
+          <span className="text-primary font-medium">الإجمالي</span>
+          <span className="text-primary font-medium">
+            {(totalPrice + 15).toFixed(2)} ج.م
           </span>
         </div>
       </div>
@@ -61,17 +61,17 @@ const OrderSummary = () => {
       <div className="flex border border-primary rounded-full p-1">
         <input
           type="text"
-          placeholder="Type here..."
+          placeholder="أدخل الرمز هنا..."
           // value={promoCode}
           // onChange={(e) => setPromoCode?.(e.target.value)}
-          className="flex-1 pl-3 input"
+          className="flex-1 pr-3 input"
         />
         <button
           type="button"
           // onClick={() => handleApplyPromo?.(totalPrice)}
           className="relative group overflow-hidden primary-btn rounded-full! cursor-pointer"
         >
-          Apply
+          تطبيق
           <span className="shine-effect group-hover:animate-shine" />
         </button>
       </div>

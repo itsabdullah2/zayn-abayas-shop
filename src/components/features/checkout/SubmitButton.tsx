@@ -18,7 +18,7 @@ const SubmitButton = ({
         : "bg-primary relative overflow-hidden group"
     }`}
   >
-    {loading ? "Processing..." : `Pay ${total} E.L`}
+    {loading ? "جارٍ المعالجة..." : `ادفع ${total} ج.م`}
     <span className="shine-effect group-hover:animate-shine" />
   </button>
 );
