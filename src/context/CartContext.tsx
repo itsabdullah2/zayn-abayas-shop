@@ -180,7 +180,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       incrementCartVersion();
       toast.success("تمت إضافة المنتج إلى السلة", {
         description: "يمكنك عرضه في صفحة السلة",
-        className: "bg-primary! text-neutral!",
+        className: "bg-primary! text-neutral! w-fit!",
         descriptionClassName: "text-text!",
       });
     } catch (err) {
