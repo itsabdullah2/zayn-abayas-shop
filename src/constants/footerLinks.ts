@@ -2,55 +2,54 @@ type FooterLinksType = {
   name: string;
   path: string;
 };
-
 export const PRIVACY_FOOTER_LINKS: FooterLinksType[] = [
   {
-    name: "Terms of use",
+    name: "شروط الاستخدام",
     path: "/",
   },
   {
-    name: "Privacy policy",
+    name: "سياسة الخصوصية",
     path: "/",
   },
 ];
 
 export const SERVICES_FOOTER_LINKS: FooterLinksType[] = [
   {
-    name: "Shop",
+    name: "المتجر",
     path: "/categories",
   },
   {
-    name: "Other services",
+    name: "خدمات أخرى",
     path: "/categories",
   },
   {
-    name: "Menu",
+    name: "القائمة",
     path: "/menu",
   },
 ];
 
 export const ABOUT_US_FOOTER_LINKS: FooterLinksType[] = [
   {
-    name: "Find information",
+    name: "معلومات عامة",
     path: "/about",
   },
   {
-    name: "About Us",
+    name: "من نحن",
     path: "/about",
   },
   {
-    name: "Out vision",
+    name: "رؤيتنا",
     path: "/about",
   },
 ];
 
 export const INFO_FOOTER_LINKS: FooterLinksType[] = [
   {
-    name: "All Categories",
+    name: "جميع الفئات",
     path: "/categories",
   },
   {
-    name: "Products & Prices",
+    name: "المنتجات والأسعار",
     path: "/categories",
   },
 ];
