@@ -76,12 +76,14 @@ const CartItem = ({ item }: { item: EnrichedProductType }) => {
 
         <div className="flex items-center gap-3 absolute -bottom-2 md:bottom-0 left-1/2 -translate-x-1/2">
           <div className="flex gap-1">
-            <span>اللون:</span>
-            <span>{color?.name === "white" ? "أبيض" : "أسود"}</span>
+            <span className="text-primary text-sm font-medium">اللون:</span>
+            <span className="text-primary text-sm">
+              {color?.name === "white" ? "أبيض" : "أسود"}
+            </span>
           </div>
           <div className="flex gap-1">
-            <span>المقاس:</span>
-            <span>{size?.name}</span>
+            <span className="text-primary text-sm font-medium">المقاس:</span>
+            <span className="text-primary text-sm">{size?.name}</span>
           </div>
         </div>
       </div>
