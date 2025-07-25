@@ -51,7 +51,7 @@ const UserDropdown = () => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative flex-center" ref={dropdownRef}>
       <button
         role="button"
         className="cursor-pointer text-primary md:text-neutral hover:text-secondary duration-200"
