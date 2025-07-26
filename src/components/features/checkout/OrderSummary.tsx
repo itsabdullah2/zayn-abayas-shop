@@ -1,9 +1,15 @@
 import useCartData from "@/hooks/useCartData";
+import useCheckout from "@/hooks/useCheckout";
+import { getTotalPriceAfterDiscount } from "@/utils/promoUtils";
 import { FaTrashAlt } from "react-icons/fa";
 
 const OrderSummary = () => {
   const { cartProducts, getProductQuantity, handleRemoveProduct, totalPrice } =
     useCartData();
+  const { promoCode, setPromoCode, handleApplyPromo, appliedPromo } =
+    useCheckout();
+
+  const priceBreakdown = getTotalPriceAfterDiscount(totalPrice, appliedPromo);
 
   return (
     <div
@@ -41,11 +47,15 @@ const OrderSummary = () => {
       <div className="pb-2 mb-2 border-b border-light-gray flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <span className="text-sm text-text">الشحن</span>
-          <span className="text-sm text-text">15.00 ج.م</span>
+          <span className="text-sm text-text">
+            {priceBreakdown.shippingFee.toFixed(2)} ج.م
+          </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm text-text">الخصم</span>
-          <span className="text-sm text-text">00.00 ج.م</span>
+          <span className="text-sm text-text">
+            {priceBreakdown.discount.toFixed(2)} ج.م
+          </span>
         </div>
       </div>
 
@@ -53,7 +63,7 @@ const OrderSummary = () => {
         <div className="flex items-center justify-between">
           <span className="text-primary font-medium">الإجمالي</span>
           <span className="text-primary font-medium">
-            {(totalPrice + 15).toFixed(2)} ج.م
+            {priceBreakdown.total.toFixed(2)} ج.م
           </span>
         </div>
       </div>
@@ -62,13 +72,13 @@ const OrderSummary = () => {
         <input
           type="text"
           placeholder="أدخل الرمز هنا..."
-          // value={promoCode}
-          // onChange={(e) => setPromoCode?.(e.target.value)}
+          value={promoCode}
+          onChange={(e) => setPromoCode?.(e.target.value)}
           className="flex-1 pr-3 input"
         />
         <button
           type="button"
-          // onClick={() => handleApplyPromo?.(totalPrice)}
+          onClick={() => handleApplyPromo?.(totalPrice)}
           className="relative group overflow-hidden primary-btn rounded-full! cursor-pointer"
         >
           تطبيق
