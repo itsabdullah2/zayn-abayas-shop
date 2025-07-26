@@ -85,6 +85,12 @@ const OrderSummary = () => {
           <span className="shine-effect group-hover:animate-shine" />
         </button>
       </div>
+
+      {appliedPromo && (
+        <p className="text-green-600 text-sm mt-3 text-center">
+          تم استخدام كود الخصم "{appliedPromo}" بنجاح!
+        </p>
+      )}
     </div>
   );
 };
