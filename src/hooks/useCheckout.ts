@@ -1,4 +1,4 @@
-import { useContextSelector } from "use-context-selector";
+import { useContext } from "react";
 import { CheckoutContext } from "@/context/CheckoutContext";
 import {
   getTotalPriceAfterDiscount,
@@ -7,13 +7,13 @@ import {
 import { useCallback } from "react";
 
 const useCheckout = () => {
-  const { appliedPromo, promoCode, setPromoCode, handleApplyPromo } =
-    useContextSelector(CheckoutContext, (ctx) => ({
-      appliedPromo: ctx?.appliedPromo,
-      promoCode: ctx?.promoCode,
-      setPromoCode: ctx?.setPromoCode,
-      handleApplyPromo: ctx?.handleApplyPromo,
-    }));
+  const context = useContext(CheckoutContext);
+
+  if (!context) {
+    throw new Error("useCheckout must be used within CheckoutProvider");
+  }
+
+  const { appliedPromo, promoCode, setPromoCode, handleApplyPromo } = context;
 
   const getTotals = useCallback(
     (totalPrice: number, code?: string) =>
