@@ -1,5 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { createContext } from "use-context-selector";
+import React, { useCallback, useMemo, useState, createContext } from "react";
 import {
   getProductDiscount,
   getTotalPriceAfterDiscount,
@@ -88,7 +87,6 @@ export const CheckoutProvider = ({
       appliedPromo,
       promoError,
       promoCode,
-      setPromoCode,
       handleApplyPromo,
       getTotals,
       getDiscount,
