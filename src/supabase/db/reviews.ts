@@ -67,7 +67,7 @@ export const getLikes = async (
 ): Promise<ReviewLikesTableType[]> => {
   try {
     const { data, error } = await supabase
-      .from("review-likes")
+      .from("review_likes")
       .select("*")
       .eq("review_id", review_id);
 
@@ -82,16 +82,15 @@ export const getLikes = async (
 
 export const addLike = async (
   user_id: string,
-  review_id: string,
-  likes: number
+  review_id: string
 ): Promise<ReviewLikesTableType> => {
   try {
     const { data, error } = await supabase
-      .from("review-likes")
+      .from("review_likes")
       .insert({
         user_id,
         review_id,
-        likes,
+        // likes,
       })
       .single();
 
@@ -110,7 +109,7 @@ export const deleteLike = async (
 ): Promise<ReviewLikesTableType> => {
   try {
     const { data, error } = await supabase
-      .from("review-likes")
+      .from("review_likes")
       .delete()
       .eq("user_id", user_id)
       .eq("review_id", review_id)
