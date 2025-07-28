@@ -19,7 +19,7 @@ export type UserTableType = {
 };
 
 export type ReviewsTableType = {
-  id?: string;
+  id: string;
   product_id: string;
   user_id: string;
   comment: string;
@@ -31,7 +31,6 @@ export type ReviewLikesTableType = {
   id?: string;
   user_id: string;
   review_id: string;
-  likes: number;
   created_at?: Date;
 };
 
