@@ -83,7 +83,7 @@ const CartItem = ({ item }: { item: EnrichedProductType }) => {
           </div>
           <div className="flex gap-1">
             <span className="text-primary text-sm font-medium">المقاس:</span>
-            <span className="text-primary text-sm">{size?.name}</span>
+            <span className="text-primary text-sm uppercase">{size?.name}</span>
           </div>
         </div>
       </div>
