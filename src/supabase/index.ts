@@ -14,6 +14,8 @@ import { getVariants } from "./db/products";
 import { getColors } from "./db/products";
 import { getSizes } from "./db/products";
 
+import { clearCart } from "./db/cart";
+
 import { createOrder } from "./db/orders";
 import { getUserOrders } from "./db/orders";
 
@@ -32,6 +34,8 @@ export {
   getVariants,
   getColors,
   getSizes,
+  //
+  clearCart,
   //
   createOrder,
   getUserOrders,
