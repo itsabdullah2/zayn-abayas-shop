@@ -13,6 +13,7 @@ const useCartData = () => {
     cartItems,
     handleIncreaseQuantity,
     handleDecreaseQuantity,
+    incrementCartVersion,
   } = useContextSelector(CartContext, (ctx) => ({
     setVariantsIds: ctx?.setVariantsIds,
     variantsIds: ctx?.variantsIds,
@@ -24,6 +25,7 @@ const useCartData = () => {
     cartItems: ctx?.cartItems,
     handleIncreaseQuantity: ctx?.handleIncreaseQuantity,
     handleDecreaseQuantity: ctx?.handleDecreaseQuantity,
+    incrementCartVersion: ctx?.incrementCartVersion,
   }));
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -111,6 +113,7 @@ const useCartData = () => {
     handleRemoveProduct,
     handleIncreaseQuantity,
     handleDecreaseQuantity,
+    incrementCartVersion,
   };
 };
 
