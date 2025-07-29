@@ -1,17 +1,23 @@
 import { useStripe, useElements } from "@stripe/react-stripe-js";
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState } from "react";
 import CheckoutInputs from "./CheckoutInputs";
 import SubmitButton from "./SubmitButton";
 import useCheckout from "@/hooks/useCheckout";
 import { getTotalPriceAfterDiscount } from "@/utils/promoUtils";
 import { useContextSelector } from "use-context-selector";
 import { CartContext } from "@/context/CartContext";
+import { supabase } from "@/supabase";
+import type { EnrichedCartItem } from "@/types";
+import { createOrder } from "@/supabase/db/orders";
+import { AuthContext } from "@/context/AuthContext";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const { appliedPromo } = useCheckout();
   const totalPrice = useContextSelector(CartContext, (ctx) => ctx?.totalPrice)!;
+  const cartItems = useContextSelector(CartContext, (ctx) => ctx?.cartItems)!;
+  const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -37,49 +43,125 @@ const CheckoutForm = () => {
       setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!stripe || !elements) return;
 
+    if (!stripe || !elements) return;
     const cardElement = elements.getElement("card");
     if (!cardElement) return;
 
     setLoading(true);
     setError("");
 
-    try {
-      const {
-        error,
-        // paymentMethod
-      } = await stripe.createPaymentMethod({
-        type: "card",
-        card: cardElement,
-        billing_details: {
-          name: formData.name,
-          email: formData.email,
-          address: {
-            line1: formData.address1,
-            line2: formData.address2,
-            city: formData.city,
-            country: formData.country,
-          },
-        },
-      });
+    const enrichedItems: EnrichedCartItem[] = await Promise.all(
+      cartItems.map(async (item) => {
+        const { data: variant, error } = await supabase
+          .from("product_variants")
+          .select("product_id, color_id, size_id, price")
+          .eq("id", item.variant_id)
+          .single();
 
-      if (error) {
-        setError(error.message || "Payment failed");
+        if (error) throw error;
+
+        return {
+          variant_id: item.variant_id,
+          product_id: variant.product_id,
+          color_id: variant.color_id,
+          size_id: variant.size_id,
+          quantity: item.quantity,
+          price: variant.price,
+        };
+      })
+    );
+
+    try {
+      // Step 1: Create The Order in DB
+      if (user) {
+        await createOrder({
+          userId: user.id,
+          totalPrice,
+          items: enrichedItems,
+        });
+      }
+      // Step 2: Payment Process
+      const { paymentMethod, error: stripeError } =
+        await stripe.createPaymentMethod({
+          type: "card",
+          card: cardElement,
+          billing_details: {
+            name: formData.name,
+            email: formData.email,
+            address: {
+              line1: formData.address1,
+              line2: formData.address2,
+              city: formData.city,
+              country: formData.country,
+            },
+          },
+        });
+
+      if (stripeError) {
+        setError(stripeError.message || "Payment Failed");
+
+        // Cancel the order from supabase
         return;
       }
+      console.log(paymentMethod);
 
+      // Step 3: Clear The Cart Table After The Previous Steps are succeed
+      // clearCart()
       setSubmitted(true);
-      // console.log(paymentMethod);
     } catch (err) {
       console.error(err);
-      setError("Something went wrong. Please try again.");
+      setError("Something went wrong, please try again!");
     } finally {
       setLoading(false);
     }
   };
+
+  // const handleSubmit = async (e: FormEvent) => {
+  //   e.preventDefault();
+  //   if (!stripe || !elements) return;
+
+  //   const cardElement = elements.getElement("card");
+  //   if (!cardElement) return;
+
+  //   setLoading(true);
+  //   setError("");
+
+  //   try {
+  //     const {
+  //       error,
+  //       // paymentMethod
+  //     } = await stripe.createPaymentMethod({
+  //       type: "card",
+  //       card: cardElement,
+  //       billing_details: {
+  //         name: formData.name,
+  //         email: formData.email,
+  //         address: {
+  //           line1: formData.address1,
+  //           line2: formData.address2,
+  //           city: formData.city,
+  //           country: formData.country,
+  //         },
+  //       },
+  //     });
+
+  //     if (error) {
+  //       setError(error.message || "Payment failed");
+  //       return;
+  //     }
+
+  //     setSubmitted(true);
+  //     // console.log(paymentMethod);
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError("Something went wrong. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   if (submitted) {
     return (
