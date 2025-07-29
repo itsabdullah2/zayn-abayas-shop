@@ -25,3 +25,12 @@ export type EnrichedProductType = VariantsTableType & {
   category_id?: string;
   available?: boolean;
 };
+
+export type EnrichedCartItem = {
+  variant_id: string;
+  product_id: string;
+  color_id: string;
+  size_id: string;
+  quantity: number;
+  price: number;
+};
