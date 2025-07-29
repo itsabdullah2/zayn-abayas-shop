@@ -6,6 +6,7 @@ import { PiSignInBold, PiSignOutBold } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
 import { useContextSelector } from "use-context-selector";
 import { signOut } from "@/supabase/auth/signOut";
+import { clearCart } from "@/supabase";
 
 const UserDropdown = () => {
   const [dropdown, setDropdown] = useState<boolean>(false);
@@ -27,6 +28,7 @@ const UserDropdown = () => {
 
   const handleLogout = async () => {
     try {
+      if (user) await clearCart(user.id);
       await signOut();
       setDropdown(false);
     } catch (error) {
