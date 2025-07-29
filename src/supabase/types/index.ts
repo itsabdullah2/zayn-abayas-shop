@@ -1,3 +1,4 @@
+import type { ProductType } from "@/types";
 import type { User, Session } from "@supabase/supabase-js";
 
 export type SigningResult = {
@@ -45,4 +46,29 @@ export type VariantsTableType = {
 export type ColorsAndSizesType = {
   id: string;
   name: string;
+};
+
+export type Order = {
+  id: string;
+  user_id: string;
+  status: string;
+  total_price: number;
+  created_at: Date;
+};
+
+export type OrderItem = {
+  id: string;
+  order_id: string;
+  product_id: string;
+  quantity: number;
+  order_price: number;
+  created_at: Date;
+};
+
+export type OrderItemWithProduct = OrderItem & {
+  product: ProductType;
+};
+
+export type FullOrder = Order & {
+  order_items: OrderItemWithProduct[];
 };
