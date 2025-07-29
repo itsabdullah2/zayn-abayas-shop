@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import PlacedReviews from "./PlacedReviews";
 import AddReview from "./AddReview";
-import { useContextSelector } from "use-context-selector";
-import { AuthContext } from "@/context/AuthContext";
 import type { ReviewsTableType } from "@/supabase/types";
 import { getReviews } from "@/supabase";
 
@@ -10,8 +8,6 @@ const Reviews = ({ productId }: { productId: string }) => {
   const [isReviews, setIsReviews] = useState("reviews");
   const [reviewsData, setReviewsData] = useState<ReviewsTableType[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
 
   const fetchReviews = useCallback(async () => {
     try {
@@ -30,7 +26,7 @@ const Reviews = ({ productId }: { productId: string }) => {
 
   let content;
   if (isReviews === "reviews") {
-    content = <PlacedReviews reviews={reviewsData} userId={user?.id} />;
+    content = <PlacedReviews reviews={reviewsData} />;
   } else if (isReviews === "add-review") {
     content = <AddReview productId={productId} refreshReviews={fetchReviews} />;
   }
