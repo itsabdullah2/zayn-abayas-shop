@@ -14,17 +14,25 @@ import { getVariants } from "./db/products";
 import { getColors } from "./db/products";
 import { getSizes } from "./db/products";
 
+import { createOrder } from "./db/orders";
+import { getUserOrders } from "./db/orders";
+
 export {
   supabase,
   signInWithPassword,
   signUpWithEmail,
   signInWithOAuth,
   signOut,
+  //
   getReviews,
   addReview,
   updateReview,
+  //
   getProducts,
   getVariants,
   getColors,
   getSizes,
+  //
+  createOrder,
+  getUserOrders,
 };
