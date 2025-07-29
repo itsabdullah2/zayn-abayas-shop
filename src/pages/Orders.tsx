@@ -1,5 +1,5 @@
-const Orders = () => {
-  return <div className="flex-1">Orders</div>;
+const OrdersPage = () => {
+  return <div className="flex-1 bg-light-gray">OrdersPage</div>;
 };
 
-export default Orders;
+export default OrdersPage;
