@@ -6,9 +6,10 @@ import useCheckout from "@/hooks/useCheckout";
 import { getTotalPriceAfterDiscount } from "@/utils/promoUtils";
 import { useContextSelector } from "use-context-selector";
 import { CartContext } from "@/context/CartContext";
-import { supabase, createOrder } from "@/supabase";
+import { supabase, createOrder, clearCart } from "@/supabase";
 import type { EnrichedCartItem } from "@/types";
 import { AuthContext } from "@/context/AuthContext";
+import useCartData from "@/hooks/useCartData";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -17,6 +18,7 @@ const CheckoutForm = () => {
   const totalPrice = useContextSelector(CartContext, (ctx) => ctx?.totalPrice)!;
   const cartItems = useContextSelector(CartContext, (ctx) => ctx?.cartItems)!;
   const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
+  const { incrementCartVersion } = useCartData();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -108,7 +110,10 @@ const CheckoutForm = () => {
       console.log(paymentMethod);
 
       // Step 3: Clear The Cart Table After The Previous Steps are succeed
-      // clearCart()
+      if (user) {
+        await clearCart(user.id);
+        incrementCartVersion?.();
+      }
       setSubmitted(true);
     } catch (err) {
       console.error(err);
@@ -117,50 +122,6 @@ const CheckoutForm = () => {
       setLoading(false);
     }
   };
-
-  // const handleSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
-  //   if (!stripe || !elements) return;
-
-  //   const cardElement = elements.getElement("card");
-  //   if (!cardElement) return;
-
-  //   setLoading(true);
-  //   setError("");
-
-  //   try {
-  //     const {
-  //       error,
-  //       // paymentMethod
-  //     } = await stripe.createPaymentMethod({
-  //       type: "card",
-  //       card: cardElement,
-  //       billing_details: {
-  //         name: formData.name,
-  //         email: formData.email,
-  //         address: {
-  //           line1: formData.address1,
-  //           line2: formData.address2,
-  //           city: formData.city,
-  //           country: formData.country,
-  //         },
-  //       },
-  //     });
-
-  //     if (error) {
-  //       setError(error.message || "Payment failed");
-  //       return;
-  //     }
-
-  //     setSubmitted(true);
-  //     // console.log(paymentMethod);
-  //   } catch (err) {
-  //     console.error(err);
-  //     setError("Something went wrong. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   if (submitted) {
     return (
