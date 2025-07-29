@@ -6,9 +6,8 @@ import useCheckout from "@/hooks/useCheckout";
 import { getTotalPriceAfterDiscount } from "@/utils/promoUtils";
 import { useContextSelector } from "use-context-selector";
 import { CartContext } from "@/context/CartContext";
-import { supabase } from "@/supabase";
+import { supabase, createOrder } from "@/supabase";
 import type { EnrichedCartItem } from "@/types";
-import { createOrder } from "@/supabase/db/orders";
 import { AuthContext } from "@/context/AuthContext";
 
 const CheckoutForm = () => {
