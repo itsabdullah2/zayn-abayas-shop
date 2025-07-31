@@ -52,6 +52,47 @@ export const createOrder = async ({
   }
 };
 
+export const updateOrderStatus = async (
+  status: string,
+  orderId: string,
+  userId: string
+) => {
+  try {
+    const { error } = await supabase
+      .from("orders")
+      .update({ status })
+      .eq("id", orderId)
+      .eq("user_id", userId);
+
+    if (error) {
+      console.error("Supabase error:", error.message);
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    console.error("Unexpected error while updating status:", err);
+    return false;
+  }
+};
+
+export const cancelOrder = async (orderId: string, userId: string) => {
+  try {
+    const { error } = await supabase
+      .from("orders")
+      .update({ status: "canceled" }) // or use .delete() if you prefer to remove it
+      .eq("id", orderId)
+      .eq("user_id", userId);
+
+    if (error) {
+      console.error("Cancel order error:", error.message);
+      throw error;
+    }
+  } catch (err) {
+    console.error("Failed to cancel order:", err);
+  }
+};
+
 export const getUserOrders = async (userId: string): Promise<FullOrder[]> => {
   try {
     const { data, error } = await supabase
