@@ -6,7 +6,13 @@ import useCheckout from "@/hooks/useCheckout";
 import { getTotalPriceAfterDiscount } from "@/utils/promoUtils";
 import { useContextSelector } from "use-context-selector";
 import { CartContext } from "@/context/CartContext";
-import { supabase, createOrder, clearCart } from "@/supabase";
+import {
+  supabase,
+  createOrder,
+  clearCart,
+  cancelOrder,
+  updateOrderStatus,
+} from "@/supabase";
 import type { EnrichedCartItem } from "@/types";
 import { AuthContext } from "@/context/AuthContext";
 import useCartData from "@/hooks/useCartData";
@@ -54,36 +60,45 @@ const CheckoutForm = () => {
     setLoading(true);
     setError("");
 
-    const enrichedItems: EnrichedCartItem[] = await Promise.all(
-      cartItems.map(async (item) => {
-        const { data: variant, error } = await supabase
-          .from("product_variants")
-          .select("product_id, color_id, size_id, price")
-          .eq("id", item.variant_id)
-          .single();
-
-        if (error) throw error;
-
-        return {
-          variant_id: item.variant_id,
-          product_id: variant.product_id,
-          color_id: variant.color_id,
-          size_id: variant.size_id,
-          quantity: item.quantity,
-          price: variant.price,
-        };
-      })
-    );
-
     try {
+      const enrichedItems: EnrichedCartItem[] = await Promise.all(
+        cartItems.map(async (item) => {
+          const { data: variant, error } = await supabase
+            .from("product_variants")
+            .select("product_id, color_id, size_id, price")
+            .eq("id", item.variant_id)
+            .single();
+
+          if (error) throw error;
+
+          return {
+            variant_id: item.variant_id,
+            product_id: variant.product_id,
+            color_id: variant.color_id,
+            size_id: variant.size_id,
+            quantity: item.quantity,
+            price: variant.price,
+          };
+        })
+      );
+
+      let orderId = "";
+
       // Step 1: Create The Order in DB
       if (user) {
-        await createOrder({
+        const order = await createOrder({
           userId: user.id,
-          totalPrice,
+          totalPrice: priceBreakdown.total,
           items: enrichedItems,
         });
+
+        if (!order || !order.id) {
+          throw new Error("Failed to create the order");
+        }
+
+        orderId = order.id;
       }
+
       // Step 2: Payment Process
       const { paymentMethod, error: stripeError } =
         await stripe.createPaymentMethod({
@@ -105,15 +120,21 @@ const CheckoutForm = () => {
         setError(stripeError.message || "Payment Failed");
 
         // Cancel the order from supabase
+        if (user && orderId) {
+          await cancelOrder(orderId, user.id);
+        }
         return;
       }
       console.log(paymentMethod);
+      console.log(priceBreakdown.total);
 
-      // Step 3: Clear The Cart Table After The Previous Steps are succeed
-      if (user) {
+      // Step 3: Update the status and Clear The Cart Table After The Previous Steps are succeed
+      if (user && orderId) {
+        await updateOrderStatus("paid", orderId, user.id);
         await clearCart(user.id);
         incrementCartVersion?.();
       }
+
       setSubmitted(true);
     } catch (err) {
       console.error(err);
