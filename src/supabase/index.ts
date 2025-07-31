@@ -17,6 +17,8 @@ import { getSizes } from "./db/products";
 import { clearCart } from "./db/cart";
 
 import { createOrder } from "./db/orders";
+import { updateOrderStatus } from "./db/orders";
+import { cancelOrder } from "./db/orders";
 import { getUserOrders } from "./db/orders";
 
 export {
@@ -39,4 +41,6 @@ export {
   //
   createOrder,
   getUserOrders,
+  updateOrderStatus,
+  cancelOrder,
 };
