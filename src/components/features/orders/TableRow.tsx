@@ -1,16 +1,51 @@
-import React from "react";
-import type { FullOrder } from "@/supabase/types";
+import React, { useCallback, useEffect, useState } from "react";
+import type { FullOrder, OrderItemWithProduct } from "@/supabase/types";
+import { getArabicStatusLabel, getStatusColors } from "@/utils/getStatusColor";
+import { PriceFormatter } from "@/utils/formatePrice";
+import { MdMoreVert } from "react-icons/md";
+
+const generateOrderNumber = () => {
+  const random = Math.floor(100000000 + Math.random() * 900000000); // 9-digits
+  return `#${random}`;
+};
 
 const TableRow = ({ order }: { order: FullOrder }) => {
-  console.log(order);
+  const [orderItem, setOrderItem] = useState<OrderItemWithProduct>();
+  const { bg, text } = getStatusColors(order.status);
+  const statusLabel = getArabicStatusLabel(order.status);
+
+  const returnedItem = useCallback(
+    () => order.order_items.map((item) => setOrderItem(item)),
+    [order.order_items]
+  );
+
+  useEffect(() => {
+    returnedItem();
+  }, [returnedItem]);
+
   return (
-    <tr className="flex">
-      <td className="flex-1">الاسم</td>
-      <td className="flex-1">المعرف</td>
-      <td className="flex-1">التاريخ</td>
-      <td className="flex-1">الكمية</td>
-      <td className="flex-1">السعر</td>
-      <td className="flex-1">الحالة</td>
+    <tr className="flex flex-1 py-2 odd:bg-light-gray items-center">
+      <td className="flex-1 text-center">{orderItem?.product.product_name}</td>
+      <td className="flex-1 text-center">{generateOrderNumber()}</td>
+      <td className="flex-1 text-center">
+        {new Date(order.created_at).toLocaleDateString()}
+      </td>
+      <td className="flex-1 text-center">{orderItem?.quantity}</td>
+      <td className="flex-1 text-center">
+        {PriceFormatter(order.total_price, "eg")} ج.م
+      </td>
+      <td className="flex-1 flex-center text-center">
+        <span
+          className={`px-2 py-1 rounded-full text-sm ${bg} ${text} w-28 block`}
+        >
+          {statusLabel}
+        </span>
+      </td>
+      <td className="flex-1 text-center flex-center">
+        <button className="cursor-pointer text-primary">
+          <MdMoreVert size={25} />
+        </button>
+      </td>
     </tr>
   );
 };
