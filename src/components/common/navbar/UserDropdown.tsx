@@ -69,7 +69,9 @@ const UserDropdown = () => {
               <p className="font-semibold text-primary">
                 Hello,{" "}
                 <span className="">
-                  {username.slice(0, 1).toUpperCase() + username.slice(1)}
+                  {username
+                    ? username.slice(0, 1).toUpperCase() + username.slice(1)
+                    : "N/A"}
                 </span>
               </p>
               <p className="text-sm text-text">{email}</p>
