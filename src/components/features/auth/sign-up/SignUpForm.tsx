@@ -104,18 +104,6 @@ const SignUpForm = () => {
           </button>
 
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-          <button
-            type="button"
-            className={`w-full text-primary py-3 rounded-lg font-medium bg-light-gray hover:bg-light-gray duration-200 flex items-center justify-center cursor-pointer`}
-          >
-            <img
-              src="https://www.google.com/favicon.ico"
-              alt="Google"
-              className="w-4 h-4 mr-2"
-            />
-            تسجيل الدخول باستخدام جوجل
-          </button>
         </form>
 
         <p className="text-center mt-6 text-gray">

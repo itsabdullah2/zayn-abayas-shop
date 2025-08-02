@@ -1,5 +1,5 @@
 import InputField from "@/components/common/InputField";
-import { signInWithOAuth, signInWithPassword } from "@/supabase";
+import { signInWithPassword } from "@/supabase";
 import { createUser, getAuthenticatedUser } from "@/supabase/db/users";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
