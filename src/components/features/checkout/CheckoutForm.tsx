@@ -100,21 +100,20 @@ const CheckoutForm = () => {
       }
 
       // Step 2: Payment Process
-      const { paymentMethod, error: stripeError } =
-        await stripe.createPaymentMethod({
-          type: "card",
-          card: cardElement,
-          billing_details: {
-            name: formData.name,
-            email: formData.email,
-            address: {
-              line1: formData.address1,
-              line2: formData.address2,
-              city: formData.city,
-              country: formData.country,
-            },
+      const { error: stripeError } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+        billing_details: {
+          name: formData.name,
+          email: formData.email,
+          address: {
+            line1: formData.address1,
+            line2: formData.address2,
+            city: formData.city,
+            country: formData.country,
           },
-        });
+        },
+      });
 
       if (stripeError) {
         setError(stripeError.message || "Payment Failed");
@@ -125,8 +124,6 @@ const CheckoutForm = () => {
         }
         return;
       }
-      console.log(paymentMethod);
-      console.log(priceBreakdown.total);
 
       // Step 3: Update the status and Clear The Cart Table After The Previous Steps are succeed
       if (user && orderId) {

@@ -27,7 +27,6 @@ const Orders = () => {
 
     fetchUserOrders();
   }, [user]);
-  console.log(ordersData);
 
   let content;
 
