@@ -3,14 +3,23 @@ import type { FullOrder, OrderItemWithProduct } from "@/supabase/types";
 import { getArabicStatusLabel, getStatusColors } from "@/utils/getStatusColor";
 import { PriceFormatter } from "@/utils/formatePrice";
 import { MdMoreVert } from "react-icons/md";
+import DropdownActions from "./DropdownActions";
 
-const generateOrderNumber = () => {
-  const random = Math.floor(100000000 + Math.random() * 900000000); // 9-digits
-  return `#${random}`;
+type Props = {
+  order: FullOrder;
+  dropdownActions: string | null;
+  handleDropdownActions: (id: string) => void;
+  generateOrderNumber: string;
 };
 
-const TableRow = ({ order }: { order: FullOrder }) => {
+const TableRow = ({
+  order,
+  dropdownActions,
+  handleDropdownActions,
+  generateOrderNumber,
+}: Props) => {
   const [orderItem, setOrderItem] = useState<OrderItemWithProduct>();
+
   const { bg, text } = getStatusColors(order.status);
   const statusLabel = getArabicStatusLabel(order.status);
 
@@ -26,7 +35,7 @@ const TableRow = ({ order }: { order: FullOrder }) => {
   return (
     <tr className="flex flex-1 py-2 odd:bg-light-gray items-center">
       <td className="flex-1 text-center">{orderItem?.product.product_name}</td>
-      <td className="flex-1 text-center">{generateOrderNumber()}</td>
+      <td className="flex-1 text-center">{generateOrderNumber}</td>
       <td className="flex-1 text-center">
         {new Date(order.created_at).toLocaleDateString()}
       </td>
@@ -41,10 +50,14 @@ const TableRow = ({ order }: { order: FullOrder }) => {
           {statusLabel}
         </span>
       </td>
-      <td className="flex-1 text-center flex-center">
-        <button className="cursor-pointer text-primary">
+      <td className="flex-1 text-center flex-center relative">
+        <button
+          className="cursor-pointer text-primary"
+          onClick={() => handleDropdownActions(order.id)}
+        >
           <MdMoreVert size={25} />
         </button>
+        {dropdownActions === order.id && <DropdownActions />}
       </td>
     </tr>
   );
