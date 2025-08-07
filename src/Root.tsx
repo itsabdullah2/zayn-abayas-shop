@@ -12,7 +12,6 @@ import {
   Error404Page,
   HomePage,
   OrdersPage,
-  OrderStatusPage,
   ProductDetailsPage,
   ProductDetailsPopup,
   SearchPopup,
@@ -20,6 +19,7 @@ import {
   SignInPage,
   SignUpPage,
 } from "./";
+import { OrdersProvider } from "./context/OrdersContext";
 
 const Root = () => {
   const searchPopup = useContextSelector(
@@ -52,20 +52,14 @@ const Root = () => {
             </ProtectedRoute>
           }
         />
-        <Route
-          path={"/order-status"}
-          element={
-            <ProtectedRoute>
-              <OrderStatusPage />
-            </ProtectedRoute>
-          }
-        />
         <Route path={"/cart"} element={<CartPage />} />
         <Route
           path={"/orders"}
           element={
             <ProtectedRoute>
-              <OrdersPage />
+              <OrdersProvider>
+                <OrdersPage />
+              </OrdersProvider>
             </ProtectedRoute>
           }
         />
