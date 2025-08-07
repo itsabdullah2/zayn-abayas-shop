@@ -4,6 +4,8 @@ import { getArabicStatusLabel, getStatusColors } from "@/utils/getStatusColor";
 import { PriceFormatter } from "@/utils/formatePrice";
 import { MdMoreVert } from "react-icons/md";
 import DropdownActions from "./DropdownActions";
+import { useContextSelector } from "use-context-selector";
+import { OrdersContext } from "@/context/OrdersContext";
 
 type Props = {
   order: FullOrder;
@@ -19,6 +21,10 @@ const TableRow = ({
   generateOrderNumber,
 }: Props) => {
   const [orderItem, setOrderItem] = useState<OrderItemWithProduct>();
+  const openTrackingPopup = useContextSelector(
+    OrdersContext,
+    (ctx) => ctx?.openTrackingPopup
+  );
 
   const { bg, text } = getStatusColors(order.status);
   const statusLabel = getArabicStatusLabel(order.status);
@@ -57,7 +63,11 @@ const TableRow = ({
         >
           <MdMoreVert size={25} />
         </button>
-        {dropdownActions === order.id && <DropdownActions />}
+        {dropdownActions === order.id && (
+          <DropdownActions
+            openOrderTrackingPopup={() => openTrackingPopup?.(order.id)}
+          />
+        )}
       </td>
     </tr>
   );
