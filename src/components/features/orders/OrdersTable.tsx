@@ -35,6 +35,7 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
             dropdownActions={dropdownActions}
             handleDropdownActions={handleDropdownActions}
             generateOrderNumber={generateOrderNumber}
+            setDropdownActions={setDropdownActions}
           />
         ))}
       </tbody>
