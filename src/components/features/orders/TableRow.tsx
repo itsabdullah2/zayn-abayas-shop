@@ -12,6 +12,7 @@ type Props = {
   dropdownActions: string | null;
   handleDropdownActions: (id: string) => void;
   generateOrderNumber: string;
+  setDropdownActions: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const TableRow = ({
@@ -19,6 +20,7 @@ const TableRow = ({
   dropdownActions,
   handleDropdownActions,
   generateOrderNumber,
+  setDropdownActions,
 }: Props) => {
   const [orderItem, setOrderItem] = useState<OrderItemWithProduct>();
   const openTrackingPopup = useContextSelector(
@@ -66,6 +68,7 @@ const TableRow = ({
         {dropdownActions === order.id && (
           <DropdownActions
             openOrderTrackingPopup={() => openTrackingPopup?.(order.id)}
+            setDropdownActions={setDropdownActions}
           />
         )}
       </td>
