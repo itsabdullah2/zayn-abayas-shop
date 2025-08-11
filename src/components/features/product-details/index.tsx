@@ -1,11 +1,10 @@
 import Loading from "@/components/layout/Loading";
 import { PriceFormatter } from "@/utils/formatePrice";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import CartBtns from "./CartBtns";
 import QuantityBtns from "./QuantityBtns";
 import Reviews from "./Reviews";
-import { FaStar } from "react-icons/fa";
 import ColorSelection from "@/components/common/ColorSelection";
 import SizeSelection from "@/components/common/SizeSelection";
 import useCartData from "@/hooks/useCartData";
@@ -14,10 +13,12 @@ import { AppContext } from "@/context/AppContext";
 import { toast } from "sonner";
 import useBuyNow from "@/hooks/useBuyNow";
 import useProductDetails from "@/hooks/useProductDetails";
+import StarRating from "./StarRating";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { product, variants, colors, sizes, loading } = useProductDetails(id);
+  const { product, variants, colors, sizes, loading, reviews } =
+    useProductDetails(id);
   const { handleCart } = useCartData();
   const closeProductPopup = useContextSelector(
     AppContext,
@@ -58,6 +59,15 @@ const ProductDetails = () => {
     }
   };
 
+  // Calculating the rating stars
+  const ratingStars = useMemo(() => {
+    if (!reviews.length) return 0;
+    const ratingFromDB = reviews.map((review) => review.rating);
+    return (
+      ratingFromDB.reduce((acc, val) => acc + val, 0) / ratingFromDB.length
+    );
+  }, [reviews]);
+
   if (loading) return <Loading />;
 
   if (variants.length === 0 || colors.length === 0 || sizes.length === 0) {
@@ -82,9 +92,7 @@ const ProductDetails = () => {
           </h4>
 
           <div className="flex items-center gap-1 text-xl -mt-3">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <FaStar key={i} className="text-soft-gray" />
-            ))}
+            <StarRating rating={ratingStars} />
           </div>
 
           <div className="flex flex-col mt-2">
