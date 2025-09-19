@@ -29,12 +29,24 @@ const ListItem = ({
       className="card-style group animate-appear"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
-      <img
-        src={product.product_img}
-        alt={product.product_name}
-        loading="lazy"
-        className="w-full"
-      />
+      <picture>
+        {/* avif version */}
+        <source
+          srcSet={`${product.product_img}?quality=80?format=avif`}
+          type="image/avif"
+        />
+        {/* webp version */}
+        <source
+          srcSet={`${product.product_img}?quality=80?format=webp`}
+          type="image/webp"
+        />
+        <img
+          src={product.product_img}
+          alt={product.product_name}
+          loading="lazy"
+          className="w-full object-cover"
+        />
+      </picture>
       <figcaption className="flex justify-between gap-2 items-center py-4 px-2">
         <p className="card-title">
           {product.product_name.length > 20

@@ -81,12 +81,24 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
             className="card-style group animate-appear"
             style={{ animationDelay: `${i * 0.1}s` }}
           >
-            <img
-              src={item.product_img}
-              alt={item.product_name}
-              loading="lazy"
-              className="w-full"
-            />
+            <picture>
+              {/* avif version */}
+              <source
+                srcSet={`${item.product_img}?quality=80?format=avif`}
+                type="image/avif"
+              />
+              {/* webp version */}
+              <source
+                srcSet={`${item.product_img}?quality=80?format=webp`}
+                type="image/webp"
+              />
+              <img
+                src={item.product_img}
+                alt={item.product_name}
+                loading="lazy"
+                className="object-cover w-full"
+              />
+            </picture>
             <figcaption className="flex justify-between items-center py-4 px-2">
               <p className="card-title">
                 {item.product_name.length > 25
