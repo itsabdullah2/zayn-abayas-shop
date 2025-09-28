@@ -21,8 +21,9 @@ html {
   --color-gray: #6a7282;
   --color-soft-gray: #99a1af;
   --color-light-gray: #e5e7eb;
-  --font-noto-kufi: "Noto Kufi Arabic", Arial, "sans-serif";
-  --font-roboto: "Roboto", "sans-serif";
+  --font-noto-kufi: "Noto Kufi Arabic", Tahoma, Arial, sans-serif;
+  --font-roboto: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
 
   --animate-shine: shine 0.8s ease-in-out;
   --animate-appear: appear 0.5s ease-in-out;
@@ -53,9 +54,15 @@ body {
   text-align: right;
 }
 
+:lang(en) {
+  font-family: var(--font-roboto);
+  direction: ltr;
+  text-align: left;
+}
+
 @layer utilities {
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pb-10;
+    @apply max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 mt-10 pb-10;
   }
 
   .flex-center {
