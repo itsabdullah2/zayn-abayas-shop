@@ -100,7 +100,7 @@ const ProductDetails = () => {
               {PriceFormatter(variants[0]?.price, "en-EG")} L.E
             </h4>
 
-            <div className="flex gap-3 mt-5">
+            <div className="flex flex-col md:flex-row gap-3 mt-5">
               <ColorSelection
                 colors={colors}
                 selectedColorId={selectedColorId}

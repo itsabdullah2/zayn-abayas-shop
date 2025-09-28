@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContextSelector } from "use-context-selector";
 import { signOut } from "@/supabase/auth/signOut";
 import { clearCart } from "@/supabase";
+import { AppContext } from "@/context/AppContext";
 
 const UserDropdown = () => {
   const [dropdown, setDropdown] = useState<boolean>(false);
@@ -16,6 +17,10 @@ const UserDropdown = () => {
     user: ctx?.user,
     isAuthenticated: ctx?.isAuthenticated,
   }));
+  const setIsNavMenu = useContextSelector(
+    AppContext,
+    (value) => value?.setIsNavMenu
+  )!;
 
   const username = user?.user_metadata?.username;
   const email = user?.user_metadata?.email;
@@ -35,6 +40,9 @@ const UserDropdown = () => {
       // Optionally handle error (e.g., show toast)
       console.error("Logout failed", error);
     }
+  };
+  const handleNavMenu = () => {
+    setIsNavMenu(false);
   };
 
   useEffect(() => {
@@ -83,16 +91,28 @@ const UserDropdown = () => {
               to="/orders"
               icon={<FaShoppingCart size={16} />}
               label="طلباتي"
+              onClick={() => {
+                handleToggleUserDropdown();
+                handleNavMenu();
+              }}
             />
             <MenuItem
               to="/wishlist"
               icon={<FaHeart size={16} />}
               label="قائمة الرغبات"
+              onClick={() => {
+                handleToggleUserDropdown();
+                handleNavMenu();
+              }}
             />
             <MenuItem
               to="/help"
               icon={<IoIosHelpCircle size={16} />}
               label="المساعدة والدعم"
+              onClick={() => {
+                handleToggleUserDropdown();
+                handleNavMenu();
+              }}
             />
           </ul>
 
@@ -125,14 +145,20 @@ const MenuItem = ({
   icon,
   label,
   to,
+  onClick,
 }: {
   icon: React.ReactNode;
   label: string;
   to: string;
+  onClick: () => void;
 }) => {
   return (
     <li className="text-sm text-gray hover:text-primary px-2 py-2 hover:bg-light-gray rounded-md w-full duration-150">
-      <Link to={to} className="flex items-center gap-1 cursor-pointer">
+      <Link
+        to={to}
+        className="flex items-center gap-1 cursor-pointer"
+        onClick={onClick}
+      >
         {icon} {label}
       </Link>
     </li>

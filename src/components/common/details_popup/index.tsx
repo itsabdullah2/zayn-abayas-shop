@@ -71,7 +71,7 @@ const ProductDetailsPopup = ({ productId }: { productId: string }) => {
         >
           <LoadingOrError loading={loading} error={error} />
 
-          <div className="grid grid-cols-4 gap-3 mt-5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-5">
             {product && <ProductImg product={product} />}
             {!loading && product && variants && (
               <ProductInfo

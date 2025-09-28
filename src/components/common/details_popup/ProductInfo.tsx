@@ -41,7 +41,7 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
 
   return (
     <div className="col-span-2">
-      <div className="flex flex-col gap-1 pb-2 border-b border-soft-gray">
+      <div className=" pb-2 border-b border-soft-gray">
         <p className="text-text font-sm">{product?.product_desc}</p>
       </div>
 
