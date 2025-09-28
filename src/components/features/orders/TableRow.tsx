@@ -41,24 +41,29 @@ const TableRow = ({
   }, [returnedItem]);
 
   return (
-    <tr className="flex flex-1 py-2 odd:bg-light-gray items-center">
-      <td className="flex-1 text-center">{orderItem?.product.product_name}</td>
-      <td className="flex-1 text-center">{generateOrderNumber}</td>
-      <td className="flex-1 text-center">
+    <tr className="py-2 odd:bg-light-gray">
+      <td className="text-center py-3">
+        {orderItem?.product.product_name &&
+        orderItem?.product.product_name.length > 30
+          ? orderItem?.product.product_name.slice(0, 100) + "..."
+          : orderItem?.product.product_name}
+      </td>
+      <td className="text-center py-3">{generateOrderNumber}</td>
+      <td className="text-center py-3">
         {new Date(order.created_at).toLocaleDateString()}
       </td>
-      <td className="flex-1 text-center">{orderItem?.quantity}</td>
-      <td className="flex-1 text-center">
+      <td className="text-center py-3">{orderItem?.quantity}</td>
+      <td className="text-center py-3">
         {PriceFormatter(order.total_price, "eg")} ج.م
       </td>
-      <td className="flex-1 flex-center text-center">
+      <td className="flex-center text-center py-3">
         <span
           className={`px-2 py-1 rounded-full text-sm ${bg} ${text} w-28 block`}
         >
           {statusLabel}
         </span>
       </td>
-      <td className="flex-1 text-center flex-center relative">
+      <td className="text-center py-3 relative">
         <button
           className="cursor-pointer text-primary"
           onClick={() => handleDropdownActions(order.id)}
