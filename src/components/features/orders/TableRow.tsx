@@ -42,28 +42,32 @@ const TableRow = ({
 
   return (
     <tr className="py-2 odd:bg-light-gray">
-      <td className="text-center py-3">
+      <td className="text-center py-3 px-2 whitespace-nowrap">
         {orderItem?.product.product_name &&
         orderItem?.product.product_name.length > 30
-          ? orderItem?.product.product_name.slice(0, 100) + "..."
+          ? orderItem?.product.product_name.slice(0, 30) + "..."
           : orderItem?.product.product_name}
       </td>
-      <td className="text-center py-3">{generateOrderNumber}</td>
-      <td className="text-center py-3">
+      <td className="text-center py-3 px-2 whitespace-nowrap">
+        {generateOrderNumber}
+      </td>
+      <td className="text-center py-3 px-2 whitespace-nowrap">
         {new Date(order.created_at).toLocaleDateString()}
       </td>
-      <td className="text-center py-3">{orderItem?.quantity}</td>
-      <td className="text-center py-3">
+      <td className="text-center py-3 px-2 whitespace-nowrap">
+        {orderItem?.quantity}
+      </td>
+      <td className="text-center py-3 px-2 whitespace-nowrap">
         {PriceFormatter(order.total_price, "eg")} ج.م
       </td>
-      <td className="flex-center text-center py-3">
+      <td className="text-center py-3 px-2">
         <span
-          className={`px-2 py-1 rounded-full text-sm ${bg} ${text} w-28 block`}
+          className={`px-2 py-1 rounded-full text-sm ${bg} ${text} w-28 block mx-auto whitespace-nowrap`}
         >
           {statusLabel}
         </span>
       </td>
-      <td className="text-center py-3 relative">
+      <td className="text-center py-3 px-2 relative">
         <button
           className="cursor-pointer text-primary"
           onClick={() => handleDropdownActions(order.id)}
