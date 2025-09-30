@@ -1,0 +1,45 @@
+import { AppContext } from "@/context/AppContext";
+import { useContextSelector } from "use-context-selector";
+import { IoWarningOutline } from "react-icons/io5";
+
+const ConfirmCancelDialog = () => {
+  const setIsDialogOpen = useContextSelector(
+    AppContext,
+    (ctx) => ctx?.setIsDialogOpen
+  )!;
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+  const handleConfirmCancel = () => {
+    console.log("Order is Cancelled Successfully");
+  };
+  return (
+    <>
+      <div className="absolute top-0 left-0 w-full h-full bg-black/70 z-10" />
+      <div className="w-[95vw] sm:w-[500px] bg-white rounded-xl py-4 px-5 absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
+        <div className="flex flex-col items-center gap-4 mb-5">
+          <IoWarningOutline size={35} className="text-red-500" />
+          <h2 className="text-base text-black font-medium pb-3">
+            هل أنت متأكد من إلغاء الطلب؟
+          </h2>
+        </div>
+        <div className="flex items-center justify-between gap-3">
+          <button
+            className="cursor-pointer border border-accentA rounded-lg px-5 py-1 hover:bg-accentA duration-150 hover:text-white"
+            onClick={handleCloseDialog}
+          >
+            الغاء
+          </button>
+          <button
+            className="cursor-pointer border border-accentA rounded-lg px-5 py-1 hover:bg-accentA duration-150 hover:text-white"
+            onClick={handleConfirmCancel}
+          >
+            تأكيد
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ConfirmCancelDialog;
