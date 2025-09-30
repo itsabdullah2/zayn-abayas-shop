@@ -13,6 +13,8 @@ type AppContextType = {
   closeProductPopup: () => void;
   openProductPopup: (id: string) => void;
   handleSelectedCategory: (filter: string) => void;
+  isDialogOpen: boolean;
+  setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -22,6 +24,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchPopup, setSearchPopup] = useState<boolean>(false);
   const [productPopup, setProductPopup] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleCloseSearchPopup = useCallback(() => {
     setSearchPopup(false);
@@ -81,6 +85,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     closeProductPopup,
     openProductPopup,
     handleSelectedCategory,
+    isDialogOpen,
+    setIsDialogOpen,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

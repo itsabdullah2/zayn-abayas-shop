@@ -42,7 +42,7 @@ const TableRow = ({
 
   return (
     <tr className="py-2 odd:bg-light-gray">
-      <td className="text-center py-3 px-2 whitespace-nowrap">
+      <td className="text-center py-3 px-2 whitespace-nowrap rounded-tr-lg rounded-br-lg">
         {orderItem?.product.product_name &&
         orderItem?.product.product_name.length > 30
           ? orderItem?.product.product_name.slice(0, 30) + "..."
@@ -67,7 +67,7 @@ const TableRow = ({
           {statusLabel}
         </span>
       </td>
-      <td className="text-center py-3 px-2 relative">
+      <td className="text-center py-3 px-2 relative rounded-tl-lg rounded-bl-lg">
         <button
           className="cursor-pointer text-primary"
           onClick={() => handleDropdownActions(order.id)}
@@ -75,10 +75,29 @@ const TableRow = ({
           <MdMoreVert size={25} />
         </button>
         {dropdownActions === order.id && (
-          <DropdownActions
-            openOrderTrackingPopup={() => openTrackingPopup?.(order.id)}
-            setDropdownActions={setDropdownActions}
-          />
+          <div
+            className="fixed inset-0 z-10"
+            onClick={() => setDropdownActions(null)}
+          >
+            <div
+              className="absolute"
+              style={{
+                top: `${
+                  (event?.target as HTMLElement)?.getBoundingClientRect()
+                    .bottom + window.scrollY
+                }px`,
+                left: `${
+                  (event?.target as HTMLElement)?.getBoundingClientRect().left +
+                  window.scrollX
+                }px`,
+              }}
+            >
+              <DropdownActions
+                openOrderTrackingPopup={() => openTrackingPopup?.(order.id)}
+                setDropdownActions={setDropdownActions}
+              />
+            </div>
+          </div>
         )}
       </td>
     </tr>
