@@ -23,13 +23,22 @@ const DropdownActions = ({
     (ctx) => ctx?.setIsDialogOpen
   );
   const handleTrackingPopup = () => {
+    if (status === "cancelled") {
+      setIsDialogOpen?.(true);
+      return;
+    }
     openOrderTrackingPopup();
     setDropdownActions(null);
   };
   const handleCancelOrder = () => {
     setIsDialogOpen?.(true);
   };
-  const handleReturnOrder = () => {};
+  const handleReturnOrder = () => {
+    if (status === "cancelled") {
+      setIsDialogOpen?.(true);
+      return;
+    }
+  };
   const handlePrint = () => {};
 
   const isDisabled = status !== "paid";

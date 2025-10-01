@@ -56,13 +56,20 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
     }
   };
 
+  const targetOrder = orders.find((order) => order.id === targetOrderId);
+
   return (
     <>
       {isDialogOpen && (
         <ConfirmCancelDialog
-          message="هل أنت متأكد من إلغاء الطلب؟"
+          message={
+            targetOrder?.status === "cancelled"
+              ? "تم الغاء الطلب لا يمكن فتح النافذة المنبثقة"
+              : "هل أنت متأكد من إلغاء الطلب؟"
+          }
           icon={<IoWarningOutline size={35} className="text-red-500" />}
           onClick={handleConfirmCancellation}
+          status={targetOrder?.status || ""}
         />
       )}
       <section className="bg-neutral rounded-xl border-soft-gray border p-5 relative">

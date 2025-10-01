@@ -5,9 +5,10 @@ type Props = {
   icon: React.ReactNode;
   message: string;
   onClick?: () => void;
+  status?: string;
 };
 
-const ConfirmCancelDialog = ({ icon, message, onClick }: Props) => {
+const ConfirmCancelDialog = ({ icon, message, onClick, status }: Props) => {
   const setIsDialogOpen = useContextSelector(
     AppContext,
     (ctx) => ctx?.setIsDialogOpen
@@ -24,19 +25,25 @@ const ConfirmCancelDialog = ({ icon, message, onClick }: Props) => {
           {icon}
           <h2 className="text-base text-black font-medium pb-3">{message}</h2>
         </div>
-        <div className="flex items-center justify-between gap-3">
+        <div
+          className={`flex items-center ${
+            status === "cancelled" ? "justify-center" : "justify-between"
+          } gap-3`}
+        >
           <button
-            className="cursor-pointer border border-accentA rounded-lg px-5 py-1 hover:bg-accentA duration-150 hover:text-white"
+            className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"
             onClick={handleCloseDialog}
           >
             الغاء
           </button>
-          <button
-            className="cursor-pointer border border-accentA rounded-lg px-5 py-1 hover:bg-accentA duration-150 hover:text-white"
-            onClick={onClick}
-          >
-            تأكيد
-          </button>
+          {status === "cancelled" ? null : (
+            <button
+              className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"
+              onClick={onClick}
+            >
+              تأكيد
+            </button>
+          )}
         </div>
       </div>
     </>
