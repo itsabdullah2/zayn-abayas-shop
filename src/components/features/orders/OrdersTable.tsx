@@ -8,6 +8,8 @@ import { IoWarningOutline, IoCheckmarkCircle } from "react-icons/io5";
 import { toast } from "sonner";
 import { cancelOrder } from "@/supabase";
 import { AuthContext } from "@/context/AuthContext";
+import { OrdersContext } from "@/context/OrdersContext";
+import OrderTrackingPopup from "@/components/features/orders/OrderTrackingPopup";
 
 const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
   const [dropdownActions, setDropdownActions] = useState<string | null>(null);
@@ -20,6 +22,10 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
     })
   );
   const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
+  const isTrackingPopup = useContextSelector(
+    OrdersContext,
+    (ctx) => ctx?.isTrackingPopup
+  );
 
   const handleDropdownActions = (id: string) => {
     setDropdownActions((prev) => (prev === id ? null : id));
@@ -60,6 +66,12 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
 
   return (
     <>
+      {isTrackingPopup && (
+        <OrderTrackingPopup
+          status={targetOrder?.status || ""}
+          order={targetOrder as FullOrder}
+        />
+      )}
       {isDialogOpen && (
         <ConfirmCancelDialog
           message={
