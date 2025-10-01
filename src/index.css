@@ -27,6 +27,8 @@ html {
 
   --animate-shine: shine 0.8s ease-in-out;
   --animate-appear: appear 0.5s ease-in-out;
+  --animate-wave: wave 1.5s ease-in-out infinite;
+  --animate-ripple: ripple 1.5s ease-out infinite;
 
   @keyframes shine {
     0% {
@@ -44,6 +46,31 @@ html {
     100% {
       transform: translateY(0);
       opacity: 1;
+    }
+  }
+  @keyframes wave {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.15);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes ripple {
+    0% {
+      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
   }
 }
