@@ -53,6 +53,7 @@ export type Order = {
   user_id: string;
   status: string;
   total_price: number;
+  order_number: string;
   created_at: Date;
 };
 

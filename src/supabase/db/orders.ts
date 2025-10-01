@@ -80,7 +80,7 @@ export const cancelOrder = async (orderId: string, userId: string) => {
   try {
     const { error } = await supabase
       .from("orders")
-      .update({ status: "canceled" }) // or use .delete() if you prefer to remove it
+      .update({ status: "cancelled" }) // or use .delete() if you prefer to remove it
       .eq("id", orderId)
       .eq("user_id", userId);
 

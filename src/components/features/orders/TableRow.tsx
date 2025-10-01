@@ -11,7 +11,6 @@ type Props = {
   order: FullOrder;
   dropdownActions: string | null;
   handleDropdownActions: (id: string) => void;
-  generateOrderNumber: string;
   setDropdownActions: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
@@ -19,7 +18,6 @@ const TableRow = ({
   order,
   dropdownActions,
   handleDropdownActions,
-  generateOrderNumber,
   setDropdownActions,
 }: Props) => {
   const [orderItem, setOrderItem] = useState<OrderItemWithProduct>();
@@ -28,12 +26,17 @@ const TableRow = ({
     (ctx) => ctx?.openTrackingPopup
   );
 
-  const { bg, text } = getStatusColors(order.status);
-  const statusLabel = getArabicStatusLabel(order.status);
+  const memoizedOrder = React.useMemo(
+    () => order,
+    [order.status, order.id, order.order_items]
+  );
+
+  const { bg, text } = getStatusColors(memoizedOrder.status);
+  const statusLabel = getArabicStatusLabel(memoizedOrder.status);
 
   const returnedItem = useCallback(
-    () => order.order_items.map((item) => setOrderItem(item)),
-    [order.order_items]
+    () => memoizedOrder.order_items.map((item) => setOrderItem(item)),
+    [memoizedOrder.order_items]
   );
 
   useEffect(() => {
@@ -49,16 +52,16 @@ const TableRow = ({
           : orderItem?.product.product_name}
       </td>
       <td className="text-center py-3 px-2 whitespace-nowrap">
-        {generateOrderNumber}
+        {memoizedOrder.order_number}
       </td>
       <td className="text-center py-3 px-2 whitespace-nowrap">
-        {new Date(order.created_at).toLocaleDateString()}
+        {new Date(memoizedOrder.created_at).toLocaleDateString()}
       </td>
       <td className="text-center py-3 px-2 whitespace-nowrap">
         {orderItem?.quantity}
       </td>
       <td className="text-center py-3 px-2 whitespace-nowrap">
-        {PriceFormatter(order.total_price, "eg")} ج.م
+        {PriceFormatter(memoizedOrder.total_price, "eg")} ج.م
       </td>
       <td className="text-center py-3 px-2">
         <span
@@ -70,11 +73,11 @@ const TableRow = ({
       <td className="text-center py-3 px-2 relative rounded-tl-lg rounded-bl-lg">
         <button
           className="cursor-pointer text-primary"
-          onClick={() => handleDropdownActions(order.id)}
+          onClick={() => handleDropdownActions(memoizedOrder.id)}
         >
           <MdMoreVert size={25} />
         </button>
-        {dropdownActions === order.id && (
+        {dropdownActions === memoizedOrder.id && (
           <div
             className="fixed inset-0 z-10"
             onClick={() => setDropdownActions(null)}
@@ -93,8 +96,11 @@ const TableRow = ({
               }}
             >
               <DropdownActions
-                openOrderTrackingPopup={() => openTrackingPopup?.(order.id)}
+                openOrderTrackingPopup={() =>
+                  openTrackingPopup?.(memoizedOrder.id)
+                }
                 setDropdownActions={setDropdownActions}
+                status={memoizedOrder.status}
               />
             </div>
           </div>
