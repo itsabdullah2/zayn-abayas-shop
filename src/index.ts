@@ -22,7 +22,11 @@ export const Error404Page = lazy(() => import("./pages/Error404"));
 export const SignInPage = lazy(() => import("./pages/SignIn"));
 export const SignUpPage = lazy(() => import("./pages/SignUp"));
 export const ProductDetailsPage = lazy(() => import("./pages/ProductDetails"));
+
 export const AdminOrdersPage = lazy(() => import("./pages/admin/AdminOrders"));
 export const AdminDashboardPage = lazy(
   () => import("./pages/admin/AdminDashboard")
+);
+export const AdminSidebar = lazy(
+  () => import("./components/features/dash/Sidebar")
 );
