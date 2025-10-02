@@ -5,19 +5,48 @@ import Loading from "../layout/Loading";
 
 import { useEffect } from "react";
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = ({
+  children,
+  role = "user",
+}: {
+  children: React.ReactNode;
+  role?: "user" | "admin";
+}) => {
   const navigate = useNavigate();
 
-  const { user, loading } = useContextSelector(AuthContext, (ctx) => ({
+  const { user, loading, profile } = useContextSelector(AuthContext, (ctx) => ({
     user: ctx?.user,
     loading: ctx?.loading,
+    profile: ctx?.profile,
   }));
 
   useEffect(() => {
-    if (!loading && !user) {
-      navigate("/sign-up");
+    if (!loading) {
+      if (!user) {
+        navigate("/sign-up");
+        return;
+      }
+      // Admin should only access admin /admin/*
+      if (
+        profile?.role === "admin" &&
+        !location.pathname.startsWith("/admin")
+      ) {
+        navigate("/admin/dashboard");
+        return;
+      }
+      // User should not access admin /admin/*
+      if (profile?.role === "user" && location.pathname.startsWith("/admin")) {
+        navigate("/");
+        return;
+      }
+
+      // if role is explicitly required
+      if (role && profile?.role !== role) {
+        navigate("/");
+        return;
+      }
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, role, profile]);
 
   if (loading || (!user && !loading)) return <Loading />;
 
