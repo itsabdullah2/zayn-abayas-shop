@@ -66,3 +66,40 @@ export const getUsers = async <T = UserTableType>(
 
   return data as T[];
 };
+
+export const getUserById = async (
+  userIds: string | string[]
+): Promise<UserTableType[]> => {
+  try {
+    if (!userIds || (Array.isArray(userIds) && userIds.length === 0)) return [];
+
+    if (Array.isArray(userIds)) {
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .in("id", userIds);
+
+      if (error) {
+        console.error("Error fetching user by ID:", error);
+        return [];
+      }
+
+      return data ?? [];
+    } else {
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", userIds);
+
+      if (error) {
+        console.error("Error fetching user by ID:", error);
+        return [];
+      }
+
+      return data ?? [];
+    }
+  } catch (err) {
+    console.error("Error fetching user by ID:", err);
+    throw err;
+  }
+};

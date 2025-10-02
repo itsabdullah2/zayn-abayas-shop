@@ -17,6 +17,7 @@ export type UserTableType = {
   username: string;
   email: string;
   created_at: string;
+  role: string;
 };
 
 export type ReviewsTableType = {
