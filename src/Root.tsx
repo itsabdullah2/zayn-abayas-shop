@@ -24,6 +24,8 @@ import {
 import { OrdersProvider } from "./context/OrdersContext";
 
 const Root = () => {
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   const searchPopup = useContextSelector(
     AppContext,
     (value) => value?.searchPopup
@@ -39,7 +41,7 @@ const Root = () => {
 
   return (
     <div className="flex flex-col min-h-dvh bg-neutral">
-      <Navbar />
+      {!isAdminRoute && <Navbar />}
       {searchPopup && <SearchPopup />}
       {productDetailsPopup && <ProductDetailsPopup productId={productId} />}
       <Routes>
@@ -86,7 +88,7 @@ const Root = () => {
         <Route path={"/products/:id"} element={<ProductDetailsPage />} />
         <Route path={"*"} element={<Error404Page />} />
       </Routes>
-      <Footer />
+      {!isAdminRoute && <Footer />}
     </div>
   );
 };
