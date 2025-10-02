@@ -18,6 +18,8 @@ import {
   ShopPage,
   SignInPage,
   SignUpPage,
+  AdminOrdersPage,
+  AdminDashboardPage,
 } from "./";
 import { OrdersProvider } from "./context/OrdersContext";
 
@@ -47,7 +49,7 @@ const Root = () => {
         <Route
           path={"/checkout"}
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="user">
               <CheckoutPage />
             </ProtectedRoute>
           }
@@ -56,10 +58,26 @@ const Root = () => {
         <Route
           path={"/orders"}
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="user">
               <OrdersProvider>
                 <OrdersPage />
               </OrdersProvider>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={"/admin/orders"}
+          element={
+            <ProtectedRoute role="admin">
+              <AdminOrdersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={"/admin/dashboard"}
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboardPage />
             </ProtectedRoute>
           }
         />
