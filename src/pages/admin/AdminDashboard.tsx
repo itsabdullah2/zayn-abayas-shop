@@ -1,3 +1,4 @@
+import { AdminSidebar } from "@/.";
 import { lazy } from "react";
 
 const AdminDashboard = lazy(
@@ -6,8 +7,11 @@ const AdminDashboard = lazy(
 
 const AdminDashboardPage = () => {
   return (
-    <div className="flex-1 bg-light-gray">
-      <AdminDashboard />
+    <div className="flex-1 bg-light-gray flex">
+      <AdminSidebar />
+      <div className="flex-1">
+        <AdminDashboard />
+      </div>
     </div>
   );
 };
