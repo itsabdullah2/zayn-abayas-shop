@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 import { supabase } from "@/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import { getUsers } from "@/supabase/db/users";
+import type { UserTableType } from "@/supabase/types";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
+  profile: UserTableType | null;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -15,6 +18,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<UserTableType | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +28,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const {
           data: { session },
         } = await supabase.auth.getSession();
-        setUser(session?.user ?? null);
+        const authUser = session?.user ?? null;
+        setUser(authUser);
+
+        if (authUser) {
+          const profileData = await getUsers();
+          setProfile(profileData[0]);
+        }
       } catch (error) {
         console.error("Error getting initial session:", error);
       } finally {
@@ -49,6 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user,
     loading,
     isAuthenticated: !!user,
+    profile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
