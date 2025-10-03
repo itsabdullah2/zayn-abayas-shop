@@ -1,3 +1,5 @@
+import Dropdown from "@/components/layout/Dropdown";
+import { updateOrderStatus } from "@/supabase";
 import { getUserById } from "@/supabase/db/users";
 import type { FullOrder, UserTableType } from "@/supabase/types";
 import { formateDate } from "@/utils/formateDate";
@@ -10,6 +12,11 @@ type Props = {
 
 const Table = ({ orders, loading }: Props) => {
   const [users, setUsers] = useState<UserTableType[]>([]);
+  const [localOrders, setLocalOrders] = useState<FullOrder[]>(orders);
+
+  useEffect(() => {
+    setLocalOrders(orders);
+  }, [orders]);
 
   useEffect(() => {
     const fetchUsersById = async () => {
@@ -24,7 +31,36 @@ const Table = ({ orders, loading }: Props) => {
     if (orders.length) fetchUsersById();
   }, [orders]);
 
-  console.log(users);
+  const handleStatusChange = async (newStatus: string, orderId: string) => {
+    // Optimistic UI Update
+    setLocalOrders((prev) =>
+      prev.map((order) =>
+        order.id === orderId ? { ...order, status: newStatus } : order
+      )
+    );
+    try {
+      const userId = localOrders.find((order) => order.id === orderId)?.user_id;
+      if (userId) {
+        // Update the order status in the database
+        await updateOrderStatus(newStatus, orderId, userId);
+      }
+    } catch (err) {
+      console.error("Error updating order status:", err);
+      // Revert the optimistic update in case of an error
+      setLocalOrders((prev) =>
+        prev.map((order) =>
+          order.id === orderId
+            ? {
+                ...order,
+                status: orders.find((origin) => origin.id === orderId)!.status,
+              }
+            : order
+        )
+      );
+      throw err;
+    }
+  };
+
   return (
     <div className="overflow-x-auto mt-10">
       {loading ? (
@@ -43,7 +79,7 @@ const Table = ({ orders, loading }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => {
+            {localOrders.map((order) => {
               const user = users.find((u) => u.id === order.user_id);
               return (
                 <tr key={order.id} className="odd:bg-gray-300">
@@ -54,7 +90,14 @@ const Table = ({ orders, loading }: Props) => {
                     {user?.username ?? "مستخدم غير معروف"}
                   </td>
                   <td className="text-center p-2">{order.total_price} E.L</td>
-                  <td className="text-center p-2">{order.status}</td>
+                  {/* <td className="text-center p-2">{order.status}</td> */}
+                  <td className="text-center p-2">
+                    <Dropdown
+                      status={order.status}
+                      handleStatusChange={handleStatusChange}
+                      orderId={order.id}
+                    />
+                  </td>
                   <td className="text-center p-2 rounded-tl-md rounded-bl-md">
                     {formateDate(order.created_at)}
                   </td>
