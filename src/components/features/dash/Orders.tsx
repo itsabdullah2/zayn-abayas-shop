@@ -24,7 +24,6 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
-  console.log("Orders Data:", orders);
   return (
     <section className="section-container">
       <h2 className="text-xl font-medium text-primary">الطبات</h2>
