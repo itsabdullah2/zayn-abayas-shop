@@ -18,10 +18,7 @@ const Dropdown = ({ status, orderId, handleStatusChange }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="cursor-pointer bg-primary text-neutral"
-        >
+        <Button className="cursor-pointer bg-primary text-neutral">
           {getArabicStatusLabel(status)}
         </Button>
       </DropdownMenuTrigger>
