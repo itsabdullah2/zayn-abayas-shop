@@ -30,3 +30,6 @@ export const AdminDashboardPage = lazy(
 export const AdminSidebar = lazy(
   () => import("./components/features/dash/Sidebar")
 );
+export const TablePagination = lazy(
+  () => import("./components/layout/TablePagination")
+);
