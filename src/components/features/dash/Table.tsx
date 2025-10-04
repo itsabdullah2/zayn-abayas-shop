@@ -1,9 +1,12 @@
 import Dropdown from "@/components/layout/Dropdown";
+import { Button } from "@/components/ui/button";
 import { updateOrderStatus } from "@/supabase";
 import { getUserById } from "@/supabase/db/users";
 import type { FullOrder, UserTableType } from "@/supabase/types";
 import { formateDate } from "@/utils/formateDate";
 import React, { useEffect, useState } from "react";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 type Props = {
   orders: FullOrder[];
@@ -61,52 +64,95 @@ const Table = ({ orders, loading }: Props) => {
     }
   };
 
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+
+    doc.text("Orders Report", 10, 10);
+
+    const tableColumns = [
+      "Order Number",
+      "Client Name",
+      "Total",
+      "Status",
+      "Order Date",
+    ];
+    const tableRows: (string | number)[][] = [];
+
+    localOrders.forEach((order) => {
+      const user = users.find((u) => u.id === order.user_id);
+
+      tableRows.push([
+        order.order_number,
+        user?.username ?? "مستخدم غير معروف",
+        `${order.total_price} E.L`,
+        order.status,
+        formateDate(order.created_at),
+      ]);
+    });
+
+    autoTable(doc, {
+      head: [tableColumns],
+      body: tableRows,
+      startY: 20,
+    });
+
+    doc.save("orders_report.pdf");
+  };
+
   return (
-    <div className="overflow-x-auto mt-10">
-      {loading ? (
-        <div className="text-center text-2xl font-medium text-primary">
-          Loading...
-        </div>
-      ) : (
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-center p-3">رقم الطلب</th>
-              <th className="text-center p-3">العميل</th>
-              <th className="text-center p-3">المجموع</th>
-              <th className="text-center p-3">الحالة</th>
-              <th className="text-center p-3">تاريخ الطلب</th>
-            </tr>
-          </thead>
-          <tbody>
-            {localOrders.map((order) => {
-              const user = users.find((u) => u.id === order.user_id);
-              return (
-                <tr key={order.id} className="odd:bg-gray-300">
-                  <td className="text-center p-2 rounded-tr-md rounded-br-md">
-                    {order.order_number}
-                  </td>
-                  <td className="text-center p-2 first-letter:capitalize">
-                    {user?.username ?? "مستخدم غير معروف"}
-                  </td>
-                  <td className="text-center p-2">{order.total_price} E.L</td>
-                  {/* <td className="text-center p-2">{order.status}</td> */}
-                  <td className="text-center p-2">
-                    <Dropdown
-                      status={order.status}
-                      handleStatusChange={handleStatusChange}
-                      orderId={order.id}
-                    />
-                  </td>
-                  <td className="text-center p-2 rounded-tl-md rounded-bl-md">
-                    {formateDate(order.created_at)}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
+    <div className="flex flex-col gap-2 mt-8">
+      <Button
+        className="w-fit px-10 bg-transparent border border-primary text-primary hover:bg-primary hover:text-neutral cursor-pointer"
+        onClick={handleDownloadPDF}
+      >
+        طباعة
+      </Button>
+      <div className="overflow-x-auto">
+        {loading ? (
+          <div className="text-center text-2xl font-medium text-primary">
+            Loading...
+          </div>
+        ) : (
+          <table className="w-full">
+            <thead>
+              <tr>
+                <th className="text-center p-3">رقم الطلب</th>
+                <th className="text-center p-3">العميل</th>
+                <th className="text-center p-3">المجموع</th>
+                <th className="text-center p-3">الحالة</th>
+                <th className="text-center p-3">تاريخ الطلب</th>
+              </tr>
+            </thead>
+            <tbody>
+              {localOrders.map((order) => {
+                const user = users.find((u) => u.id === order.user_id);
+                return (
+                  <tr key={order.id} className="odd:bg-gray-300">
+                    <td className="text-center p-2 rounded-tr-md rounded-br-md">
+                      {order.order_number}
+                    </td>
+                    <td className="text-center p-2 first-letter:capitalize">
+                      {user?.username ?? "مستخدم غير معروف"}
+                    </td>
+                    <td className="text-center p-2">{order.total_price} E.L</td>
+                    {/* <td className="text-center p-2">{order.status}</td> */}
+                    <td className="text-center p-2">
+                      <Dropdown
+                        status={order.status}
+                        handleStatusChange={handleStatusChange}
+                        orderId={order.id}
+                      />
+                    </td>
+                    <td className="text-center p-2 rounded-tl-md rounded-bl-md">
+                      {formateDate(order.created_at)}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };
