@@ -13,10 +13,14 @@ const UserDropdown = () => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useContextSelector(AuthContext, (ctx) => ({
-    user: ctx?.user,
-    isAuthenticated: ctx?.isAuthenticated,
-  }));
+  const { user, isAuthenticated, profile } = useContextSelector(
+    AuthContext,
+    (ctx) => ({
+      user: ctx?.user,
+      isAuthenticated: ctx?.isAuthenticated,
+      profile: ctx?.profile,
+    })
+  );
   const setIsNavMenu = useContextSelector(
     AppContext,
     (value) => value?.setIsNavMenu
@@ -86,35 +90,50 @@ const UserDropdown = () => {
             </div>
           )}
 
-          <ul className="flex flex-col">
-            <MenuItem
-              to="/orders"
-              icon={<FaShoppingCart size={16} />}
-              label="طلباتي"
-              onClick={() => {
-                handleToggleUserDropdown();
-                handleNavMenu();
-              }}
-            />
-            <MenuItem
-              to="/wishlist"
-              icon={<FaHeart size={16} />}
-              label="قائمة الرغبات"
-              onClick={() => {
-                handleToggleUserDropdown();
-                handleNavMenu();
-              }}
-            />
-            <MenuItem
-              to="/help"
-              icon={<IoIosHelpCircle size={16} />}
-              label="المساعدة والدعم"
-              onClick={() => {
-                handleToggleUserDropdown();
-                handleNavMenu();
-              }}
-            />
-          </ul>
+          {/* Render Different Menu Items Based on User Role */}
+          {profile?.role === "admin" ? (
+            <ul className="flex flex-col">
+              <MenuItem
+                to="/admin/dashboard"
+                icon={<FaUser size={16} />}
+                label="لوحة التحكم"
+                onClick={() => {
+                  handleToggleUserDropdown();
+                  handleNavMenu();
+                }}
+              />
+            </ul>
+          ) : (
+            <ul className="flex flex-col">
+              <MenuItem
+                to="/orders"
+                icon={<FaShoppingCart size={16} />}
+                label="طلباتي"
+                onClick={() => {
+                  handleToggleUserDropdown();
+                  handleNavMenu();
+                }}
+              />
+              <MenuItem
+                to="/wishlist"
+                icon={<FaHeart size={16} />}
+                label="قائمة الرغبات"
+                onClick={() => {
+                  handleToggleUserDropdown();
+                  handleNavMenu();
+                }}
+              />
+              <MenuItem
+                to="/help"
+                icon={<IoIosHelpCircle size={16} />}
+                label="المساعدة والدعم"
+                onClick={() => {
+                  handleToggleUserDropdown();
+                  handleNavMenu();
+                }}
+              />
+            </ul>
+          )}
 
           <div className="border-t border-gray-300 pt-2">
             {isAuthenticated ? (

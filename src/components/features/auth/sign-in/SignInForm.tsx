@@ -1,6 +1,10 @@
 import InputField from "@/components/common/InputField";
 import { signInWithPassword } from "@/supabase";
-import { createUser, getAuthenticatedUser } from "@/supabase/db/users";
+import {
+  createUser,
+  getAuthenticatedUser,
+  getUserById,
+} from "@/supabase/db/users";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -41,7 +45,18 @@ const SignInForm = () => {
         await createUser(signedInUser.id, username, formData.email);
       }
 
-      navigate("/");
+      if (signedInUser) {
+        const res = await getUserById(signedInUser.id);
+        const profile = res[0];
+
+        // Redirect to Dashboard if the role is admin otherwise to the store
+        if (profile?.role === "admin") {
+          // navigate("/admin/dashboard");
+          window.location.href = "/admin/dashboard";
+        } else {
+          navigate("/");
+        }
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       throw err;
