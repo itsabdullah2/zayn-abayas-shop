@@ -7,6 +7,7 @@ import { formateDate } from "@/utils/formateDate";
 import React, { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import { TablePagination } from "@/.";
 
 type Props = {
   orders: FullOrder[];
@@ -100,14 +101,14 @@ const Table = ({ orders, loading }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mt-8">
+    <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg h-[calc(100dvh-150px)]">
       <Button
         className="w-fit px-10 bg-transparent border border-primary text-primary hover:bg-primary hover:text-neutral cursor-pointer"
         onClick={handleDownloadPDF}
       >
         طباعة
       </Button>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto flex-1 overflow-y-auto">
         {loading ? (
           <div className="text-center text-2xl font-medium text-primary">
             Loading...
@@ -153,6 +154,7 @@ const Table = ({ orders, loading }: Props) => {
           </table>
         )}
       </div>
+      <TablePagination totalItems={localOrders.length} />
     </div>
   );
 };
