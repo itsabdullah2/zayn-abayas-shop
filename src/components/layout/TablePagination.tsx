@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
-const TablePagination = ({ totalItems }: { totalItems: number }) => {
+type Props = {
+  totalItems: number;
+  className?: string;
+};
+
+const TablePagination = ({ totalItems, className }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, _setItemsPerPage] = useState(10);
 
@@ -23,13 +28,13 @@ const TablePagination = ({ totalItems }: { totalItems: number }) => {
   const end = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div className="flex items-center justify-between">
+    <div className={`flex items-center justify-between ${className}`}>
       <div className="flex items-center gap-1">
         <button
           className={`cursor-pointer hover:bg-light-gray py-3 px-3 rounded-full duration-150 active:translate-x-[2px] ${
             currentPage === totalPages
               ? "opacity-40 cursor-not-allowed"
-              : "hover:bg-light-gray"
+              : "hover:bg-light-gray text-primary"
           }`}
           disabled={currentPage === totalPages}
           onClick={handleNextPage}
@@ -43,7 +48,7 @@ const TablePagination = ({ totalItems }: { totalItems: number }) => {
           className={`cursor-pointer hover:bg-light-gray py-3 px-3 rounded-full duration-150 active:translate-x-[-2px] ${
             currentPage === 1
               ? "opacity-40 cursor-not-allowed"
-              : "hover:bg-light-gray"
+              : "hover:bg-light-gray text-primary"
           }`}
           disabled={currentPage === 1}
           onClick={handlePrevPage}

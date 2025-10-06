@@ -10,6 +10,7 @@ import { cancelOrder } from "@/supabase";
 import { AuthContext } from "@/context/AuthContext";
 import { OrdersContext } from "@/context/OrdersContext";
 import OrderTrackingPopup from "@/components/features/orders/OrderTrackingPopup";
+import { TablePagination } from "@/.";
 
 const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
   const [dropdownActions, setDropdownActions] = useState<string | null>(null);
@@ -85,7 +86,7 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
         />
       )}
       <section className="bg-neutral rounded-xl border-soft-gray border p-5 relative">
-        <div className="overflow-x-auto -mx-5 px-5">
+        <div className="overflow-x-auto -mx-5 px-5 flex flex-col gap-5">
           <table className="w-full min-w-[800px]">
             <thead>
               <tr>
@@ -124,6 +125,8 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
               ))}
             </tbody>
           </table>
+
+          <TablePagination totalItems={orders.length} className="pb-3" />
         </div>
       </section>
     </>
