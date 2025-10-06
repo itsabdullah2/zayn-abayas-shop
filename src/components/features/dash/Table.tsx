@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { TablePagination } from "@/.";
+import { toast } from "sonner";
 
 type Props = {
   orders: FullOrder[];
@@ -48,6 +49,8 @@ const Table = ({ orders, loading }: Props) => {
         // Update the order status in the database
         await updateOrderStatus(newStatus, orderId, userId);
       }
+
+      toast.success("تم تحديث حالة الطلب بنجاح!");
     } catch (err) {
       console.error("Error updating order status:", err);
       // Revert the optimistic update in case of an error
@@ -61,6 +64,7 @@ const Table = ({ orders, loading }: Props) => {
             : order
         )
       );
+      toast.error("حدث خطأ أثناء تحديث حالة الطلب. حاول مرة أخرى.");
       throw err;
     }
   };
@@ -98,6 +102,9 @@ const Table = ({ orders, loading }: Props) => {
     });
 
     doc.save("orders_report.pdf");
+
+    // Add Toast
+    toast.success("تم تحميل تقرير الطلبات بنجاح!");
   };
 
   return (
