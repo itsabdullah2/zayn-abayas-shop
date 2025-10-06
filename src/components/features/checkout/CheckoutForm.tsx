@@ -16,6 +16,7 @@ import {
 import type { EnrichedCartItem } from "@/types";
 import { AuthContext } from "@/context/AuthContext";
 import useCartData from "@/hooks/useCartData";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -38,6 +39,8 @@ const CheckoutForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const priceBreakdown = useMemo(() => {
     return getTotalPriceAfterDiscount(totalPrice, appliedPromo ?? "");
@@ -141,11 +144,56 @@ const CheckoutForm = () => {
     }
   };
 
+  const handleGoHome = () => {
+    navigate("/");
+    setSubmitted(false);
+  };
+  const handleViewOrder = () => {
+    navigate("/orders");
+    setSubmitted(false);
+  };
+
   if (submitted) {
     return (
-      <p className="text-green-600 text-center text-lg font-medium">
-        ✅ شكرًا لطلبك!
-      </p>
+      <>
+        <div className="absolute top-0 left-0 w-full h-full bg-black/70 z-10" />
+        <div className="flex flex-col items-center justify-center w-[95vw] sm:w-[500px] bg-white rounded-xl py-4 px-5 absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 overflow-y-hidden">
+          <div className="bg-green-100 p-6 rounded-full mb-4 animate-bounce">
+            <svg
+              className="w-12 h-12 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={3}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-800">
+            تم الدفع بنجاح!
+          </h2>
+          <p className="text-gray-600 mt-1">شكرًا لتسوقك معنا</p>
+
+          <div className="mt-6 flex gap-3">
+            <button
+              onClick={handleViewOrder}
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl cursor-pointer"
+            >
+              عرض الطلب
+            </button>
+            <button
+              onClick={handleGoHome}
+              className="border border-gray-300 px-6 py-2 rounded-xl text-gray-700 hover:bg-gray-100 cursor-pointer"
+            >
+              العودة للرئيسية
+            </button>
+          </div>
+        </div>
+      </>
     );
   }
 

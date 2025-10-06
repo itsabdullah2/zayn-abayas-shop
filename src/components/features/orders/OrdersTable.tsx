@@ -85,7 +85,7 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
           status={targetOrder?.status || ""}
         />
       )}
-      <section className="bg-neutral rounded-xl border-soft-gray border p-5 relative">
+      <section className="bg-neutral rounded-xl border-soft-gray border p-5 relative h-[calc(100dvh-352px)] overflow-y-auto">
         <div className="overflow-x-auto -mx-5 px-5 flex flex-col gap-5">
           <table className="w-full min-w-[800px]">
             <thead>

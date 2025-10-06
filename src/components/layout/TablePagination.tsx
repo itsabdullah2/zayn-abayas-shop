@@ -24,8 +24,8 @@ const TablePagination = ({ totalItems, className }: Props) => {
   };
 
   // Calculate the range of items being displayed
-  const start = (currentPage - 1) * itemsPerPage + 1;
-  const end = Math.min(currentPage * itemsPerPage, totalItems);
+  // const start = (currentPage - 1) * itemsPerPage + 1;
+  // const end = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
     <div className={`flex items-center justify-between ${className}`}>
@@ -42,7 +42,9 @@ const TablePagination = ({ totalItems, className }: Props) => {
           <FaArrowRightLong />
         </button>
         <span dir="ltr">
-          {start} - {end}
+          {/* Set the Start and End Page Number */}
+          {currentPage} - {totalPages}
+          {/* {currentPage} - {end} */}
         </span>
         <button
           className={`cursor-pointer hover:bg-light-gray py-3 px-3 rounded-full duration-150 active:translate-x-[-2px] ${
@@ -57,8 +59,8 @@ const TablePagination = ({ totalItems, className }: Props) => {
         </button>
       </div>
       {/* <div dir="ltr" className=" flex items-center gap-2">
-        {start} - {end} من
-        <span>100</span>
+        {itemsPerPage} - {end} من
+        <span>{totalItems}</span>
       </div> */}
     </div>
   );
