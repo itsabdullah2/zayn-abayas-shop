@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "./context/AppContext";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -22,9 +22,24 @@ import {
   AdminDashboardPage,
 } from "./";
 import { OrdersProvider } from "./context/OrdersContext";
+import { AuthContext } from "./context/AuthContext";
+import { useEffect } from "react";
 
 const Root = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith("/admin");
+
+  const { user, profile } = useContextSelector(AuthContext, (ctx) => ({
+    user: ctx?.user,
+    profile: ctx?.profile,
+  }));
+
+  useEffect(() => {
+    if (user && profile?.role === "admin" && !isAdminRoute) {
+      navigate("/admin/dashboard", { replace: true });
+    }
+  }, [user, profile?.role, isAdminRoute, navigate]);
 
   const searchPopup = useContextSelector(
     AppContext,
