@@ -28,7 +28,7 @@ const TableRow = ({
 
   const memoizedOrder = React.useMemo(
     () => order,
-    [order.status, order.id, order.order_items]
+    [order.status, order.id, order.order_items, order.status]
   );
 
   const { bg, text } = getStatusColors(memoizedOrder.status);
@@ -36,7 +36,7 @@ const TableRow = ({
 
   const returnedItem = useCallback(
     () => memoizedOrder.order_items.map((item) => setOrderItem(item)),
-    [memoizedOrder.order_items]
+    [memoizedOrder.order_items, memoizedOrder.status]
   );
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const TableRow = ({
       </td>
       <td className="text-center py-3 px-2">
         <span
-          className={`px-2 py-1 rounded-full text-sm ${bg} ${text} w-28 block mx-auto whitespace-nowrap`}
+          className={`px-2 py-1 rounded-full text-sm ${bg} ${text} min-w-28 max-w-fit block mx-auto whitespace-nowrap`}
         >
           {statusLabel}
         </span>
@@ -101,6 +101,7 @@ const TableRow = ({
                 }
                 setDropdownActions={setDropdownActions}
                 status={memoizedOrder.status}
+                order={memoizedOrder}
               />
             </div>
           </div>

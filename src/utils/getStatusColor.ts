@@ -12,6 +12,8 @@ export function getArabicStatusLabel(status: string): string {
       return "تم التوصيل";
     case "cancelled":
       return "تم الإلغاء";
+    case "refund":
+      return "قيد المعالجة للاسترجاع";
     case "refunded":
       return "تم الاسترجاع";
     case "returned":
@@ -35,6 +37,8 @@ export function getStatusColors(status: string): { bg: string; text: string } {
       return { bg: "bg-green-600", text: "text-white" };
     case "cancelled":
       return { bg: "bg-gray-600", text: "text-white" };
+    case "refund":
+      return { bg: "bg-yellow-500", text: "text-white" };
     case "refunded":
       return { bg: "bg-red-600", text: "text-white" };
     case "returned":

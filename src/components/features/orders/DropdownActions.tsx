@@ -1,27 +1,28 @@
-import { AppContext } from "@/context/AppContext";
-// import { OrdersContext } from "@/context/OrdersContext";
 import React from "react";
+import { AppContext } from "@/context/AppContext";
+import { AuthContext } from "@/context/AuthContext";
+import { updateOrderStatus } from "@/supabase";
+import type { FullOrder } from "@/supabase/types";
 import { useContextSelector } from "use-context-selector";
 
 type Props = {
   openOrderTrackingPopup: () => void;
   setDropdownActions: React.Dispatch<React.SetStateAction<string | null>>;
   status: string;
+  order: FullOrder;
 };
 
 const DropdownActions = ({
   openOrderTrackingPopup,
   setDropdownActions,
   status,
+  order,
 }: Props) => {
-  // const {orderCancellation, setOrderCancellation} = useContextSelector(OrdersContext, (ctx) => ({
-  //   orderCancellation: ctx?.orderCancellation,
-  //   setOrderCancellation: ctx?.setOrderCancellation
-  // }));
   const setIsDialogOpen = useContextSelector(
     AppContext,
     (ctx) => ctx?.setIsDialogOpen
   );
+  const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
   const handleTrackingPopup = () => {
     if (status === "cancelled") {
       setIsDialogOpen?.(true);
@@ -33,13 +34,15 @@ const DropdownActions = ({
   const handleCancelOrder = () => {
     setIsDialogOpen?.(true);
   };
-  const handleReturnOrder = () => {
+  const handleReturnOrder = async () => {
+    const userId = user?.id;
     if (status === "cancelled") {
       setIsDialogOpen?.(true);
       return;
     }
+
+    if (userId) await updateOrderStatus("refund", order.id, userId);
   };
-  const handlePrint = () => {};
 
   const isDisabled = status !== "paid";
 
@@ -71,20 +74,27 @@ const DropdownActions = ({
             تتبع الطلب
           </button>
         </li>
-        <li className="text-sm hover:bg-light-gray text-text hover:text-primary rounded-md w-full duration-150 text-right">
+        <li
+          className={`text-sm ${
+            status === "refund" || status === "refunded"
+              ? "text-gray-400"
+              : "hover:bg-light-gray text-text hover:text-primary rounded-md w-full duration-150"
+          } text-right`}
+        >
           <button
-            className="text-sm cursor-pointer w-full text-right px-2 py-2"
+            className={`text-sm ${
+              status === "refund" || status === "refunded"
+                ? "cursor-not-allowed"
+                : "cursor-pointer"
+            } w-full text-right px-2 py-2`}
             onClick={handleReturnOrder}
+            disabled={status === "refund" || status === "refunded"}
           >
-            إرجاع الطلب
-          </button>
-        </li>
-        <li className="text-sm hover:bg-light-gray text-text hover:text-primary rounded-md w-full duration-150 text-right">
-          <button
-            className="text-sm cursor-pointer w-full text-right px-2 py-2"
-            onClick={handlePrint}
-          >
-            طباعة
+            {status === "refund"
+              ? "قيد المعالجة"
+              : status === "refunded"
+              ? "تم الاسترجاع"
+              : "إرجاع الطلب"}
           </button>
         </li>
       </ul>
