@@ -107,7 +107,7 @@ html {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px)
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 body {
@@ -125,6 +125,10 @@ body {
 @layer utilities {
   .section-container {
     @apply max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 mt-10 pb-10;
+  }
+
+  .flex-between {
+    @apply flex items-center justify-between;
   }
 
   .flex-center {
