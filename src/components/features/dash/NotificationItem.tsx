@@ -1,15 +1,21 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
 type Props = {
   customerName: string;
   date: string;
   username: string;
+  onClick?: () => void;
 };
 
-const NotificationItem = ({ customerName, date, username }: Props) => {
+const NotificationItem = ({ customerName, date, username, onClick }: Props) => {
   return (
     <li className=" border-b border-gray-300 pb-3 last:border-0 hover:bg-gray-200 duration-200 px-2 rounded-md pt-3 w-full">
-      <Link to="/admin/orders" className="flex items-center gap-3">
+      <Link
+        to="/admin/orders"
+        onClick={onClick}
+        className="flex items-center gap-3"
+      >
         <div className="flex-center w-10 h-10 text-neutral bg-blue-300 rounded-full">
           {username.charAt(0).toUpperCase() || "A"}
         </div>
@@ -30,4 +36,4 @@ const NotificationItem = ({ customerName, date, username }: Props) => {
   );
 };
 
-export default NotificationItem;
+export default React.memo(NotificationItem);

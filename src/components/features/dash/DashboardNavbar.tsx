@@ -1,7 +1,7 @@
 import { AuthContext } from "@/context/AuthContext";
 import { useContextSelector } from "use-context-selector";
 import Notifications from "./Notifications";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NotificationItem from "./NotificationItem";
 import UserAvatar from "./UserAvatar";
 
@@ -10,12 +10,52 @@ const DashboardNavbar = () => {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const avatarRef = useRef<HTMLDivElement>(null);
+
   const toggleNotifications = () => {
     setIsOpen((prev) => !prev);
   };
   const toggleAvatar = () => {
     setIsAvatarOpen((prev) => !prev);
   };
+  // Close the dropdown if clicked outside & on Escape key press
+  useEffect(() => {
+    const closeNotificationsOnClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    const closeAvatarOnClickOutside = (event: MouseEvent) => {
+      if (
+        avatarRef.current &&
+        !avatarRef.current.contains(event.target as Node)
+      ) {
+        setIsAvatarOpen(false);
+      }
+    };
+
+    const closeOnEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        setIsAvatarOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", closeOnEscapeKey);
+    document.addEventListener("mousedown", closeAvatarOnClickOutside);
+    document.addEventListener("mousedown", closeNotificationsOnClickOutside);
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        closeNotificationsOnClickOutside
+      );
+      document.removeEventListener("mousedown", closeAvatarOnClickOutside);
+    };
+  }, []);
   return (
     <nav className="flex-between py-4 px-6 border-b border-gray-400 relative">
       <div className="flex flex-col gap-1">
@@ -38,7 +78,10 @@ const DashboardNavbar = () => {
       </div>
 
       {isOpen && (
-        <div className="bg-neutral py-3 px-4 rounded-md absolute left-10 top-full w-96 shadow-lg border border-gray-300">
+        <div
+          className="bg-neutral py-3 px-4 rounded-md absolute left-10 top-full w-96 shadow-lg border border-gray-300"
+          ref={dropdownRef}
+        >
           <h3 className="text-lg font-medium text-primary mb-3 pb-2 border-b border-gray-300">
             الإشعارات
           </h3>
@@ -47,13 +90,17 @@ const DashboardNavbar = () => {
               customerName={profile?.username!}
               date={new Date().toLocaleDateString()}
               username={profile?.username!}
+              onClick={toggleNotifications}
             />
           </ul>
         </div>
       )}
 
       {isAvatarOpen && (
-        <div className="text-left flex flex-col gap-1 absolute left-10 top-full bg-neutral border border-gray-300 py-3 px-4 rounded-md shadow-lg">
+        <div
+          className="text-left flex flex-col gap-1 absolute left-10 top-full bg-neutral border border-gray-300 py-3 px-4 rounded-md shadow-lg"
+          ref={avatarRef}
+        >
           <span>{profile?.username}</span>
           <span>{profile?.email}</span>
         </div>
