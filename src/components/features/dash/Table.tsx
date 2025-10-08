@@ -108,7 +108,7 @@ const Table = ({ orders, loading }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg h-[calc(100dvh-150px)]">
+    <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg h-[calc(100dvh-250px)]">
       <Button
         className="w-fit px-10 bg-transparent border border-primary text-primary hover:bg-primary hover:text-neutral cursor-pointer"
         onClick={handleDownloadPDF}
