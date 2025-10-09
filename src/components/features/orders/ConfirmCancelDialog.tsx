@@ -27,7 +27,9 @@ const ConfirmCancelDialog = ({ icon, message, onClick, status }: Props) => {
         </div>
         <div
           className={`flex items-center ${
-            status === "cancelled" ? "justify-center" : "justify-between"
+            status === "cancelled" || status === "refunded"
+              ? "justify-center"
+              : "justify-between"
           } gap-3`}
         >
           <button
@@ -36,7 +38,7 @@ const ConfirmCancelDialog = ({ icon, message, onClick, status }: Props) => {
           >
             الغاء
           </button>
-          {status === "cancelled" ? null : (
+          {status === "cancelled" || status === "refunded" ? null : (
             <button
               className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"
               onClick={onClick}

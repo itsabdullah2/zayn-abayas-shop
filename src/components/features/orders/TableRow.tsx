@@ -101,7 +101,6 @@ const TableRow = ({
                 }
                 setDropdownActions={setDropdownActions}
                 status={memoizedOrder.status}
-                order={memoizedOrder}
               />
             </div>
           </div>

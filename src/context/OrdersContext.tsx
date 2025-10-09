@@ -8,6 +8,8 @@ type OrdersContextType = {
   closeTrackingPopup: () => void;
   orderCancellation?: string | null;
   setOrderCancellation?: React.Dispatch<React.SetStateAction<string | null>>;
+  setReturnPopup?: React.Dispatch<React.SetStateAction<boolean>>;
+  returnPopup?: boolean;
 };
 
 export const OrdersContext = createContext<OrdersContextType | null>(null);
@@ -17,6 +19,7 @@ export const OrdersProvider = ({ children }: { children: React.ReactNode }) => {
   const [orderCancellation, setOrderCancellation] = useState<string | null>(
     null
   );
+  const [returnPopup, setReturnPopup] = useState(false);
 
   const openTrackingPopup = (id: string) => {
     setIsTrackingPopup(id);
@@ -27,11 +30,13 @@ export const OrdersProvider = ({ children }: { children: React.ReactNode }) => {
 
   const values: OrdersContextType = {
     isTrackingPopup,
+    returnPopup,
     // FUNCTIONS
     openTrackingPopup,
     closeTrackingPopup,
     orderCancellation,
     setOrderCancellation,
+    setReturnPopup,
   };
 
   return (

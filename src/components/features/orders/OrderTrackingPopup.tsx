@@ -3,6 +3,7 @@ import { useContextSelector } from "use-context-selector";
 import { IoIosClose, IoIosCheckmark } from "react-icons/io";
 import type { FullOrder } from "@/supabase/types";
 import { formateDate } from "@/utils/formateDate";
+import { useEffect, useRef } from "react";
 
 type Props = {
   status?: string;
@@ -43,6 +44,7 @@ const steps = [
 ];
 
 const OrderTrackingPopup = ({ status, order }: Props) => {
+  const trackingRef = useRef<HTMLDivElement>(null);
   const closeTrackingPopup = useContextSelector(
     OrdersContext,
     (ctx) => ctx?.closeTrackingPopup
@@ -50,10 +52,36 @@ const OrderTrackingPopup = ({ status, order }: Props) => {
 
   const stepIndex = steps.findIndex((s) => s.key === status);
 
+  useEffect(() => {
+    const clickOutside = (e: MouseEvent) => {
+      if (
+        trackingRef.current &&
+        !trackingRef.current.contains(e.target as Node)
+      ) {
+        closeTrackingPopup?.();
+      }
+    };
+    const clickEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeTrackingPopup?.();
+      }
+    };
+
+    document.addEventListener("keydown", clickEscape);
+    document.addEventListener("mousedown", clickOutside);
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+      document.removeEventListener("keydown", clickEscape);
+    };
+  }, []);
+
   return (
     <>
       <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-40" />
-      <div className="absolute top-32 left-1/2 -translate-x-1/2 z-50 text-white w-[95vw] md:w-[500px] lg:w-[800px] bg-white rounded-2xl py-5 px-6">
+      <div
+        className="absolute top-32 left-1/2 -translate-x-1/2 z-50 text-white w-[95vw] md:w-[500px] lg:w-[800px] bg-white rounded-2xl py-5 px-6"
+        ref={trackingRef}
+      >
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-3 items-start">
