@@ -126,6 +126,7 @@ const Table = ({ orders, loading }: Props) => {
               <tr>
                 <th className="text-center p-3">رقم الطلب</th>
                 <th className="text-center p-3">العميل</th>
+                <th className="text-center p-3">الكمية</th>
                 <th className="text-center p-3">المجموع</th>
                 <th className="text-center p-3">الحالة</th>
                 <th className="text-center p-3">تاريخ الطلب</th>
@@ -141,6 +142,10 @@ const Table = ({ orders, loading }: Props) => {
                     </td>
                     <td className="text-center p-2 first-letter:capitalize">
                       {user?.username ?? "مستخدم غير معروف"}
+                    </td>
+
+                    <td className="text-center p-2">
+                      {order.order_items[0]?.quantity}
                     </td>
                     <td className="text-center p-2">{order.total_price} E.L</td>
                     {/* <td className="text-center p-2">{order.status}</td> */}
