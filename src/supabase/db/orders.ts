@@ -130,7 +130,22 @@ export const getUserOrders = async (userId: string): Promise<FullOrder[]> => {
 
 export const getAllOrders = async (): Promise<FullOrder[]> => {
   try {
-    const { data, error } = await supabase.from("orders").select("*");
+    const { data, error } = await supabase.from("orders").select(
+      `*,
+      order_items(
+        id,
+        quantity,
+        order_price,
+        product:product_id (
+          id,
+          product_name,
+          product_desc,
+          product_img,
+          product_price
+        )
+      )
+      `
+    );
 
     if (error) {
       console.error("Failed to fetch orders:", error.message);
