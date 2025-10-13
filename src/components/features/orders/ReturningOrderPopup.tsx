@@ -2,9 +2,7 @@ import { OrdersContext } from "@/context/OrdersContext";
 import { useEffect, useRef } from "react";
 import { IoIosClose } from "react-icons/io";
 import { useContextSelector } from "use-context-selector";
-
-const sharedStyles =
-  "cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white";
+import ReturnForm from "./ReturnForm";
 
 const ReturningOrderPopup = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -35,13 +33,12 @@ const ReturningOrderPopup = () => {
   }, []);
   return (
     <>
-      <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-40" />
+      <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-40" />
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 z-50 -translate-y-1/2 w-[95vw] md:w-[400px] lg:w-[600px] bg-white rounded-2xl py-5 px-6"
+        className="max-h-[500px] overflow-y-auto fixed top-1/2 left-1/2 -translate-x-1/2 z-50 -translate-y-1/2 w-[95vw] md:w-[60vw] lg:w-[800px] bg-white rounded-2xl py-5 px-6"
         ref={ref}
       >
         <div className="flex justify-between items-start mb-5">
-          <h3 className="text-lg font-semibold">إرجاع الطلب</h3>
           <button
             className="w-5 h-5 border border-soft-gray flex-center rounded cursor-pointer text-primary"
             onClick={() => setReturnPopup?.(false)}
@@ -54,16 +51,7 @@ const ReturningOrderPopup = () => {
           هل أنت متأكد من إلغاء الطلب؟
         </p>
 
-        <div className={`flex items-center justify-between gap-3`}>
-          <button
-            className={`${sharedStyles}`}
-            onClick={() => setReturnPopup?.(false)}
-          >
-            الغاء
-          </button>
-
-          <button className={`${sharedStyles}`}>تأكيد</button>
-        </div>
+        <ReturnForm />
       </div>
     </>
   );

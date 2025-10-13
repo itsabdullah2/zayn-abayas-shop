@@ -85,6 +85,8 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
               ? "تم الغاء الطلب لا يمكن فتح النافذة المنبثقة"
               : targetOrder?.status === "refunded"
               ? "تم استرجاع الطلب لا يمكن فتح النافذة المنبثقة"
+              : targetOrder?.status === "delivered"
+              ? "هل أنت متأكد من استرجاع الطلب؟"
               : "هل أنت متأكد من إلغاء الطلب؟"
           }
           icon={<IoWarningOutline size={35} className="text-red-500" />}

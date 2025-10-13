@@ -1,6 +1,7 @@
 import DashboardAnalytics from "./DashboardAnalytics";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardUpperBoxes from "./DashboardUpperBoxes";
+import TableAndHighestProducts from "./TableAndHighestProducts";
 
 const AdminDashboard = () => {
   return (
@@ -11,7 +12,7 @@ const AdminDashboard = () => {
         <div className="flex flex-col gap-8 mt-10">
           <DashboardUpperBoxes />
           <DashboardAnalytics />
-          <div className="border border-gray-400 py-3 px-5 rounded-lg min-h-20" />
+          <TableAndHighestProducts />
         </div>
       </section>
     </>
