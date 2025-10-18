@@ -3,8 +3,13 @@ import { useEffect, useRef } from "react";
 import { IoIosClose } from "react-icons/io";
 import { useContextSelector } from "use-context-selector";
 import ReturnForm from "./ReturnForm";
+import type { FullOrder } from "@/supabase/types";
 
-const ReturningOrderPopup = () => {
+type Prop = {
+  order: FullOrder;
+};
+
+const ReturningOrderPopup = ({ order }: Prop) => {
   const ref = useRef<HTMLDivElement>(null);
   const setReturnPopup = useContextSelector(
     OrdersContext,
@@ -51,7 +56,7 @@ const ReturningOrderPopup = () => {
           هل أنت متأكد من إلغاء الطلب؟
         </p>
 
-        <ReturnForm />
+        <ReturnForm order={order} />
       </div>
     </>
   );

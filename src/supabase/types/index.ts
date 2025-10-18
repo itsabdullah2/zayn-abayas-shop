@@ -74,3 +74,17 @@ export type OrderItemWithProduct = OrderItem & {
 export type FullOrder = Order & {
   order_items: OrderItemWithProduct[];
 };
+
+export type ReturnFeedback = {
+  id?: string;
+  user_id: string;
+  order_id: string;
+  product_id: string;
+  notes: string;
+  rating: string;
+  tried: string;
+  exchange: string;
+  reason: string;
+  delivery_speed: string;
+  created_at: Date;
+};

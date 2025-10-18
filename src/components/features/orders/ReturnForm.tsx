@@ -1,6 +1,9 @@
 // import React from 'react'
 
+import { AuthContext } from "@/context/AuthContext";
 import { OrdersContext } from "@/context/OrdersContext";
+import { createReturnFeedback } from "@/supabase";
+import type { FullOrder } from "@/supabase/types";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useContextSelector } from "use-context-selector";
@@ -11,7 +14,11 @@ type TReturnData = {
   rating: string;
   exchange: string;
   deliverySpeed: string;
-  notes: string;
+  note: string;
+};
+
+type Prop = {
+  order: FullOrder;
 };
 
 const sharedStyles =
@@ -24,15 +31,16 @@ const INITIAL_STATE: TReturnData = {
   rating: "",
   exchange: "",
   deliverySpeed: "",
-  notes: "",
+  note: "",
 };
 
-export default function ReturnForm() {
+export default function ReturnForm({ order }: Prop) {
   const [returnData, setReturnData] = useState<TReturnData>(INITIAL_STATE);
   const setReturnPopup = useContextSelector(
     OrdersContext,
     (ctx) => ctx?.setReturnPopup
   );
+  const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -43,7 +51,7 @@ export default function ReturnForm() {
     setReturnData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const changedFields = Object.entries(returnData).reduce(
@@ -63,7 +71,25 @@ export default function ReturnForm() {
     }
 
     console.log("User Answers:", changedFields);
-    // You can send this data to your backend or database
+    // Backend Login in here
+    if (user && order) {
+      const user_id = user.id;
+      const order_id = order.id;
+      const product_id = order.order_items[0].product.id;
+      const feedbackData = {
+        user_id,
+        order_id,
+        product_id,
+        rating: returnData.rating,
+        reason: returnData.reason,
+        tried: returnData.tried,
+        notes: returnData.note,
+        delivery_speed: returnData.deliverySpeed,
+        exchange: returnData.exchange,
+      };
+
+      await createReturnFeedback(feedbackData);
+    }
 
     // Reset the state
     setReturnData(INITIAL_STATE);
@@ -180,8 +206,8 @@ export default function ReturnForm() {
         <div className="flex flex-col gap-2">
           <label className={`${labelStyles}`}>هل لديك أي ملاحظات إضافية؟</label>
           <textarea
-            name="notes"
-            value={returnData.notes}
+            name="note"
+            value={returnData.note}
             onChange={handleChange}
             className="border rounded p-2 w-full text-sm caret-accentA"
             placeholder="قم بكتابة الملاحظة"

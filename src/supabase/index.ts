@@ -5,21 +5,20 @@ import { signUpWithEmail } from "./auth/signUp";
 import { signOut } from "./auth/signOut";
 import { signInWithOAuth } from "./auth/OAuth";
 
-import { getReviews } from "./db/reviews";
-import { addReview } from "./db/reviews";
-import { updateReview } from "./db/reviews";
+import { getReviews, addReview, updateReview } from "./db/reviews";
 
-import { getProducts } from "./db/products";
-import { getVariants } from "./db/products";
-import { getColors } from "./db/products";
-import { getSizes } from "./db/products";
+import { getProducts, getVariants, getColors, getSizes } from "./db/products";
 
 import { clearCart } from "./db/cart";
 
-import { createOrder } from "./db/orders";
-import { updateOrderStatus } from "./db/orders";
-import { cancelOrder } from "./db/orders";
-import { getUserOrders } from "./db/orders";
+import {
+  createOrder,
+  updateOrderStatus,
+  cancelOrder,
+  getUserOrders,
+} from "./db/orders";
+
+import { getReturnFeedback, createReturnFeedback } from "./db/returnFeedback";
 
 export {
   supabase,
@@ -43,4 +42,7 @@ export {
   getUserOrders,
   updateOrderStatus,
   cancelOrder,
+  //
+  getReturnFeedback,
+  createReturnFeedback,
 };
