@@ -2,7 +2,7 @@
 
 import { AuthContext } from "@/context/AuthContext";
 import { OrdersContext } from "@/context/OrdersContext";
-import { createReturnFeedback } from "@/supabase";
+import { createReturnFeedback, updateOrderStatus } from "@/supabase";
 import type { FullOrder } from "@/supabase/types";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -13,8 +13,8 @@ type TReturnData = {
   tried: string;
   rating: string;
   exchange: string;
-  deliverySpeed: string;
-  note: string;
+  delivery_speed: string;
+  notes: string;
 };
 
 type Prop = {
@@ -30,8 +30,8 @@ const INITIAL_STATE: TReturnData = {
   tried: "",
   rating: "",
   exchange: "",
-  deliverySpeed: "",
-  note: "",
+  delivery_speed: "",
+  notes: "",
 };
 
 export default function ReturnForm({ order }: Prop) {
@@ -83,12 +83,14 @@ export default function ReturnForm({ order }: Prop) {
         rating: returnData.rating,
         reason: returnData.reason,
         tried: returnData.tried,
-        notes: returnData.note,
-        delivery_speed: returnData.deliverySpeed,
+        notes: returnData.notes,
+        delivery_speed: returnData.delivery_speed,
         exchange: returnData.exchange,
       };
 
       await createReturnFeedback(feedbackData);
+      // Update order status
+      await updateOrderStatus("refund", order_id, user_id);
     }
 
     // Reset the state
@@ -192,7 +194,7 @@ export default function ReturnForm({ order }: Prop) {
           </label>
           <select
             name="deliverySpeed"
-            value={returnData.deliverySpeed}
+            value={returnData.delivery_speed}
             onChange={handleChange}
             className="border rounded px-2 w-full"
           >
@@ -206,8 +208,8 @@ export default function ReturnForm({ order }: Prop) {
         <div className="flex flex-col gap-2">
           <label className={`${labelStyles}`}>هل لديك أي ملاحظات إضافية؟</label>
           <textarea
-            name="note"
-            value={returnData.note}
+            name="notes"
+            value={returnData.notes}
             onChange={handleChange}
             className="border rounded p-2 w-full text-sm caret-accentA"
             placeholder="قم بكتابة الملاحظة"

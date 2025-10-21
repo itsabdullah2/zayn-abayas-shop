@@ -9,6 +9,7 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { TablePagination } from "@/.";
 import { toast } from "sonner";
+import { PiDotsThreeCircle } from "react-icons/pi";
 
 type Props = {
   orders: FullOrder[];
@@ -149,12 +150,17 @@ const Table = ({ orders, loading }: Props) => {
                     </td>
                     <td className="text-center p-2">{order.total_price} E.L</td>
                     {/* <td className="text-center p-2">{order.status}</td> */}
-                    <td className="text-center p-2">
+                    <td className="text-center p-2 relative">
                       <Dropdown
                         status={order.status}
                         handleStatusChange={handleStatusChange}
                         orderId={order.id}
                       />
+                      {order.status === "refund" ? (
+                        <button className="active:scale-[0.90] duration-200 cursor-pointer absolute left-10 top-1/2 -translate-y-1/2 text-primary">
+                          <PiDotsThreeCircle size={25} />
+                        </button>
+                      ) : null}
                     </td>
                     <td className="text-center p-2 rounded-tl-md rounded-bl-md">
                       {formateDate(order.created_at)}
