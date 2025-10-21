@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Table from "./Table";
 import type { FullOrder } from "@/supabase/types";
 import { getAllOrders } from "@/supabase/db/orders";
-import DashboardNavbar from "./DashboardNavbar";
+import DashboardNavbar from "../DashboardNavbar";
 
 const Orders = () => {
   const [orders, setOrders] = useState<FullOrder[]>([]);

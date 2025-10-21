@@ -1,7 +1,7 @@
 import { AdminSidebar } from "@/.";
 import { lazy } from "react";
 
-const Orders = lazy(() => import("@/components/features/dash/Orders"));
+const Orders = lazy(() => import("@/components/features/dash/orders/Orders"));
 
 const AdminOrdersPage = () => {
   return (

@@ -1,5 +1,5 @@
 import DashboardAnalytics from "./DashboardAnalytics";
-import DashboardNavbar from "./DashboardNavbar";
+import DashboardNavbar from "../DashboardNavbar";
 import DashboardUpperBoxes from "./DashboardUpperBoxes";
 import TableAndHighestProducts from "./TableAndHighestProducts";
 

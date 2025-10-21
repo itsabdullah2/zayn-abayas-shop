@@ -2,7 +2,7 @@ import { AdminSidebar } from "@/.";
 import { lazy } from "react";
 
 const AdminDashboard = lazy(
-  () => import("@/components/features/dash/AdminDashboard")
+  () => import("@/components/features/dash/dashboard/AdminDashboard")
 );
 
 const AdminDashboardPage = () => {
