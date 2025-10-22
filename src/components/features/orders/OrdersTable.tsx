@@ -83,7 +83,7 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
           message={
             targetOrder?.status === "cancelled"
               ? "تم الغاء الطلب لا يمكن فتح النافذة المنبثقة"
-              : targetOrder?.status === "refunded"
+              : targetOrder?.status === "returned"
               ? "تم استرجاع الطلب لا يمكن فتح النافذة المنبثقة"
               : targetOrder?.status === "delivered"
               ? "هل أنت متأكد من استرجاع الطلب؟"

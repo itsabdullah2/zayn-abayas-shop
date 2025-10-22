@@ -90,7 +90,7 @@ export default function ReturnForm({ order }: Prop) {
 
       await createReturnFeedback(feedbackData);
       // Update order status
-      await updateOrderStatus("refund", order_id, user_id);
+      await updateOrderStatus("return", order_id, user_id);
     }
 
     // Reset the state

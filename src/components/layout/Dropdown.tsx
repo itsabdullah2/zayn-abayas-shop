@@ -40,7 +40,7 @@ const Dropdown = ({ status, orderId, handleStatusChange }: Props) => {
             جاري التوصيل
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => handleStatusChange("refunded", orderId)}
+            onClick={() => handleStatusChange("returned", orderId)}
           >
             تم الاسترجاع
           </DropdownMenuItem>

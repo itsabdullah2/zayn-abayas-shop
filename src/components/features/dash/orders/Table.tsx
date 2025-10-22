@@ -159,7 +159,7 @@ const Table = ({ orders, loading }: Props) => {
                       </td>
                       {/* <td className="text-center p-2">{order.status}</td> */}
                       <td className="text-center p-2 relative">
-                        {order.status === "refund" ? (
+                        {order.status === "return" ? (
                           <div className="flex items-center justify-center gap-2">
                             <Button
                               className="cursor-pointer bg-transparent border border-primary text-primary hover:bg-transparent"

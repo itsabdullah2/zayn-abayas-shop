@@ -24,7 +24,7 @@ const DropdownActions = ({
   );
 
   const handleTrackingPopup = () => {
-    if (status === "cancelled" || status === "refunded") {
+    if (status === "cancelled" || status === "returned") {
       setIsDialogOpen?.(true);
       return;
     }
@@ -73,30 +73,30 @@ const DropdownActions = ({
             تتبع الطلب
           </button>
         </li>
-        {["delivered", "refund", "refunded"].includes(status) && (
+        {["delivered", "return", "returned"].includes(status) && (
           <li
             className={`text-sm ${
-              status === "refund" || status === "refunded"
+              status === "return" || status === "returned"
                 ? "text-gray-400"
                 : "hover:bg-light-gray text-text hover:text-primary rounded-md w-full duration-150"
             } text-right`}
           >
             <button
               className={`text-sm ${
-                status === "refund" || status === "refunded"
+                status === "return" || status === "returned"
                   ? "cursor-not-allowed"
                   : "cursor-pointer"
               } w-full text-right px-2 py-2`}
               onClick={
-                status === "refund" || status === "refunded"
+                status === "return" || status === "returned"
                   ? undefined
                   : handleReturnOrder
               }
-              disabled={status === "refund" || status === "refunded"}
+              disabled={status === "return" || status === "returned"}
             >
-              {status === "refund"
+              {status === "return"
                 ? "قيد المعالجة"
-                : status === "refunded"
+                : status === "returned"
                 ? "تم الاسترجاع"
                 : "إرجاع الطلب"}
             </button>
