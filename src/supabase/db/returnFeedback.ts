@@ -17,6 +17,28 @@ export const getReturnFeedback = async (): Promise<ReturnFeedback[]> => {
   }
 };
 
+export const getReturnFeedbackByUserId = async (
+  userId: string
+): Promise<ReturnFeedback> => {
+  try {
+    const { data, error } = await supabase
+      .from("return_feedback")
+      .select("*")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Failed to get return feedback:", error.message);
+      throw error;
+    }
+
+    return data as ReturnFeedback;
+  } catch (err) {
+    console.error("Failed to get return feedback:", err);
+    throw err;
+  }
+};
+
 type TFeedbackData = Omit<ReturnFeedback, "created_at" | "id">;
 // type TFeedbackData = Partial<Omit<ReturnFeedback, "created_at" | "id">> &
 // Pick<ReturnFeedback, "user_id"| "product_id" | "order_id">

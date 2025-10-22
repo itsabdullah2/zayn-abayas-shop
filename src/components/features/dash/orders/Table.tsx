@@ -20,6 +20,10 @@ const Table = ({ orders, loading }: Props) => {
   const [users, setUsers] = useState<UserTableType[]>([]);
   const [localOrders, setLocalOrders] = useState<FullOrder[]>(orders);
   const [returnInfoPopup, setReturnInfoPopup] = useState(false);
+  const [orderAndUserId, setOrderAndUserId] = useState<{
+    userId: string;
+    orderId: string;
+  } | null>(null);
 
   useEffect(() => {
     setLocalOrders(orders);
@@ -108,13 +112,56 @@ const Table = ({ orders, loading }: Props) => {
     // Add Toast
     toast.success("تم تحميل تقرير الطلبات بنجاح!");
   };
-  const handleReturnInfoPopup = () => {
-    setReturnInfoPopup((prev) => !prev);
+  const openReturnInfoPopup = () => {
+    setReturnInfoPopup(true);
+  };
+
+  const handleConfirmReturn = async () => {
+    if (!orderAndUserId) return;
+
+    const { orderId, userId } = orderAndUserId;
+
+    // Optimistic UI Update
+    setLocalOrders((prev) =>
+      prev.map((order) =>
+        order.id === orderId ? { ...order, status: "returned" } : order
+      )
+    );
+
+    try {
+      await updateOrderStatus("returned", orderId, userId);
+      toast.success("تم تأكيد الإرجاع بنجاح!");
+      setOrderAndUserId(null);
+      setReturnInfoPopup(false);
+    } catch (err) {
+      console.error("Failed to update order status:", err);
+      // Revert on error
+      setLocalOrders((prev) =>
+        prev.map((order) =>
+          order.id === orderId
+            ? {
+                ...order,
+                status: orders.find((origin) => origin.id === orderId)!.status,
+              }
+            : order
+        )
+      );
+      toast.error("حدث خطأ أثناء تأكيد الإرجاع");
+    }
+  };
+  const handleCancelReturn = () => {
+    setReturnInfoPopup(false);
   };
 
   return (
     <>
-      {returnInfoPopup && <AdminConfirmReturningPopup />}
+      {returnInfoPopup && (
+        <AdminConfirmReturningPopup
+          onConfirm={handleConfirmReturn}
+          onCancel={handleCancelReturn}
+          userId={orderAndUserId && orderAndUserId.userId}
+        />
+      )}
       <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg h-[calc(100dvh-250px)]">
         <Button
           className="w-fit px-10 bg-transparent border border-primary text-primary hover:bg-primary hover:text-neutral cursor-pointer"
@@ -162,8 +209,14 @@ const Table = ({ orders, loading }: Props) => {
                         {order.status === "return" ? (
                           <div className="flex items-center justify-center gap-2">
                             <Button
-                              className="cursor-pointer bg-transparent border border-primary text-primary hover:bg-transparent"
-                              onClick={handleReturnInfoPopup}
+                              className="cursor-pointer bg-transparent border border-red-400 text-primary hover:bg-transparent animate-return-ripple"
+                              onClick={() => {
+                                openReturnInfoPopup();
+                                setOrderAndUserId({
+                                  userId: order.user_id,
+                                  orderId: order.id,
+                                });
+                              }}
                             >
                               العميل يريد استرجاع المنتج
                             </Button>

@@ -15,9 +15,11 @@ type Props = {
 };
 
 const Dropdown = ({ status, orderId, handleStatusChange }: Props) => {
+  const isDisabled =
+    status === "cancelled" || status === "returned" || status === "delivered";
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild disabled={status === "cancelled"}>
+      <DropdownMenuTrigger asChild disabled={isDisabled}>
         <Button className="cursor-pointer bg-primary text-neutral">
           {getArabicStatusLabel(status)}
         </Button>
@@ -38,11 +40,6 @@ const Dropdown = ({ status, orderId, handleStatusChange }: Props) => {
             onClick={() => handleStatusChange("out_for_delivery", orderId)}
           >
             جاري التوصيل
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => handleStatusChange("returned", orderId)}
-          >
-            تم الاسترجاع
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => handleStatusChange("delivered", orderId)}
