@@ -75,11 +75,12 @@ export default function ReturnForm({ order }: Prop) {
     if (user && order) {
       const user_id = user.id;
       const order_id = order.id;
-      const product_id = order.order_items[0].product.id;
+      const { id, product_id } = order.order_items[0];
       const feedbackData = {
         user_id,
         order_id,
         product_id,
+        order_item_id: id,
         rating: returnData.rating,
         reason: returnData.reason,
         tried: returnData.tried,
@@ -97,6 +98,7 @@ export default function ReturnForm({ order }: Prop) {
     setReturnData(INITIAL_STATE);
     setReturnPopup?.(false);
   };
+  console.log("Order Data:", order);
   return (
     <>
       <form

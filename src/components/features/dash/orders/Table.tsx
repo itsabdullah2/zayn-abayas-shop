@@ -22,6 +22,7 @@ const Table = ({ orders, loading }: Props) => {
   const [returnInfoPopup, setReturnInfoPopup] = useState(false);
   const [orderAndUserId, setOrderAndUserId] = useState<{
     userId: string;
+    orderItemId: string;
     orderId: string;
   } | null>(null);
 
@@ -159,7 +160,7 @@ const Table = ({ orders, loading }: Props) => {
         <AdminConfirmReturningPopup
           onConfirm={handleConfirmReturn}
           onCancel={handleCancelReturn}
-          userId={orderAndUserId && orderAndUserId.userId}
+          orderItemId={orderAndUserId && orderAndUserId.orderItemId}
         />
       )}
       <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg h-[calc(100dvh-250px)]">
@@ -214,6 +215,7 @@ const Table = ({ orders, loading }: Props) => {
                                 openReturnInfoPopup();
                                 setOrderAndUserId({
                                   userId: order.user_id,
+                                  orderItemId: order.order_items[0].id,
                                   orderId: order.id,
                                 });
                               }}

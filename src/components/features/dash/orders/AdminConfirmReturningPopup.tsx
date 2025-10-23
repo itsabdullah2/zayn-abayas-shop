@@ -6,17 +6,21 @@ import { useEffect, useState } from "react";
 type Props = {
   onCancel: () => void;
   onConfirm: () => void;
-  userId: string | null;
+  orderItemId: string | null;
 };
 
-const AdminConfirmReturningPopup = ({ onCancel, onConfirm, userId }: Props) => {
+const AdminConfirmReturningPopup = ({
+  onCancel,
+  onConfirm,
+  orderItemId,
+}: Props) => {
   const [feedback, setFeedback] = useState<ReturnFeedback | null>(null);
 
   useEffect(() => {
     const fetchFeedbackData = async () => {
       try {
-        if (userId) {
-          const response = await getReturnFeedbackByUserId(userId);
+        if (orderItemId) {
+          const response = await getReturnFeedbackByUserId(orderItemId);
           setFeedback(response);
         }
       } catch (err) {

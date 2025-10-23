@@ -18,13 +18,13 @@ export const getReturnFeedback = async (): Promise<ReturnFeedback[]> => {
 };
 
 export const getReturnFeedbackByUserId = async (
-  userId: string
+  orderItemId: string
 ): Promise<ReturnFeedback> => {
   try {
     const { data, error } = await supabase
       .from("return_feedback")
       .select("*")
-      .eq("user_id", userId)
+      .eq("order_item_id", orderItemId)
       .maybeSingle();
 
     if (error) {
@@ -50,6 +50,7 @@ export const createReturnFeedback = async (
     user_id,
     order_id,
     product_id,
+    order_item_id,
     rating,
     reason,
     tried,
@@ -65,6 +66,7 @@ export const createReturnFeedback = async (
         user_id,
         order_id,
         product_id,
+        order_item_id,
         notes,
         exchange,
         tried,
