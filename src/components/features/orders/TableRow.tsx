@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { FullOrder, OrderItemWithProduct } from "@/supabase/types";
 import { getArabicStatusLabel, getStatusColors } from "@/utils/getStatusColor";
 import { PriceFormatter } from "@/utils/formatePrice";
@@ -6,6 +6,7 @@ import { MdMoreVert } from "react-icons/md";
 import DropdownActions from "./DropdownActions";
 import { useContextSelector } from "use-context-selector";
 import { OrdersContext } from "@/context/OrdersContext";
+import { differenceInDays } from "date-fns";
 
 type Props = {
   order: FullOrder;
@@ -14,6 +15,7 @@ type Props = {
   setDropdownActions: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
+const RETURN_PERIOD_DAYS = 15;
 const TableRow = ({
   order,
   dropdownActions,
@@ -25,6 +27,15 @@ const TableRow = ({
     OrdersContext,
     (ctx) => ctx?.openTrackingPopup
   );
+
+  const isReturningAvailable = useMemo(() => {
+    const currentDate = new Date();
+    const orderDate = new Date(order.created_at);
+
+    return differenceInDays(currentDate, orderDate) <= RETURN_PERIOD_DAYS;
+  }, [order.created_at]);
+
+  console.log(isReturningAvailable);
 
   const memoizedOrder = React.useMemo(
     () => order,
@@ -101,6 +112,7 @@ const TableRow = ({
                 }
                 setDropdownActions={setDropdownActions}
                 status={memoizedOrder.status}
+                isReturningAvailable={isReturningAvailable}
               />
             </div>
           </div>

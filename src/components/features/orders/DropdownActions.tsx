@@ -7,12 +7,14 @@ type Props = {
   openOrderTrackingPopup: () => void;
   setDropdownActions: React.Dispatch<React.SetStateAction<string | null>>;
   status: string;
+  isReturningAvailable: boolean;
 };
 
 const DropdownActions = ({
   openOrderTrackingPopup,
   setDropdownActions,
   status,
+  isReturningAvailable,
 }: Props) => {
   const setIsDialogOpen = useContextSelector(
     AppContext,
@@ -76,23 +78,33 @@ const DropdownActions = ({
         {["delivered", "return", "returned"].includes(status) && (
           <li
             className={`text-sm ${
-              status === "return" || status === "returned"
+              status === "return" ||
+              status === "returned" ||
+              isReturningAvailable
                 ? "text-gray-400"
                 : "hover:bg-light-gray text-text hover:text-primary rounded-md w-full duration-150"
             } text-right`}
           >
             <button
               className={`text-sm ${
-                status === "return" || status === "returned"
+                status === "return" ||
+                status === "returned" ||
+                isReturningAvailable
                   ? "cursor-not-allowed"
                   : "cursor-pointer"
               } w-full text-right px-2 py-2`}
               onClick={
-                status === "return" || status === "returned"
+                status === "return" ||
+                status === "returned" ||
+                isReturningAvailable
                   ? undefined
                   : handleReturnOrder
               }
-              disabled={status === "return" || status === "returned"}
+              disabled={
+                status === "return" ||
+                status === "returned" ||
+                isReturningAvailable
+              }
             >
               {status === "return"
                 ? "قيد المعالجة"
