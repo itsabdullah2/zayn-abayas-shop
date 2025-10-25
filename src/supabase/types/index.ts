@@ -105,3 +105,12 @@ export type TTopProducts = {
   total_quantity: number;
   total_revenue: number;
 };
+
+export type TOrderItemsTable = {
+  id: string;
+  product_id: string;
+  order_id: string;
+  quantity: number;
+  order_price: number;
+  created_at?: Date;
+};

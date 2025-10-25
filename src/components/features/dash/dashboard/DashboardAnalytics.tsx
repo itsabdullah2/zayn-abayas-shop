@@ -1,12 +1,57 @@
 // import React from 'react'
 
+import useOrders from "@/hooks/useOrders";
 import { PriceFormatter } from "@/utils/formatePrice";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const sharedBtnStyles = "py-2 px-2 border rounded-md cursor-pointer text-xs";
 
 export default function DashboardAnalytics() {
   const [activePeriod, setActivePeriod] = useState("1-day");
+  const { orders } = useOrders();
+
+  const getDateRange = (period: string) => {
+    const now = new Date();
+    const startDate = new Date();
+
+    switch (period) {
+      case "1-day":
+        startDate.setDate(now.getDate() - 1);
+        break;
+      case "7-days":
+        startDate.setDate(now.getDate() - 7);
+        break;
+      case "30-days":
+        startDate.setDate(now.getDate() - 30);
+        break;
+      case "1-year":
+        startDate.setFullYear(now.getFullYear() - 1);
+        break;
+      default:
+        startDate.setFullYear(now.getFullYear() - 1);
+    }
+
+    return startDate;
+  };
+
+  const totalSalesReport = useMemo(() => {
+    const startDate = getDateRange(activePeriod);
+
+    const filteredOrders = orders.filter(
+      (order) =>
+        order.status === "delivered" && new Date(order.created_at) >= startDate
+    );
+
+    return filteredOrders.reduce(
+      (acc, item) => {
+        return {
+          totalRevenue: acc.totalRevenue + item.total_price,
+          totalItems: acc.totalItems + 1,
+        };
+      },
+      { totalRevenue: 0, totalItems: 0 }
+    );
+  }, [orders, activePeriod]);
 
   const handleActivePeriod = (period: string) => {
     setActivePeriod(period);
@@ -19,7 +64,9 @@ export default function DashboardAnalytics() {
           <h3 className="text-lg font-medium text-primary">تقرير مبيعاتك</h3>
           <span className="text-sm text-gray">انظر الى مبيعاتك</span>
         </div>
-        <h2 className="text-5xl mt-5">{PriceFormatter(4500, "en")}E.L</h2>
+        <h2 className="text-5xl mt-5">
+          {PriceFormatter(totalSalesReport.totalRevenue, "en")}E.L
+        </h2>
 
         <div className="flex items-center justify-around mt-8">
           <button

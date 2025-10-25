@@ -3,6 +3,7 @@ import { supabase } from "../";
 import type {
   FullOrder,
   OrderItem,
+  TOrderItemsTable,
   TOrdersTable,
   TTopProducts,
 } from "../types";
@@ -198,6 +199,22 @@ export const getTopProducts = async (
     return data;
   } catch (err) {
     console.error("Failed to fetch top products:", err);
+    return [];
+  }
+};
+
+export const getOrderItems = async (): Promise<TOrderItemsTable[]> => {
+  try {
+    const { data, error } = await supabase.from("order_items").select("*");
+
+    if (error) {
+      console.error("Failed to fetch order items:", error.message);
+      return [];
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Failed to fetch order items:", err);
     return [];
   }
 };
