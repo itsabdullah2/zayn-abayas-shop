@@ -187,6 +187,7 @@ export const getTopProducts = async (
   limit: number = 10
 ): Promise<TTopProducts[]> => {
   try {
+    // The rpc stands for Remote Procedure Call and this let's you execute functions created inside DB in PostgreSQL directly inside your frontend.
     const { data, error } = await supabase.rpc("get_top_products", {
       limit_count: limit,
     });
