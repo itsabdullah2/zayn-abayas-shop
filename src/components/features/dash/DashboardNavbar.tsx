@@ -12,6 +12,8 @@ const DashboardNavbar = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
+  const notificationButtonRef = useRef<HTMLButtonElement>(null);
+  const avatarButtonRef = useRef<HTMLButtonElement>(null);
 
   const toggleNotifications = () => {
     setIsOpen((prev) => !prev);
@@ -24,7 +26,9 @@ const DashboardNavbar = () => {
     const closeNotificationsOnClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        notificationButtonRef.current &&
+        !notificationButtonRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
@@ -32,7 +36,9 @@ const DashboardNavbar = () => {
     const closeAvatarOnClickOutside = (event: MouseEvent) => {
       if (
         avatarRef.current &&
-        !avatarRef.current.contains(event.target as Node)
+        !avatarRef.current.contains(event.target as Node) &&
+        avatarButtonRef.current &&
+        !avatarButtonRef.current.contains(event.target as Node)
       ) {
         setIsAvatarOpen(false);
       }
@@ -69,11 +75,16 @@ const DashboardNavbar = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <Notifications onClick={toggleNotifications} numOfNotifications={2} />
+        <Notifications
+          onClick={toggleNotifications}
+          numOfNotifications={2}
+          ref={notificationButtonRef}
+        />
         <UserAvatar
           profile={profile!}
           onClick={toggleAvatar}
           isAvatarOpen={isAvatarOpen}
+          ref={avatarButtonRef}
         />
       </div>
 

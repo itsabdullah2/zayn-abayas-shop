@@ -4,11 +4,12 @@ type Props = {
   onClick: () => void;
   isOpen?: boolean;
   numOfNotifications: number;
+  ref: React.Ref<HTMLButtonElement>;
 };
 
-const Notifications = ({ onClick, numOfNotifications }: Props) => {
+const Notifications = ({ onClick, numOfNotifications, ref }: Props) => {
   return (
-    <button className="relative cursor-pointer" onClick={onClick}>
+    <button className="relative cursor-pointer" onClick={onClick} ref={ref}>
       <div className="w-8 h-8 border border-gray-300 rounded-full flex-center">
         <IoMdNotifications size={20} className="text-primary" />
       </div>
