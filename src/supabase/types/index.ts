@@ -89,3 +89,19 @@ export type ReturnFeedback = {
   delivery_speed: string;
   created_at: Date;
 };
+
+export type TOrdersTable = {
+  id: string;
+  user_id: string;
+  status: string;
+  total_price: number;
+  order_number: string;
+  created_at: Date;
+};
+
+export type TTopProducts = {
+  order_count: number;
+  product_id: string;
+  total_quantity: number;
+  total_revenue: number;
+};

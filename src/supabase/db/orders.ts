@@ -1,6 +1,11 @@
 import type { EnrichedCartItem } from "@/types";
 import { supabase } from "../";
-import type { FullOrder, OrderItem } from "../types";
+import type {
+  FullOrder,
+  OrderItem,
+  TOrdersTable,
+  TTopProducts,
+} from "../types";
 
 export const createOrder = async ({
   userId,
@@ -156,5 +161,43 @@ export const getAllOrders = async (): Promise<FullOrder[]> => {
   } catch (error) {
     console.error("Failed to fetch orders:", error);
     throw error;
+  }
+};
+
+export const getAllOrdersFromOrdersTableOnly = async (): Promise<
+  TOrdersTable[]
+> => {
+  try {
+    const { data, error } = await supabase.from("orders").select("*");
+
+    if (error) {
+      console.error("Failed to fetch orders:", error.message);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.error("Failed to fetch orders:", err);
+    throw err;
+  }
+};
+
+export const getTopProducts = async (
+  limit: number = 10
+): Promise<TTopProducts[]> => {
+  try {
+    const { data, error } = await supabase.rpc("get_top_products", {
+      limit_count: limit,
+    });
+
+    if (error) {
+      console.error("Failed to fetch top products:", error.message);
+      return [];
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Failed to fetch top products:", err);
+    return [];
   }
 };
