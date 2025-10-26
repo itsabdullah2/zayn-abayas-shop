@@ -12,6 +12,7 @@ import {
   clearCart,
   cancelOrder,
   updateOrderStatus,
+  createNotification,
 } from "@/supabase";
 import type { EnrichedCartItem } from "@/types";
 import { AuthContext } from "@/context/AuthContext";
@@ -25,6 +26,7 @@ const CheckoutForm = () => {
   const totalPrice = useContextSelector(CartContext, (ctx) => ctx?.totalPrice)!;
   const cartItems = useContextSelector(CartContext, (ctx) => ctx?.cartItems)!;
   const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
+  const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
   const { incrementCartVersion } = useCartData();
 
   const [formData, setFormData] = useState({
@@ -129,8 +131,16 @@ const CheckoutForm = () => {
       }
 
       // Step 3: Update the status and Clear The Cart Table After The Previous Steps are succeed
-      if (user && orderId) {
+      if (user && orderId && profile) {
         await updateOrderStatus("paid", orderId, user.id);
+        await createNotification({
+          user_id: user.id,
+          user_name: profile.username,
+          title: "تم شراء منتج",
+          message: `قام بشراء منتج الأن`, // Place the order name instead of "منتج الأن"
+          type: "عملية شراء",
+          is_read: false,
+        });
         await clearCart(user.id);
         incrementCartVersion?.();
       }

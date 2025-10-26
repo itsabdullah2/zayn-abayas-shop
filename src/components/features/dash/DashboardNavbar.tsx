@@ -77,7 +77,6 @@ const DashboardNavbar = () => {
       <div className="flex items-center gap-2">
         <Notifications
           onClick={toggleNotifications}
-          numOfNotifications={2}
           ref={notificationButtonRef}
         />
         <UserAvatar
@@ -96,14 +95,8 @@ const DashboardNavbar = () => {
           <h3 className="text-lg font-medium text-primary mb-3 pb-2 border-b border-gray-300">
             الإشعارات
           </h3>
-          <ul className="flex flex-col gap-3 max-h-60 overflow-y-auto">
-            <NotificationItem
-              customerName={profile?.username!}
-              date={new Date().toLocaleDateString()}
-              username={profile?.username!}
-              onClick={toggleNotifications}
-            />
-          </ul>
+
+          <NotificationItem onClick={toggleNotifications} />
         </div>
       )}
 

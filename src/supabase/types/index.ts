@@ -114,3 +114,14 @@ export type TOrderItemsTable = {
   order_price: number;
   created_at?: Date;
 };
+
+export type TNotificationTable = {
+  id?: string;
+  user_id: string;
+  user_name: string;
+  title: string;
+  message: string;
+  type: string;
+  is_read: boolean;
+  created_at: Date;
+};

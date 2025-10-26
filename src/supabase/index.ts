@@ -20,6 +20,13 @@ import {
 
 import { getReturnFeedback, createReturnFeedback } from "./db/returnFeedback";
 
+import {
+  getNotifications,
+  createNotification,
+  updateNotification,
+  deleteNotifications,
+} from "./db/notifications";
+
 export {
   supabase,
   signInWithPassword,
@@ -45,4 +52,9 @@ export {
   //
   getReturnFeedback,
   createReturnFeedback,
+  //
+  getNotifications,
+  createNotification,
+  updateNotification,
+  deleteNotifications,
 };
