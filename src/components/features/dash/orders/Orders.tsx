@@ -4,21 +4,6 @@ import { useEnrichedProducts } from "@/hooks/useEnrichedOrders";
 
 const Orders = () => {
   const { data: orders = [], isLoading } = useEnrichedProducts();
-  //   const fetchOrders = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const ordersRes = await getAllOrders();
-  //       setOrders(ordersRes);
-  //     } catch (err) {
-  //       console.error("Failed to fetch orders:", err);
-  //       throw err;
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchOrders();
-  // }, []);
 
   return (
     <>
