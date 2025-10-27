@@ -8,7 +8,7 @@ const sharedBtnStyles = "py-2 px-2 border rounded-md cursor-pointer text-xs";
 
 export default function DashboardAnalytics() {
   const [activePeriod, setActivePeriod] = useState("1-day");
-  const { orders } = useOrders();
+  const { data: orders = [] } = useOrders();
 
   const getDateRange = (period: string) => {
     const now = new Date();
