@@ -2,7 +2,11 @@
 
 import { AuthContext } from "@/context/AuthContext";
 import { OrdersContext } from "@/context/OrdersContext";
-import { createReturnFeedback, updateOrderStatus } from "@/supabase";
+import {
+  createNotification,
+  createReturnFeedback,
+  updateOrderStatus,
+} from "@/supabase";
 import type { FullOrder } from "@/supabase/types";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -41,6 +45,7 @@ export default function ReturnForm({ order }: Prop) {
     (ctx) => ctx?.setReturnPopup
   );
   const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
+  const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -70,9 +75,8 @@ export default function ReturnForm({ order }: Prop) {
       return;
     }
 
-    console.log("User Answers:", changedFields);
     // Backend Login in here
-    if (user && order) {
+    if (user && order && profile) {
       const user_id = user.id;
       const order_id = order.id;
       const { id, product_id } = order.order_items[0];
@@ -92,13 +96,21 @@ export default function ReturnForm({ order }: Prop) {
       await createReturnFeedback(feedbackData);
       // Update order status
       await updateOrderStatus("return", order_id, user_id);
+      // Create a notification
+      await createNotification({
+        user_id,
+        user_name: profile.username,
+        title: "طلب استرجاع للمنتج",
+        message: "قام بطلب استرجاع",
+        type: "عملبة استرجاع",
+        is_read: false,
+      });
     }
 
     // Reset the state
     setReturnData(INITIAL_STATE);
     setReturnPopup?.(false);
   };
-  console.log("Order Data:", order);
   return (
     <>
       <form
