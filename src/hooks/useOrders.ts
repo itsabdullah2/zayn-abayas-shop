@@ -3,20 +3,16 @@ import {
   getTopProducts,
 } from "@/supabase/db/orders";
 import type { TOrdersTable, TTopProducts } from "@/supabase/types";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 const useOrders = () => {
+  const { data: orders, isLoading } = useQuery<TOrdersTable[]>({
+    queryKey: ["orders"],
+    queryFn: getAllOrdersFromOrdersTableOnly,
+    staleTime: 1000 * 60 * 5,
+  });
   const [topProducts, setTopProducts] = useState<TTopProducts[]>([]);
-  const [orders, setOrders] = useState<TOrdersTable[]>([]);
-
-  useEffect(() => {
-    const getOrdersData = async () => {
-      const response = await getAllOrdersFromOrdersTableOnly();
-      setOrders(response);
-    };
-
-    getOrdersData();
-  }, []);
 
   useEffect(() => {
     const fetchTopProducts = async () => {
@@ -27,7 +23,7 @@ const useOrders = () => {
     fetchTopProducts();
   }, []);
 
-  return { orders, topProducts };
+  return { orders, isLoading, topProducts };
 };
 
 export default useOrders;
