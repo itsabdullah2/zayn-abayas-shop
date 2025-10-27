@@ -32,10 +32,8 @@ const TableRow = ({
     const currentDate = new Date();
     const orderDate = new Date(order.created_at);
 
-    return differenceInDays(currentDate, orderDate) <= RETURN_PERIOD_DAYS;
+    return differenceInDays(currentDate, orderDate) > RETURN_PERIOD_DAYS;
   }, [order.created_at]);
-
-  console.log(isReturningAvailable);
 
   const memoizedOrder = React.useMemo(
     () => order,

@@ -69,7 +69,6 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
   };
 
   const targetOrder = orders.find((order) => order.id === targetOrderId);
-  console.log("Order Data:", targetOrder);
   return (
     <>
       {isTrackingPopup && (
