@@ -27,7 +27,7 @@ const NotificationItem = ({ onClick }: Props) => {
       {notificationsData.map((notify) => (
         <li
           key={notify.id}
-          className=" border-b border-gray-300 pb-3 last:border-0 hover:bg-gray-200 duration-200 px-2 rounded-md pt-3 w-full"
+          className={`border-b border-gray-300 pb-3 last:border-0 hover:bg-gray-200 duration-200 px-2 rounded-md pt-3 w-full`}
         >
           <Link
             to="/admin/orders"
@@ -40,11 +40,11 @@ const NotificationItem = ({ onClick }: Props) => {
 
             <div className="">
               <div className="flex gap-1 items-center">
+                <span className="text-base font-medium text-primary inline-block first-letter:capitalize">
+                  {notify.user_name}
+                </span>{" "}
                 <span className="text-sm font-medium text-gray-400">
                   {notify.message}
-                </span>{" "}
-                <span className="text-lg font-medium text-primary inline-block first-letter:capitalize">
-                  {notify.user_name}
                 </span>{" "}
               </div>
               <span className="text-sm text-gray-400">
