@@ -89,7 +89,7 @@ const DashboardNavbar = () => {
 
       {isOpen && (
         <div
-          className="bg-neutral py-3 px-4 rounded-md absolute left-10 top-full w-96 shadow-lg border border-gray-300"
+          className="bg-neutral py-3 px-4 rounded-md absolute left-10 top-full w-96 shadow-lg border border-gray-300 z-50"
           ref={dropdownRef}
         >
           <h3 className="text-lg font-medium text-primary mb-3 pb-2 border-b border-gray-300">
@@ -102,7 +102,7 @@ const DashboardNavbar = () => {
 
       {isAvatarOpen && (
         <div
-          className="text-left flex flex-col gap-1 absolute left-10 top-full bg-neutral border border-gray-300 py-3 px-4 rounded-md shadow-lg"
+          className="text-left flex flex-col gap-1 absolute left-10 top-full bg-neutral border border-gray-300 py-3 px-4 rounded-md shadow-lg z-50"
           ref={avatarRef}
         >
           <span>{profile?.username}</span>
