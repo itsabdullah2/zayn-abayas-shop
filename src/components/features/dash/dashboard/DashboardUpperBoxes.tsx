@@ -2,11 +2,13 @@
 import { FaBox, FaAward } from "react-icons/fa";
 import { BsClipboard2CheckFill, BsClipboard2XFill } from "react-icons/bs";
 import useOrders from "@/hooks/useOrders";
+import { useTopProducts } from "@/hooks/useTopProducts";
 
 export default function DashboardUpperBoxes() {
-  const { orders, topProducts } = useOrders();
+  const { data: orders = [] } = useOrders();
+  const { data: topProducts = [] } = useTopProducts();
 
-  const { completedCount, cancelledCount } = (orders || []).reduce(
+  const { completedCount, cancelledCount } = orders.reduce(
     (acc, order) => {
       if (order.status === "delivered") acc.completedCount++;
       if (order.status === "cancelled") acc.cancelledCount++;
