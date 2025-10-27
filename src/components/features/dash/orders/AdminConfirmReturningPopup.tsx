@@ -35,7 +35,6 @@ const AdminConfirmReturningPopup = ({
     fetchFeedbackData();
   }, []);
 
-  console.log("Feedback data:", feedback);
   return (
     <>
       <div className="fixed inset-0 bg-black/70 w-full h-full z-20" />
