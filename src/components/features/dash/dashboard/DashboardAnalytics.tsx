@@ -37,7 +37,7 @@ export default function DashboardAnalytics() {
   const totalSalesReport = useMemo(() => {
     const startDate = getDateRange(activePeriod);
 
-    const filteredOrders = (orders || []).filter(
+    const filteredOrders = orders.filter(
       (order) =>
         order.status === "delivered" && new Date(order.created_at) >= startDate
     );
