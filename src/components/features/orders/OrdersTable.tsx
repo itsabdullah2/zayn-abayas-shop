@@ -10,7 +10,6 @@ import { cancelOrder } from "@/supabase";
 import { AuthContext } from "@/context/AuthContext";
 import { OrdersContext } from "@/context/OrdersContext";
 import OrderTrackingPopup from "@/components/features/orders/OrderTrackingPopup";
-import { TablePagination } from "@/.";
 import ReturningOrderPopup from "./ReturningOrderPopup";
 
 const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
@@ -134,8 +133,6 @@ const OrdersTable = ({ orders }: { orders: FullOrder[] }) => {
               ))}
             </tbody>
           </table>
-
-          <TablePagination totalItems={orders.length} className="pb-3" />
         </div>
       </section>
     </>

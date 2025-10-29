@@ -1,25 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 type Props = {
   totalItems: number;
   className?: string;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+  itemsPerPage: number;
 };
 
-const TablePagination = ({ totalItems, className }: Props) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, _setItemsPerPage] = useState(10);
+const TablePagination = ({
+  totalItems,
+  className,
+  currentPage,
+  onPageChange,
+  itemsPerPage,
+}: Props) => {
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [itemsPerPage, _setItemsPerPage] = useState(10);
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
+      onPageChange(currentPage + 1);
     }
   };
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
+      onPageChange(currentPage - 1);
     }
   };
 

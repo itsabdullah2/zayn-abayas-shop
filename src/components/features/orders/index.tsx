@@ -4,8 +4,12 @@ import type { FullOrder } from "@/supabase/types";
 import { useEffect, useState } from "react";
 import { useContextSelector } from "use-context-selector";
 import OrdersTable from "./OrdersTable";
+import { TablePagination } from "@/.";
 
 const Orders = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const [ordersData, setOrdersData] = useState<FullOrder[]>([]);
   const [loading, setLoading] = useState(false);
   const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
@@ -47,7 +51,18 @@ const Orders = () => {
   }
 
   if (ordersData.length > 0) {
-    content = <OrdersTable orders={ordersData} />;
+    content = (
+      <>
+        <OrdersTable orders={ordersData} />
+        <TablePagination
+          totalItems={ordersData.length}
+          className="pb-3"
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          itemsPerPage={itemsPerPage}
+        />
+      </>
+    );
   }
 
   return <section className="section-container">{content}</section>;

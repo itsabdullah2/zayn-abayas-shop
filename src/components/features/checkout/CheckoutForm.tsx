@@ -87,6 +87,9 @@ const CheckoutForm = () => {
         })
       );
 
+      // Check the stock if the product is available
+      // Decrease the stock by the quantity that the client asked
+
       let orderId = "";
 
       // Step 1: Create The Order in DB

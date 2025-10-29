@@ -7,7 +7,6 @@ import { formateDate } from "@/utils/formateDate";
 import React, { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import { TablePagination } from "@/.";
 import { toast } from "sonner";
 import AdminConfirmReturningPopup from "./AdminConfirmReturningPopup";
 
@@ -241,7 +240,6 @@ const Table = ({ orders, loading }: Props) => {
             </table>
           )}
         </div>
-        <TablePagination totalItems={localOrders.length} />
       </div>
     </>
   );
