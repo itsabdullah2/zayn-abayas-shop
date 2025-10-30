@@ -1,93 +1,30 @@
-import {
-  getCategories,
-  getProducts,
-  getVariants,
-} from "@/supabase/db/products";
-import type { ProductType } from "@/types";
-import { useEffect, useState } from "react";
 import ProductsList from "./ProductsList";
 import FilterBar from "./FilterBar";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
-import type { CategoriesTableType } from "@/supabase/types";
-
-type EnrichedProductType = ProductType & {
-  price?: number;
-};
+import { useCategories } from "@/hooks/useCategories";
+import { useProducts } from "@/hooks/useProducts";
+import { useEnrichedProducts } from "@/hooks/useEnrichedProducts";
 
 const Shop = () => {
-  const [data, setData] = useState<EnrichedProductType[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [categories, setCategories] = useState<CategoriesTableType[]>([]);
   const selectedCategory = useContextSelector(
     AppContext,
     (ctx) => ctx?.selectedCategory
-  );
+  )!;
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await getCategories();
-        setCategories(result);
-      } catch (err) {
-        console.error("Failed to Fetch Categories:", err);
-      }
-    };
+  const { data: categories = [], isLoading: categoriesLoading } =
+    useCategories();
+  const { data: products = [], isLoading: productsLoading } = useProducts({
+    selectedCategory,
+    categories,
+  });
+  const { data: enrichedProducts = [], isLoading: enrichedLoading } =
+    useEnrichedProducts({
+      products,
+      enabled: !productsLoading,
+    });
 
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    if (categories.length === 0) return;
-
-    const fetchProducts = async () => {
-      try {
-        let products = [];
-
-        if (selectedCategory === "all") {
-          products = await getProducts();
-        } else {
-          const selected = categories.find(
-            (cat) =>
-              cat.category.trim().toLocaleLowerCase() ===
-              selectedCategory?.trim().toLocaleLowerCase()
-          );
-
-          if (selected) {
-            products = await getProducts({
-              eqCol: "category_id",
-              eqVal: selected.id,
-            });
-          } else {
-            setData([]);
-            return;
-          }
-        }
-
-        // Enrich products with their first variant's price
-        const enriched: EnrichedProductType[] = await Promise.all(
-          products.map(async (product) => {
-            try {
-              const variants = await getVariants({ productId: product.id });
-              const price = variants[0]?.price;
-
-              return { ...product, price };
-            } catch (err) {
-              return { ...product };
-            }
-          })
-        );
-        setData(enriched);
-      } catch (err) {
-        console.error("Failed to fetch the products");
-        return [];
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [selectedCategory, categories]);
+  const isLoading = categoriesLoading || productsLoading || enrichedLoading;
 
   return (
     <section className="section-container flex flex-col gap-10">
@@ -99,10 +36,10 @@ const Shop = () => {
 
       {isLoading ? (
         <p>جارٍ تحميل المنتجات...</p>
-      ) : data.length === 0 ? (
+      ) : enrichedProducts.length === 0 ? (
         <p>لم يتم العثور على منتجات</p>
       ) : (
-        <ProductsList products={data} />
+        <ProductsList products={enrichedProducts} />
       )}
     </section>
   );
