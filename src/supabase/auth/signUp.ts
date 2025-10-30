@@ -4,7 +4,8 @@ import type { SigningResult } from "../types";
 export const signUpWithEmail = async (
   email: string,
   password: string,
-  username: string
+  username: string,
+  role: string
 ): Promise<SigningResult> => {
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -12,6 +13,7 @@ export const signUpWithEmail = async (
     options: {
       data: {
         username,
+        role,
       },
     },
   });

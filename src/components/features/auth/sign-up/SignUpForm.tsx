@@ -9,6 +9,7 @@ const SignUpForm = () => {
     username: "",
     email: "",
     password: "",
+    role: "customer",
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,7 +38,8 @@ const SignUpForm = () => {
       await signUpWithEmail(
         formData.email,
         formData.password,
-        formData.username
+        formData.username,
+        formData.role
       );
 
       navigate("/sign-in");
@@ -46,6 +48,7 @@ const SignUpForm = () => {
         username: "",
         email: "",
         password: "",
+        role: "customer",
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -94,6 +97,17 @@ const SignUpForm = () => {
             value={formData.password}
             onChange={handleChange}
           />
+          {/* <InputField
+            label=""
+            type=""
+            name=""
+            id=""
+            placeholder=""
+            showPasswordFn={}
+            toggleIcon={}
+            value={}
+            onChange={}
+          /> */}
           <button
             type="submit"
             disabled={loading}
