@@ -9,6 +9,8 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { toast } from "sonner";
 import AdminConfirmReturningPopup from "./AdminConfirmReturningPopup";
+import { useContextSelector } from "use-context-selector";
+import { AuthContext } from "@/context/AuthContext";
 
 type Props = {
   orders: FullOrder[];
@@ -19,11 +21,11 @@ const Table = ({ orders, loading }: Props) => {
   const [users, setUsers] = useState<UserTableType[]>([]);
   const [localOrders, setLocalOrders] = useState<FullOrder[]>(orders);
   const [returnInfoPopup, setReturnInfoPopup] = useState(false);
-  const [orderAndUserId, setOrderAndUserId] = useState<{
-    userId: string;
+  const [isOrderId, setIsOrderId] = useState<{
     orderItemId: string;
     orderId: string;
   } | null>(null);
+  const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
 
   useEffect(() => {
     setLocalOrders(orders);
@@ -117,9 +119,9 @@ const Table = ({ orders, loading }: Props) => {
   };
 
   const handleConfirmReturn = async () => {
-    if (!orderAndUserId) return;
+    if (!isOrderId) return;
 
-    const { orderId, userId } = orderAndUserId;
+    const { orderId } = isOrderId;
 
     // Optimistic UI Update
     setLocalOrders((prev) =>
@@ -129,10 +131,12 @@ const Table = ({ orders, loading }: Props) => {
     );
 
     try {
-      await updateOrderStatus("returned", orderId, userId);
-      toast.success("تم تأكيد الإرجاع بنجاح!");
-      setOrderAndUserId(null);
-      setReturnInfoPopup(false);
+      if (profile) {
+        await updateOrderStatus("returned", orderId, undefined, true);
+        toast.success("تم تأكيد الإرجاع بنجاح!");
+        setIsOrderId(null);
+        setReturnInfoPopup(false);
+      }
     } catch (err) {
       console.error("Failed to update order status:", err);
       // Revert on error
@@ -152,14 +156,13 @@ const Table = ({ orders, loading }: Props) => {
   const handleCancelReturn = () => {
     setReturnInfoPopup(false);
   };
-
   return (
     <>
       {returnInfoPopup && (
         <AdminConfirmReturningPopup
           onConfirm={handleConfirmReturn}
           onCancel={handleCancelReturn}
-          orderItemId={orderAndUserId && orderAndUserId.orderItemId}
+          orderItemId={isOrderId && isOrderId.orderItemId}
         />
       )}
       <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg h-[calc(100dvh-250px)]">
@@ -212,8 +215,7 @@ const Table = ({ orders, loading }: Props) => {
                               className="cursor-pointer bg-transparent border border-red-400 text-primary hover:bg-transparent animate-return-ripple"
                               onClick={() => {
                                 openReturnInfoPopup();
-                                setOrderAndUserId({
-                                  userId: order.user_id,
+                                setIsOrderId({
                                   orderItemId: order.order_items[0].id,
                                   orderId: order.id,
                                 });

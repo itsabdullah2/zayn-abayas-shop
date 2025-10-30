@@ -61,14 +61,17 @@ export const createOrder = async ({
 export const updateOrderStatus = async (
   status: string,
   orderId: string,
-  userId: string
+  userId?: string,
+  isAdmin: boolean = false
 ) => {
   try {
-    const { error } = await supabase
-      .from("orders")
-      .update({ status })
-      .eq("id", orderId)
-      .eq("user_id", userId);
+    let query = supabase.from("orders").update({ status }).eq("id", orderId);
+
+    if (!isAdmin && userId) {
+      query = query.eq("user_id", userId);
+    }
+
+    const { error } = await query;
 
     if (error) {
       console.error("Supabase error:", error.message);
