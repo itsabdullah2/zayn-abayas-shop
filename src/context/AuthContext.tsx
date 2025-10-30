@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 import { supabase } from "@/supabase/client";
-import type { User } from "@supabase/supabase-js";
-import { getUsers } from "@/supabase/db/users";
+import type { User, Subscription } from "@supabase/supabase-js";
+import { getUserProfile } from "@/supabase/db/users";
 import type { UserTableType } from "@/supabase/types";
 
 interface AuthContextType {
@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let subscription: Subscription | undefined;
     // Get initial session
     const getInitialSession = async () => {
       try {
@@ -32,8 +33,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(authUser);
 
         if (authUser) {
-          const profileData = await getUsers();
-          setProfile(profileData[0]);
+          const profileData = await getUserProfile(authUser.id);
+          setProfile(profileData);
         }
       } catch (error) {
         console.error("Error getting initial session:", error);
@@ -42,17 +43,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    getInitialSession();
+    getInitialSession().then(() => {
+      // Listen for auth changes
+      const {
+        data: { subscription: sub },
+      } = supabase.auth.onAuthStateChange(async (_event, session) => {
+        setLoading(true);
+        const newUser = session?.user ?? null;
+        setUser(newUser);
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
+        if (newUser) {
+          const profileData = await getUserProfile(newUser.id);
+          setProfile(profileData);
+        } else {
+          setProfile(null);
+        }
+
+        setLoading(false);
+      });
+      subscription = sub;
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, []);
 
   const value: AuthContextType = {

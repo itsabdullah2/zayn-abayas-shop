@@ -103,3 +103,28 @@ export const getUserById = async (
     throw err;
   }
 };
+
+export const getUserProfile = async (
+  userId: string
+): Promise<UserTableType> => {
+  try {
+    if (!userId) {
+      console.error("User ID is required");
+    }
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      console.error("Failed to get the user:", error.message);
+      throw error;
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Failed to get the user:", err);
+    throw err;
+  }
+};

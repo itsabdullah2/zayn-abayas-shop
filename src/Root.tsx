@@ -66,7 +66,7 @@ const Root = () => {
         <Route
           path={"/checkout"}
           element={
-            <ProtectedRoute role="user">
+            <ProtectedRoute role="customer">
               <CheckoutPage />
             </ProtectedRoute>
           }
@@ -75,7 +75,7 @@ const Root = () => {
         <Route
           path={"/orders"}
           element={
-            <ProtectedRoute role="user">
+            <ProtectedRoute role="customer">
               <OrdersProvider>
                 <OrdersPage />
               </OrdersProvider>

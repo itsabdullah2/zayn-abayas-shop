@@ -9,6 +9,7 @@ type Props = {
 };
 
 const UserAvatar = ({ profile, onClick, isAvatarOpen, ref }: Props) => {
+  console.log(profile);
   return (
     <button
       onClick={onClick}

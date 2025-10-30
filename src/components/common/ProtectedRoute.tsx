@@ -1,5 +1,5 @@
 import { AuthContext } from "@/context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContextSelector } from "use-context-selector";
 import Loading from "../layout/Loading";
 
@@ -7,18 +7,17 @@ import { useEffect } from "react";
 
 const ProtectedRoute = ({
   children,
-  role = "user",
+  role = "customer",
 }: {
   children: React.ReactNode;
-  role?: "user" | "admin";
+  role: "customer" | "admin";
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { user, loading, profile } = useContextSelector(AuthContext, (ctx) => ({
-    user: ctx?.user,
-    loading: ctx?.loading,
-    profile: ctx?.profile,
-  }));
+  const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
+  const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
+  const loading = useContextSelector(AuthContext, (ctx) => ctx?.loading);
 
   useEffect(() => {
     if (!loading) {
@@ -35,7 +34,10 @@ const ProtectedRoute = ({
         return;
       }
       // User should not access admin /admin/*
-      if (profile?.role === "user" && location.pathname.startsWith("/admin")) {
+      if (
+        profile?.role === "customer" &&
+        location.pathname.startsWith("/admin")
+      ) {
         navigate("/");
         return;
       }
@@ -48,7 +50,7 @@ const ProtectedRoute = ({
     }
   }, [user, loading, navigate, role, profile]);
 
-  if (loading || (!user && !loading)) return <Loading />;
+  if (loading) return <Loading />;
 
   return children;
 };
