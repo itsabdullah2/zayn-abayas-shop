@@ -5,6 +5,7 @@ import { AppContext } from "@/context/AppContext";
 import { useCategories } from "@/hooks/useCategories";
 import { useProducts } from "@/hooks/useProducts";
 import { useEnrichedProducts } from "@/hooks/useEnrichedProducts";
+import { SkeletonCard } from "@/components/common/SkeletonCard";
 
 const Shop = () => {
   const selectedCategory = useContextSelector(
@@ -35,7 +36,13 @@ const Shop = () => {
       </div>
 
       {isLoading ? (
-        <p>جارٍ تحميل المنتجات...</p>
+        <>
+          <div className="responsive-grid">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        </>
       ) : enrichedProducts.length === 0 ? (
         <p>لم يتم العثور على منتجات</p>
       ) : (

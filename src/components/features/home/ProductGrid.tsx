@@ -10,6 +10,7 @@ import { AppContext } from "@/context/AppContext";
 import type { ProductType } from "@/types";
 import type { VariantsTableType } from "@/supabase/types";
 import { useNavigate } from "react-router-dom";
+import { SkeletonCard } from "@/components/common/SkeletonCard";
 
 type EnrichedProductType = ProductType & {
   price?: number;
@@ -71,7 +72,13 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
     <section>
       <h2 className="text-primary font-bold text-3xl mb-5">{title}</h2>
       {loading && (
-        <p className="text-center text-text">جارٍ تحميل المنتجات...</p>
+        <>
+          <div className="responsive-grid">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        </>
       )}
       {error && <p className="text-red-500">{error}</p>}
       <div className="responsive-grid">

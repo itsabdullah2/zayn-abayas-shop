@@ -1,14 +1,10 @@
 import { lazy } from "react";
 import { CATEGORY_IDS } from "@/constants";
-import { useContextSelector } from "use-context-selector";
-import { AuthContext } from "@/context/AuthContext";
 
 const ProductGrid = lazy(() => import("./ProductGrid"));
 const Hero = lazy(() => import("./Hero"));
 
 const Home = () => {
-  const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
-  console.log(profile);
   return (
     <>
       <Hero />
