@@ -1,6 +1,5 @@
 import { getProducts, getVariants } from "@/supabase/db/products";
 import { PriceFormatter } from "@/utils/formatePrice";
-import { useEffect, useState } from "react";
 
 import { IoIosMore } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
@@ -8,9 +7,9 @@ import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
 
 import type { ProductType } from "@/types";
-import type { VariantsTableType } from "@/supabase/types";
 import { useNavigate } from "react-router-dom";
 import { SkeletonCard } from "@/components/common/SkeletonCard";
+import { useQuery } from "@tanstack/react-query";
 
 type EnrichedProductType = ProductType & {
   price?: number;
@@ -24,54 +23,43 @@ type ProductGridProps = {
 };
 
 const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<EnrichedProductType[]>([]);
-
   const openProductPopup = useContextSelector(
     AppContext,
     (ctx) => ctx?.openProductPopup
   )!;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const products = await getProducts({
-          eqCol,
-          eqVal,
-          limit,
-        });
+  const {
+    data: products = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["home-products"],
+    queryFn: async (): Promise<EnrichedProductType[]> => {
+      const products = await getProducts({ eqCol, eqVal, limit });
 
-        const enriched = await Promise.all(
-          products.map(async (product) => {
-            try {
-              const variants: VariantsTableType[] = await getVariants({
-                productId: product.id,
-              });
-              const price = variants[0]?.price;
-              return { ...product, price };
-            } catch {
-              return { ...product };
-            }
-          })
-        );
-
-        setData(enriched);
-      } catch {
-        setError("Failed to load products.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [eqCol, eqVal, limit]);
+      const enriched = await Promise.all(
+        products.map(async (product) => {
+          try {
+            const variants = await getVariants({
+              productId: product.id,
+            });
+            const price = variants[0]?.price;
+            return { ...product, price };
+          } catch (err) {
+            return { ...product };
+          }
+        })
+      );
+      return enriched;
+    },
+    staleTime: 5 * 1000 * 60, // 5 minutes
+  });
 
   return (
     <section>
       <h2 className="text-primary font-bold text-3xl mb-5">{title}</h2>
-      {loading && (
+      {isLoading && (
         <>
           <div className="responsive-grid">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -80,9 +68,9 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
           </div>
         </>
       )}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500">{error.message}</p>}
       <div className="responsive-grid">
-        {data.map((item, i) => (
+        {products.map((item, i) => (
           <figure
             key={item.id}
             className="card-style group animate-appear"
