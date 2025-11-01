@@ -42,6 +42,7 @@ export type VariantsTableType = {
   color_id: string;
   size_id: string;
   price: number;
+  stock: number;
   created_at: Date;
 };
 export type ColorsAndSizesType = {

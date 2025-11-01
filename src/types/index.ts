@@ -33,4 +33,5 @@ export type EnrichedCartItem = {
   size_id: string;
   quantity: number;
   price: number;
+  stock: number;
 };

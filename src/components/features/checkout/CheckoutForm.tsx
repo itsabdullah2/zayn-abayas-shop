@@ -18,6 +18,7 @@ import type { EnrichedCartItem } from "@/types";
 import { AuthContext } from "@/context/AuthContext";
 import useCartData from "@/hooks/useCartData";
 import { useNavigate } from "react-router-dom";
+import { useUpdateVariant } from "@/hooks/useVariants";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -28,6 +29,7 @@ const CheckoutForm = () => {
   const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
   const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
   const { incrementCartVersion } = useCartData();
+  const updateVariantMutation = useUpdateVariant();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -70,7 +72,7 @@ const CheckoutForm = () => {
         cartItems.map(async (item) => {
           const { data: variant, error } = await supabase
             .from("product_variants")
-            .select("product_id, color_id, size_id, price")
+            .select("*")
             .eq("id", item.variant_id)
             .single();
 
@@ -83,16 +85,28 @@ const CheckoutForm = () => {
             size_id: variant.size_id,
             quantity: item.quantity,
             price: variant.price,
+            stock: variant.stock,
           };
         })
       );
 
-      // Check the stock if the product is available
-      // Decrease the stock by the quantity that the client asked
+      console.log(enrichedItems);
+
+      // Step 1: Check the stock if the product is available
+      const outOfStock = enrichedItems.find(
+        (item) => item.stock < item.quantity
+      );
+      if (outOfStock) {
+        setError(
+          `الكمية المطلوبة من المنتج غير متوفرة (variant ${outOfStock.variant_id})`
+        );
+        setLoading(false);
+        return;
+      }
 
       let orderId = "";
 
-      // Step 1: Create The Order in DB
+      // Step 2: Create The Order in DB
       if (user) {
         const order = await createOrder({
           userId: user.id,
@@ -107,7 +121,7 @@ const CheckoutForm = () => {
         orderId = order.id;
       }
 
-      // Step 2: Payment Process
+      // Step 3: Payment Process
       const { error: stripeError } = await stripe.createPaymentMethod({
         type: "card",
         card: cardElement,
@@ -133,7 +147,7 @@ const CheckoutForm = () => {
         return;
       }
 
-      // Step 3: Update the status and Clear The Cart Table After The Previous Steps are succeed
+      // Step 4: Update the status and Clear The Cart Table After The Previous Steps are succeed
       if (user && orderId && profile) {
         await updateOrderStatus("paid", orderId, user.id);
         await createNotification({
@@ -147,6 +161,17 @@ const CheckoutForm = () => {
         await clearCart(user.id);
         incrementCartVersion?.();
       }
+
+      // Step 5: Decrease the stock by the quantity that the client asked
+      await Promise.all(
+        enrichedItems.map(async (item) => {
+          const newStock = item.stock - item.quantity;
+          await updateVariantMutation.mutateAsync({
+            id: item.variant_id,
+            stock: newStock,
+          });
+        })
+      );
 
       setSubmitted(true);
     } catch (err) {

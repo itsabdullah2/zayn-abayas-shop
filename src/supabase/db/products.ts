@@ -256,6 +256,37 @@ export const getVariants = async (
   }
 };
 
+export const updateVariant = async (
+  id: string,
+  stock: number
+): Promise<VariantsTableType> => {
+  try {
+    if (!id) {
+      throw new Error("Product Id is required");
+    }
+    if (stock === undefined || stock === null) {
+      throw new Error("The updated stock is required");
+    }
+
+    const { data, error } = await supabase
+      .from("product_variants")
+      .update({ stock })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Failed to update the variant:", error.message);
+      throw error;
+    }
+
+    return data;
+  } catch (err) {
+    console.error(`Failed to update the variant ${err}`);
+    throw err;
+  }
+};
+
 export const getColors = async (
   colorId: string = ""
 ): Promise<ColorsAndSizesType[]> => {
