@@ -27,6 +27,9 @@ export const AdminOrdersPage = lazy(() => import("./pages/admin/AdminOrders"));
 export const AdminDashboardPage = lazy(
   () => import("./pages/admin/AdminDashboard")
 );
+export const AdminProductsPage = lazy(
+  () => import("./pages/admin/AdminProducts")
+);
 export const AdminSidebar = lazy(
   () => import("./components/features/dash/Sidebar")
 );
