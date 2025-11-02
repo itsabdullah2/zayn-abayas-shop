@@ -64,7 +64,7 @@ const DashboardNavbar = () => {
   }, []);
   return (
     <nav className="flex-between py-4 px-6 border-b border-gray-400 relative">
-      <div className="flex flex-col gap-1">
+      <div className="hidden lg:flex-col lg:gap-1 lg:flex">
         <h2 className="text-xl font-medium text-primary">
           مرحبًا بك في لوحة التحكم,{" "}
           <span className="first-letter:capitalize inline-block">

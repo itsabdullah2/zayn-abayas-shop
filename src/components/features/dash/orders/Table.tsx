@@ -165,14 +165,14 @@ const Table = ({ orders, loading }: Props) => {
           orderItemId={isOrderId && isOrderId.orderItemId}
         />
       )}
-      <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg h-[calc(100dvh-250px)]">
+      <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg max-h-[calc(100vh-250px)]">
         <Button
-          className="w-fit px-10 bg-transparent border border-primary text-primary hover:bg-primary hover:text-neutral cursor-pointer"
+          className="w-fit px-4 sm:px-10 bg-transparent border border-primary text-primary hover:bg-primary hover:text-neutral cursor-pointer"
           onClick={handleDownloadPDF}
         >
           طباعة
         </Button>
-        <div className="overflow-x-auto flex-1 overflow-y-auto">
+        <div className="overflow-x-auto flex-1">
           {loading ? (
             <div className="text-center text-2xl font-medium text-primary">
               Loading...
@@ -197,7 +197,7 @@ const Table = ({ orders, loading }: Props) => {
                       <td className="text-center p-2 rounded-tr-md rounded-br-md">
                         {order.order_number}
                       </td>
-                      <td className="text-center p-2 first-letter:capitalize">
+                      <td className="text-center p-2 first-letter:capitalize max-w-[160px] break-words">
                         {user?.username ?? "مستخدم غير معروف"}
                       </td>
 

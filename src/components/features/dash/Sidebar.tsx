@@ -2,39 +2,21 @@ import { signOut } from "@/supabase";
 import { NavLink } from "react-router-dom";
 import { LuLayoutDashboard, LuBox } from "react-icons/lu";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { BiLogOut } from "react-icons/bi";
+import { useSidebarState } from "@/hooks/useSidebarState";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
-
-  const handleToggle = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 640) {
-        setIsOpen(false);
-      } else {
-        setIsOpen(true);
-      }
-    };
-
-    handleResize(); // run once on mount
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const { isOpen, handleToggle } = useSidebarState();
 
   const handleLogout = async () => await signOut();
-  // Add these classes to the sidebar when responsiveness part comes: fixed h-[100dvh] top-0 right-0
+
   return (
     <aside
       className={`${
         isOpen ? "w-64" : "w-16"
       } border-l border-gray-400 py-3 px-2 flex flex-col gap-10 relative transition-all duration-200 ease-in-out`}
     >
-      <h1 className="text-2xl font-bold text-primary text-center">
+      <h1 className={`text-2xl font-bold text-primary text-center`}>
         زين عباءات
       </h1>
 
@@ -45,11 +27,11 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `w-full py-2 px-3 rounded-md flex items-center gap-2 ${
                 isActive ? "bg-primary text-secondary" : ""
-              }`
+              } ${isOpen ? "" : "justify-center"}`
             }
           >
-            <LuLayoutDashboard />
-            لوحة التحكم
+            <LuLayoutDashboard size={22} />
+            <span className={`${isOpen ? "" : "hidden"}`}>لوحة التحكم</span>
           </NavLink>
         </li>
         <li>
@@ -58,19 +40,22 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `w-full py-2 px-3 rounded-md flex items-center gap-2 ${
                 isActive ? "bg-primary text-secondary" : ""
-              }`
+              } ${isOpen ? "" : "justify-center"}`
             }
           >
-            <LuBox />
-            الطلبات
+            <LuBox size={22} />
+            <span className={`${isOpen ? "" : "hidden"}`}>الطلبات</span>
           </NavLink>
         </li>
       </ul>
       <button
         onClick={handleLogout}
-        className="auth-btn text-red-800 hover:text-white hover:bg-red-600 text-center justify-center border border-red-800 hover:border-red-600"
+        className={`auth-btn text-red-800 hover:text-white hover:bg-red-600 text-center flex items-center ${
+          isOpen ? "" : "justify-center"
+        } gap-2 border border-red-800 hover:border-red-600`}
       >
-        تسجيل الخروج
+        <BiLogOut size={22} className="" />
+        <span className={`${isOpen ? "" : "hidden"}`}>تسجيل الخروج</span>
       </button>
 
       <button
