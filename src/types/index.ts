@@ -7,6 +7,7 @@ export interface ProductType {
   product_img: string;
   category_id: string;
   available: boolean;
+  is_best_seller: boolean;
   create_at?: Date;
 }
 
