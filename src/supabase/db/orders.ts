@@ -102,7 +102,11 @@ export const cancelOrder = async (orderId: string, userId: string) => {
   }
 };
 
-export const getUserOrders = async (userId: string): Promise<FullOrder[]> => {
+export const getUserOrders = async (
+  userId: string,
+  limit: number = 10,
+  offset: number = 0
+): Promise<FullOrder[]> => {
   try {
     const { data, error } = await supabase
       .from("orders")
@@ -123,6 +127,7 @@ export const getUserOrders = async (userId: string): Promise<FullOrder[]> => {
       `
       )
       .eq("user_id", userId)
+      .range(offset, offset + limit - 1)
       .order("created_at", { ascending: false });
 
     if (error) {

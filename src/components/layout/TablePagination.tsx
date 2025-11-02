@@ -16,9 +16,6 @@ const TablePagination = ({
   onPageChange,
   itemsPerPage,
 }: Props) => {
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [itemsPerPage, _setItemsPerPage] = useState(10);
-
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handleNextPage = () => {
@@ -31,10 +28,6 @@ const TablePagination = ({
       onPageChange(currentPage - 1);
     }
   };
-
-  // Calculate the range of items being displayed
-  // const start = (currentPage - 1) * itemsPerPage + 1;
-  // const end = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
     <div className={`flex items-center justify-between ${className}`}>

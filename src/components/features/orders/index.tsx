@@ -1,36 +1,38 @@
 import { AuthContext } from "@/context/AuthContext";
-import { getUserOrders } from "@/supabase";
-import type { FullOrder } from "@/supabase/types";
-import { useEffect, useState } from "react";
+import { getUserOrders, supabase } from "@/supabase";
+import { useState } from "react";
 import { useContextSelector } from "use-context-selector";
 import OrdersTable from "./OrdersTable";
 import { TablePagination } from "@/.";
+import { useQuery } from "@tanstack/react-query";
 
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const [ordersData, setOrdersData] = useState<FullOrder[]>([]);
-  const [loading, setLoading] = useState(false);
   const user = useContextSelector(AuthContext, (ctx) => ctx?.user);
 
-  useEffect(() => {
-    const fetchUserOrders = async () => {
-      try {
-        setLoading(true);
-        if (user) {
-          const result = await getUserOrders(user.id);
-          setOrdersData(result);
-        }
-      } catch (err) {
-        console.error("Failed to fetch user orders:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data: ordersData = [], isLoading } = useQuery({
+    queryKey: ["orders-data", user?.id, currentPage],
+    queryFn: () => {
+      const offset = (currentPage - 1) * itemsPerPage;
+      return getUserOrders(user!.id, itemsPerPage, offset);
+    },
+    staleTime: 3 * 1000 * 60,
+  });
 
-    fetchUserOrders();
-  }, [user]);
+  // Fetch total count separately
+  const { data: totalCount = 0 } = useQuery({
+    queryKey: ["orders-count", user?.id],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from("orders")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user!.id);
+      return count || 0;
+    },
+    staleTime: 3 * 1000 * 60,
+  });
 
   let content;
 
@@ -42,7 +44,7 @@ const Orders = () => {
     );
   }
 
-  if (loading) {
+  if (isLoading) {
     content = (
       <div className="text-center">
         <p className="text-text text-xl">جاري تحميل الطلبات...</p>
@@ -55,7 +57,7 @@ const Orders = () => {
       <>
         <OrdersTable orders={ordersData} />
         <TablePagination
-          totalItems={ordersData.length}
+          totalItems={totalCount}
           className="pb-3"
           currentPage={currentPage}
           onPageChange={setCurrentPage}
