@@ -1,5 +1,6 @@
 // import React from "react";
 import DashboardNavbar from "../DashboardNavbar";
+import ProductsList from "./ProductsList";
 
 const Products = () => {
   return (
@@ -7,7 +8,7 @@ const Products = () => {
       <DashboardNavbar />
       <section className="section-container">
         <h2 className="text-xl font-medium text-primary">المنتجات</h2>
-        {/* <Table orders={orders} loading={isLoading} /> */}
+        <ProductsList />
         {/* <TablePagination
           totalItems={getAllOrders.length}
           itemsPerPage={itemsPerPage}
