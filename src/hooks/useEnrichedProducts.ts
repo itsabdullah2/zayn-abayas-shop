@@ -4,11 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 
 type EnrichedProductType = ProductType & {
   price?: number;
+  stock?: number;
 };
 
 interface UseEnrichedProductsProps {
   products: ProductType[];
-  enabled: boolean;
+  enabled?: boolean;
 }
 
 export const useEnrichedProducts = ({
@@ -16,14 +17,14 @@ export const useEnrichedProducts = ({
   enabled,
 }: UseEnrichedProductsProps) => {
   return useQuery({
-    queryKey: ["enriched-products", products.map((p) => p.id)],
+    queryKey: ["enriched-products", products?.map((p) => p.id)],
     queryFn: async (): Promise<EnrichedProductType[]> => {
       return await Promise.all(
         products.map(async (product) => {
           try {
             const variants = await getVariants({ productId: product.id });
-            const price = variants[0]?.price;
-            return { ...product, price };
+            const { price, stock } = variants[0];
+            return { ...product, price, stock };
           } catch (err) {
             return { ...product };
           }
