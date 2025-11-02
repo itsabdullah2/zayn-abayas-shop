@@ -1,5 +1,6 @@
 import { getProducts } from "@/supabase";
 import type { CategoriesTableType } from "@/supabase/types";
+import type { ProductType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 interface UseProductProps {
@@ -34,5 +35,13 @@ export const useProducts = ({
     },
     enabled: categories.length > 0 && !!selectedCategory,
     staleTime: 2 * 60 * 1000, // 5 minutes
+  });
+};
+
+export const useShowProducts = () => {
+  return useQuery<ProductType[]>({
+    queryKey: ["show-products"],
+    queryFn: () => getProducts(),
+    staleTime: 3 * 1000 * 60, // 3 minute
   });
 };
