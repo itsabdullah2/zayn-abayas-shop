@@ -172,13 +172,13 @@ const Table = ({ orders, loading }: Props) => {
         >
           طباعة
         </Button>
-        <div className="overflow-x-auto flex-1">
+        <div className="overflow-x-auto max-w-full flex-1">
           {loading ? (
             <div className="text-center text-2xl font-medium text-primary">
               Loading...
             </div>
           ) : (
-            <table className="w-full">
+            <table className="min-w-full">
               <thead>
                 <tr>
                   <th className="text-center p-3">رقم الطلب</th>
@@ -197,7 +197,7 @@ const Table = ({ orders, loading }: Props) => {
                       <td className="text-center p-2 rounded-tr-md rounded-br-md">
                         {order.order_number}
                       </td>
-                      <td className="text-center p-2 first-letter:capitalize max-w-[160px] break-words">
+                      <td className="text-center p-2 first-letter:capitalize">
                         {user?.username ?? "مستخدم غير معروف"}
                       </td>
 

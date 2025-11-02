@@ -17,7 +17,7 @@ const Sidebar = () => {
       } border-l border-gray-400 py-3 px-2 flex flex-col gap-10 relative transition-all duration-200 ease-in-out`}
     >
       <h1 className={`text-2xl font-bold text-primary text-center`}>
-        زين عباءات
+        زين <span className={`${isOpen ? "" : "hidden"}`}>عباءات</span>
       </h1>
 
       <ul className="flex-1 flex flex-col gap-3">
