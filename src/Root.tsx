@@ -20,6 +20,7 @@ import {
   SignUpPage,
   AdminOrdersPage,
   AdminDashboardPage,
+  AdminProductsPage,
 } from "./";
 import { OrdersProvider } from "./context/OrdersContext";
 import { AuthContext } from "./context/AuthContext";
@@ -83,6 +84,14 @@ const Root = () => {
           }
         />
         <Route
+          path={"/admin/dashboard"}
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={"/admin/orders"}
           element={
             <ProtectedRoute role="admin">
@@ -91,10 +100,10 @@ const Root = () => {
           }
         />
         <Route
-          path={"/admin/dashboard"}
+          path={"/admin/products"}
           element={
             <ProtectedRoute role="admin">
-              <AdminDashboardPage />
+              <AdminProductsPage />
             </ProtectedRoute>
           }
         />
