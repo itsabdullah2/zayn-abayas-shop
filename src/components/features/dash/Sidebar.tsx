@@ -4,6 +4,7 @@ import { LuLayoutDashboard, LuBox } from "react-icons/lu";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { BiLogOut } from "react-icons/bi";
 import { useSidebarState } from "@/hooks/useSidebarState";
+import { AiFillProduct } from "react-icons/ai";
 
 const Sidebar = () => {
   const { isOpen, handleToggle } = useSidebarState();
@@ -45,6 +46,19 @@ const Sidebar = () => {
           >
             <LuBox size={22} />
             <span className={`${isOpen ? "" : "hidden"}`}>الطلبات</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/admin/products"
+            className={({ isActive }) =>
+              `w-full py-2 px-3 rounded-md flex items-center gap-2 ${
+                isActive ? "bg-primary text-secondary" : ""
+              } ${isOpen ? "" : "justify-center"}`
+            }
+          >
+            <AiFillProduct size={22} />
+            <span className={`${isOpen ? "" : "hidden"}`}>المنتجات</span>
           </NavLink>
         </li>
       </ul>
