@@ -63,7 +63,7 @@ const DashboardNavbar = () => {
     };
   }, []);
   return (
-    <nav className="flex-between py-4 px-6 border-b border-gray-400 relative max-w-full">
+    <nav className="flex-between py-4 px-3 lg:px-6 border-b border-gray-400 relative max-w-full">
       <div className="flex-col gap-1 flex">
         <h2 className="text-base lg:text-xl font-medium text-primary">
           مرحبًا بك في لوحة التحكم,{" "}
