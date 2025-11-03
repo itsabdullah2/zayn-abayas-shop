@@ -1,18 +1,13 @@
 import { getOrderItems } from "@/supabase/db/orders";
-import type { TOrderItemsTable } from "@/supabase/types";
-import { useEffect, useState } from "react";
+import type { OrderItem } from "@/supabase/types";
+import { useQuery } from "@tanstack/react-query";
 
 const useOrderItems = () => {
-  const [orderItemsData, setOrderItemsData] = useState<TOrderItemsTable[]>([]);
-
-  useEffect(() => {
-    const fetchOrderItemsData = async () => {
-      const response = await getOrderItems();
-      setOrderItemsData(response);
-    };
-
-    fetchOrderItemsData();
-  }, []);
+  const { data: orderItemsData = [] } = useQuery<OrderItem[]>({
+    queryKey: ["order-items"],
+    queryFn: getOrderItems,
+    staleTime: 3 * 1000 * 60, // 3 minute
+  });
 
   return { orderItemsData };
 };

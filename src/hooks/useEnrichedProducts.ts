@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 type EnrichedProductType = ProductType & {
   price?: number;
-  stock?: number;
+  stock: number;
 };
 
 interface UseEnrichedProductsProps {
@@ -26,7 +26,7 @@ export const useEnrichedProducts = ({
             const { price, stock } = variants[0];
             return { ...product, price, stock };
           } catch (err) {
-            return { ...product };
+            return { ...product, stock: 0 };
           }
         })
       );

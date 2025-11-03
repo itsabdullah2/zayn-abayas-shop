@@ -3,7 +3,6 @@ import { supabase } from "../";
 import type {
   FullOrder,
   OrderItem,
-  TOrderItemsTable,
   TOrdersTable,
   TTopProducts,
 } from "../types";
@@ -219,7 +218,7 @@ export const getTopProducts = async (
   }
 };
 
-export const getOrderItems = async (): Promise<TOrderItemsTable[]> => {
+export const getOrderItems = async (): Promise<OrderItem[]> => {
   try {
     const { data, error } = await supabase.from("order_items").select("*");
 

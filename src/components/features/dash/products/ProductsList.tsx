@@ -2,15 +2,23 @@ import { useShowProducts } from "@/hooks/useProducts";
 import ProductListItem from "./ProductListItem";
 import { useEnrichedProducts } from "@/hooks/useEnrichedProducts";
 import { SkeletonCard } from "@/components/common/SkeletonCard";
+import { useSoldProducts } from "@/hooks/useSoldProducts";
+import useOrders from "@/hooks/useOrders";
+import useOrderItems from "@/hooks/useOrderItems";
 
 const ProductsList = () => {
   const { data: products = [] } = useShowProducts();
   const { data: enrichedProducts = [], isLoading } = useEnrichedProducts({
     products,
   });
-  console.log("Enriched Products Data:", enrichedProducts);
-
-  console.log("Products Data:", products);
+  const { data: orders = [] } = useOrders();
+  const { orderItemsData } = useOrderItems();
+  const soldProducts = useSoldProducts(
+    enrichedProducts,
+    orders,
+    orderItemsData
+  );
+  console.log("Sold Products Data:", soldProducts);
 
   if (isLoading) {
     return (
@@ -23,9 +31,16 @@ const ProductsList = () => {
   }
 
   return (
-    <>
-      <ProductListItem products={enrichedProducts} />
-    </>
+    <div className="responsive-grid mt-8 items-stretch">
+      {enrichedProducts.map((product, i) => (
+        <ProductListItem
+          key={product.id}
+          idx={i}
+          product={product}
+          soldProducts={soldProducts}
+        />
+      ))}
+    </div>
   );
 };
 
