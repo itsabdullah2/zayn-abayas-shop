@@ -3,6 +3,7 @@
 import useOrders from "@/hooks/useOrders";
 import { PriceFormatter } from "@/utils/formatePrice";
 import { useMemo, useState } from "react";
+import AnalyticsChart from "./AnalyticsChart";
 
 const sharedBtnStyles = "py-2 px-2 border rounded-md cursor-pointer text-xs";
 
@@ -59,14 +60,14 @@ export default function DashboardAnalytics() {
 
   return (
     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-      <div className="col-span-1 border border-gray-400 py-3 px-5 rounded-lg min-h-20">
+      <div className="col-span-1 py-3 px-5 rounded-lg min-h-20 flex flex-col justify-between">
         <div className="flex flex-col gap-1">
           <h3 className="text-lg font-medium text-primary">تقرير مبيعاتك</h3>
           <span className="text-sm text-gray">انظر الى مبيعاتك</span>
+          <h2 className="text-5xl mt-5">
+            {PriceFormatter(totalSalesReport.totalRevenue, "en")}E.L
+          </h2>
         </div>
-        <h2 className="text-5xl mt-5">
-          {PriceFormatter(totalSalesReport.totalRevenue, "en")}E.L
-        </h2>
 
         <div className="flex items-center justify-around mt-8">
           <button
@@ -111,7 +112,9 @@ export default function DashboardAnalytics() {
           </button>
         </div>
       </div>
-      <div className="col-span-2 border border-gray-400 py-3 px-5 rounded-lg min-h-20" />
+      <div className="col-span-2 py-3 rounded-lg min-h-20 max-h-[300px]">
+        <AnalyticsChart />
+      </div>
     </div>
   );
 }
