@@ -7,9 +7,16 @@ import { signInWithOAuth } from "./auth/OAuth";
 
 import { getReviews, addReview, updateReview } from "./db/reviews";
 
-import { getProducts, getVariants, getColors, getSizes } from "./db/products";
+import { getProducts, deleteProduct } from "./db/products";
 
-import { clearCart } from "./db/cart";
+import {
+  clearCart,
+  getCartItems,
+  createCartItem,
+  removeItem,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
+} from "./db/cart";
 
 import {
   createOrder,
@@ -27,6 +34,9 @@ import {
   deleteNotifications,
 } from "./db/notifications";
 
+import { getVariants, getColors, getSizes } from "./db/variants";
+import { getCategories } from "./db/categories";
+
 export {
   supabase,
   signInWithPassword,
@@ -39,11 +49,14 @@ export {
   updateReview,
   //
   getProducts,
-  getVariants,
-  getColors,
-  getSizes,
+  deleteProduct,
   //
   clearCart,
+  getCartItems,
+  createCartItem,
+  removeItem,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
   //
   createOrder,
   getUserOrders,
@@ -57,4 +70,10 @@ export {
   createNotification,
   updateNotification,
   deleteNotifications,
+  //
+  getVariants,
+  getColors,
+  getSizes,
+  //
+  getCategories,
 };

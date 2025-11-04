@@ -1,4 +1,4 @@
-import { getCategories } from "@/supabase/db/products";
+import { getCategories } from "@/supabase";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCategories = () => {

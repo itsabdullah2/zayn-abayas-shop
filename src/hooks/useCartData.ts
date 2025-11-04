@@ -1,4 +1,4 @@
-import { getProducts, getVariants } from "@/supabase/db/products";
+import { getProducts, getVariants } from "@/supabase";
 import { useContextSelector } from "use-context-selector";
 import { CartContext } from "@/context/CartContext";
 import { useCallback, useEffect, useMemo, useState } from "react";

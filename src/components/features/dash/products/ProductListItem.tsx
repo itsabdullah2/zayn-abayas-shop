@@ -20,7 +20,7 @@ type Props = {
 
 const ProductListItem = ({ product, idx, soldProducts }: Props) => {
   const targetSoldProduct = soldProducts.find((o) => o.id === product.id);
-  console.log(targetSoldProduct);
+
   return (
     <figure
       key={product.id}

@@ -90,8 +90,6 @@ const CheckoutForm = () => {
         })
       );
 
-      console.log(enrichedItems);
-
       // Step 1: Check the stock if the product is available
       const outOfStock = enrichedItems.find(
         (item) => item.stock < item.quantity

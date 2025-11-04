@@ -1,4 +1,4 @@
-import { getProducts, getVariants } from "@/supabase/db/products";
+import { getProducts, getVariants } from "@/supabase";
 import { PriceFormatter } from "@/utils/formatePrice";
 
 import { IoIosMore } from "react-icons/io";

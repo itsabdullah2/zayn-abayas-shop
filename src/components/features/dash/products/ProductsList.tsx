@@ -18,7 +18,6 @@ const ProductsList = () => {
     orders,
     orderItemsData
   );
-  console.log("Sold Products Data:", soldProducts);
 
   if (isLoading) {
     return (

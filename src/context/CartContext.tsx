@@ -6,7 +6,7 @@ import {
   getCartItems,
   increaseCartItemQuantity,
   removeItem,
-} from "@/supabase/db/products";
+} from "@/supabase";
 import type { CartItemType, EnrichedProductType } from "@/types";
 import { useContextSelector } from "use-context-selector";
 import { AuthContext } from "./AuthContext";
