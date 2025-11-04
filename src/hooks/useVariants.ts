@@ -1,5 +1,5 @@
 import { getVariants, supabase } from "@/supabase";
-import { updateVariant } from "@/supabase/db/products";
+import { updateVariant } from "@/supabase";
 import type { VariantsTableType } from "@/supabase/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 

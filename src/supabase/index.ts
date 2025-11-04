@@ -34,7 +34,7 @@ import {
   deleteNotifications,
 } from "./db/notifications";
 
-import { getVariants, getColors, getSizes } from "./db/variants";
+import { getVariants, getColors, getSizes, updateVariant } from "./db/variants";
 import { getCategories } from "./db/categories";
 
 export {
@@ -74,6 +74,7 @@ export {
   getVariants,
   getColors,
   getSizes,
+  updateVariant,
   //
   getCategories,
 };
