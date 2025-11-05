@@ -18,7 +18,7 @@ import {
 const DashboardNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
   const notificationsMutation = useUpdateNotifications();
   const { notificationsData } = useNotifications();
@@ -90,6 +90,17 @@ const DashboardNavbar = () => {
       document.removeEventListener("mousedown", closeAvatarOnClickOutside);
     };
   }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <nav className="flex-between py-4 px-3 lg:px-6 border-b border-gray-400 relative max-w-full">
