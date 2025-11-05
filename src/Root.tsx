@@ -25,6 +25,7 @@ import {
 import { OrdersProvider } from "./context/OrdersContext";
 import { AuthContext } from "./context/AuthContext";
 import { useEffect } from "react";
+import { SidebarProvider } from "./context/SidebarContext";
 
 const Root = () => {
   const location = useLocation();
@@ -84,26 +85,16 @@ const Root = () => {
           }
         />
         <Route
-          path={"/admin/dashboard"}
+          path="/admin/*"
           element={
             <ProtectedRoute role="admin">
-              <AdminDashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={"/admin/orders"}
-          element={
-            <ProtectedRoute role="admin">
-              <AdminOrdersPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={"/admin/products"}
-          element={
-            <ProtectedRoute role="admin">
-              <AdminProductsPage />
+              <SidebarProvider>
+                <Routes>
+                  <Route path="dashboard" element={<AdminDashboardPage />} />
+                  <Route path="orders" element={<AdminOrdersPage />} />
+                  <Route path="products" element={<AdminProductsPage />} />
+                </Routes>
+              </SidebarProvider>
             </ProtectedRoute>
           }
         />
