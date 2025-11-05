@@ -4,6 +4,7 @@ import DashboardNavbar from "../DashboardNavbar";
 import ProductsList from "./ProductsList";
 import { FaThLarge } from "react-icons/fa";
 import { MdTableChart } from "react-icons/md";
+import ProductsTable from "./ProductsTable";
 
 const Products = () => {
   const [view, setView] = useState<"table" | "cards">("table");
@@ -29,7 +30,7 @@ const Products = () => {
             )}
           </button>
         </div>
-        <ProductsList />
+        {view === "table" ? <ProductsTable /> : <ProductsList />}
       </section>
     </>
   );
