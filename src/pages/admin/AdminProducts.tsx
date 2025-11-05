@@ -13,7 +13,9 @@ const AdminProductsPage = () => {
   return (
     <div className="flex-1 bg-light-gray flex">
       <AdminSidebar className="fixed! right-0 top-0 h-dvh " />
-      <div className={`flex-1 ${isOpen ? "mr-64" : "mr-16"} duration-200`}>
+      <div
+        className={`flex-1 ${isOpen ? "sm:mr-64" : "sm:mr-16"} duration-200`}
+      >
         <Products />
       </div>
     </div>

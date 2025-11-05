@@ -18,7 +18,7 @@ import {
 const DashboardNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
   const notificationsMutation = useUpdateNotifications();
   const { notificationsData } = useNotifications();
@@ -167,8 +167,8 @@ const DashboardNavbar = () => {
 
       <div
         className={`fixed top-20 ${
-          isSidebarOpen ? "right-0" : "translate-x-full"
-        } w-full px-4 pt-3 pb-5 bg-neutral shadow-lg z-50 transition-all duration-500 sm:hidden flex flex-col gap-10`}
+          isSidebarOpen ? "right-0" : "translate-x-full -right-full"
+        } w-full px-4 pt-3 pb-5 bg-neutral shadow-lg z-50 transition-all duration-500 flex flex-col gap-10`}
       >
         <h2
           className={`text-2xl font-bold text-primary pb-2 border-b border-light-gray`}
