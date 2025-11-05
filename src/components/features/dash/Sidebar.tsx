@@ -3,11 +3,17 @@ import { NavLink } from "react-router-dom";
 import { LuLayoutDashboard, LuBox } from "react-icons/lu";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { BiLogOut } from "react-icons/bi";
-import { useSidebarState } from "@/hooks/useSidebarState";
 import { AiFillProduct } from "react-icons/ai";
+import React from "react";
+import { useContextSelector } from "use-context-selector";
+import { SidebarContext } from "@/context/SidebarContext";
 
-const Sidebar = () => {
-  const { isOpen, handleToggle } = useSidebarState();
+const Sidebar = ({ className }: { className?: string }) => {
+  const isOpen = useContextSelector(SidebarContext, (ctx) => ctx?.isOpen);
+  const handleToggle = useContextSelector(
+    SidebarContext,
+    (ctx) => ctx?.handleToggle
+  );
 
   const handleLogout = async () => await signOut();
 
@@ -15,7 +21,7 @@ const Sidebar = () => {
     <aside
       className={`${
         isOpen ? "w-64" : "w-16"
-      } border-l border-gray-400 py-3 px-2 hidden sm:flex flex-col gap-10 relative transition-all duration-200 ease-in-out`}
+      } border-l border-gray-400 py-3 px-2 hidden sm:flex flex-col gap-10 relative transition-all duration-200 ease-in-out z-[100] ${className}`}
     >
       <h1 className={`text-2xl font-bold text-primary text-center`}>
         زين <span className={`${isOpen ? "" : "hidden"}`}>عباءات</span>
@@ -73,7 +79,7 @@ const Sidebar = () => {
       </button>
 
       <button
-        className={`absolute -left-3 top-10 bg-neutral w-6 h-6 rounded-full shadow-md cursor-pointer flex-center z-50`}
+        className={`absolute -left-3 top-10 bg-neutral w-6 h-6 rounded-full shadow-md cursor-pointer flex-center z-[100]`}
         onClick={handleToggle}
       >
         <MdOutlineArrowForwardIos
@@ -87,4 +93,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default React.memo(Sidebar);
