@@ -1,4 +1,4 @@
-import useNotifications from "@/hooks/useNotifications";
+import { useNotifications } from "@/hooks/useNotifications";
 import { formateDate } from "@/utils/formateDate";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -27,7 +27,9 @@ const NotificationItem = ({ onClick }: Props) => {
       {notificationsData.map((notify) => (
         <li
           key={notify.id}
-          className={`border-b border-gray-300 pb-3 last:border-0 hover:bg-gray-200 duration-200 px-2 rounded-md pt-3 w-full`}
+          className={`border-b border-gray-300 pb-3 last:border-0 ${
+            notify.is_read ? "" : "bg-gray-200"
+          } hover:bg-gray-200 duration-200 px-2 rounded-md pt-3 w-full`}
         >
           <Link
             to="/admin/orders"

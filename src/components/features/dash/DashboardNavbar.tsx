@@ -9,13 +9,19 @@ import { LuLayoutDashboard, LuBox } from "react-icons/lu";
 import { AiFillProduct } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
-import { signOut } from "@/supabase";
+import { deleteNotifications, signOut } from "@/supabase";
+import {
+  useNotifications,
+  useUpdateNotifications,
+} from "@/hooks/useNotifications";
 
 const DashboardNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const profile = useContextSelector(AuthContext, (ctx) => ctx?.profile);
+  const notificationsMutation = useUpdateNotifications();
+  const { notificationsData } = useNotifications();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
@@ -30,6 +36,16 @@ const DashboardNavbar = () => {
   };
   const handleSidebarToggle = () => {
     setIsSidebarOpen((prev) => !prev);
+  };
+  const handleMarkAllRead = async () => {
+    if (notificationsData.length) {
+      await notificationsMutation.mutateAsync({ is_read: true });
+    }
+  };
+  const handleClearAll = async () => {
+    if (notificationsData.length) {
+      await deleteNotifications();
+    }
   };
   const handleLogout = async () => await signOut();
 
@@ -115,9 +131,24 @@ const DashboardNavbar = () => {
             className="bg-neutral py-3 px-4 rounded-md absolute left-10 top-full w-96 shadow-lg border border-gray-300 z-50"
             ref={dropdownRef}
           >
-            <h3 className="text-lg font-medium text-primary mb-3 pb-2 border-b border-gray-300">
-              الإشعارات
-            </h3>
+            <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-300">
+              <h3 className="text-lg font-medium text-primary">الإشعارات</h3>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={handleMarkAllRead}
+                  className="text-sm border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-neutral duration-150 py-1 px-2 rounded-sm cursor-pointer"
+                >
+                  تحديد كمقروء
+                </button>
+                <button
+                  onClick={handleClearAll}
+                  className="text-sm border border-red-600 text-red-500 hover:bg-red-600 hover:text-neutral duration-150 py-1 px-2 rounded-sm cursor-pointer"
+                >
+                  مسح الكل
+                </button>
+              </div>
+            </div>
 
             <NotificationItem onClick={toggleNotifications} />
           </div>

@@ -57,22 +57,21 @@ export const createNotification = async (
 };
 
 export const updateNotification = async (
-  is_read: boolean,
-  user_id: string
-): Promise<TNotificationTable> => {
+  is_read: boolean
+): Promise<TNotificationTable[]> => {
   try {
     const { data, error } = await supabase
       .from("notifications")
       .update({ is_read })
-      .eq("user_id", user_id)
-      .single();
+      .not("id", "is", null)
+      .select("*");
 
     if (error) {
       console.error("Failed to update the notification:", error.message);
       throw error;
     }
 
-    return data;
+    return data || [];
   } catch (err) {
     console.error("Failed to update the notification:", err);
     throw err;
@@ -84,7 +83,7 @@ export const deleteNotifications = async () => {
     const { error } = await supabase
       .from("notifications")
       .delete()
-      .neq("id", "");
+      .not("id", "is", null);
 
     if (error) {
       console.error("Failed to clear notifications:", error.message);

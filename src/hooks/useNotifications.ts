@@ -1,8 +1,8 @@
-import { getNotifications } from "@/supabase";
+import { getNotifications, updateNotification } from "@/supabase";
 import type { TNotificationTable } from "@/supabase/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const useNotifications = () => {
+export const useNotifications = () => {
   const {
     data: notificationsData = [],
     isLoading,
@@ -10,10 +10,21 @@ const useNotifications = () => {
   } = useQuery<TNotificationTable[]>({
     queryKey: ["notifications"],
     queryFn: getNotifications,
-    // staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 2,
   });
 
   return { notificationsData, isLoading, refetch };
 };
 
-export default useNotifications;
+export const useUpdateNotifications = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ is_read }: { is_read: boolean }) =>
+      updateNotification(is_read),
+    onSuccess: () => {
+      // queryClient.invalidateQueries({queryKey: ['notification']})
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+  });
+};
