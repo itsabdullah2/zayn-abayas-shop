@@ -21,7 +21,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     <aside
       className={`${
         isOpen ? "w-64" : "w-16"
-      } border-l border-gray-400 py-3 px-2 hidden sm:flex flex-col gap-10 relative transition-all duration-200 ease-in-out z-[100] ${className}`}
+      } bg-light-gray border-l border-gray-400 py-3 px-2 hidden sm:flex flex-col gap-10 relative transition-all duration-200 ease-in-out z-[100] ${className}`}
     >
       <h1 className={`text-2xl font-bold text-primary text-center`}>
         زين <span className={`${isOpen ? "" : "hidden"}`}>عباءات</span>
