@@ -48,7 +48,7 @@ const ProductsTable = () => {
               <th
                 className={`bg-primary text-neutral p-3 rounded-bl-md rounded-tl-md`}
               >
-                actions
+                خيارات
               </th>
             </tr>
           </thead>
@@ -59,14 +59,18 @@ const ProductsTable = () => {
               );
               return (
                 <tr key={product.id} className="even:bg-gray-300">
-                  <td className="rounded-tr-md rounded-br-md p-3">
+                  <td className="rounded-tr-md rounded-br-md p-3 text-sm">
                     {product.product_name}
                   </td>
-                  <td className="p-3">
+                  <td className="p-3 text-sm">
                     {PriceFormatter(product.product_price, "en")}
                   </td>
-                  <td className="p-3">{targetSoldProduct?.remainingStock}</td>
-                  <td className="p-3">{targetSoldProduct?.soldQuantity}</td>
+                  <td className="p-3 text-sm">
+                    {targetSoldProduct?.remainingStock ?? product.stock}
+                  </td>
+                  <td className="p-3 text-sm">
+                    {targetSoldProduct?.soldQuantity ?? 0}
+                  </td>
                   <td className="p-3">
                     <picture className="rounded-md">
                       {/* avif version */}

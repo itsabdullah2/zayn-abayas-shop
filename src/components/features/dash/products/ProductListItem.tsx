@@ -58,13 +58,13 @@ const ProductListItem = ({ product, idx, soldProducts }: Props) => {
           <div className="flex items-center gap-1">
             <span className={`text-primary font-light text-sm`}>المخزون:</span>
             <span className={`font-medium text-primary text-sm`}>
-              {targetSoldProduct?.remainingStock}
+              {targetSoldProduct?.remainingStock ?? product.stock}
             </span>
           </div>
           <div className="flex items-center gap-1">
             <span className={`text-primary font-light text-sm`}>مُباع:</span>
             <span className={`font-medium text-primary text-sm`}>
-              {targetSoldProduct?.soldQuantity}
+              {targetSoldProduct?.soldQuantity ?? 0}
             </span>
           </div>
         </div>
