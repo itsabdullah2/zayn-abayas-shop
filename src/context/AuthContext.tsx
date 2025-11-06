@@ -22,13 +22,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let subscription: Subscription | undefined;
+    let subscription: Subscription;
+    let mounted = true;
     // Get initial session
     const getInitialSession = async () => {
       try {
         const {
           data: { session },
         } = await supabase.auth.getSession();
+
+        if (!mounted) return;
         const authUser = session?.user ?? null;
         setUser(authUser);
 
@@ -39,7 +42,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (error) {
         console.error("Error getting initial session:", error);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
 
@@ -48,7 +51,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const {
         data: { subscription: sub },
       } = supabase.auth.onAuthStateChange(async (_event, session) => {
-        setLoading(true);
         const newUser = session?.user ?? null;
         setUser(newUser);
 
@@ -64,7 +66,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       subscription = sub;
     });
 
-    return () => subscription?.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const value: AuthContextType = {

@@ -50,7 +50,7 @@ const ProtectedRoute = ({
     }
   }, [user, loading, navigate, role, profile]);
 
-  if (loading || (!user && !loading)) return <Loading />;
+  if (loading || (!loading && !user)) return <Loading />;
 
   return children;
 };
