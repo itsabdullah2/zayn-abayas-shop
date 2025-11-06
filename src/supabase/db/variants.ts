@@ -63,7 +63,27 @@ export const updateVariant = async (
   }
 };
 
-export const deleteVariant = async () => {};
+export const deleteVariants = async (productId: string) => {
+  try {
+    if (!productId) {
+      console.error("Product ID is required to delete its variants");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("product_variants")
+      .delete()
+      .eq("product_id", productId);
+
+    if (error) {
+      console.error("Failed to delete the target variants:", error.message);
+      throw error;
+    }
+  } catch (err) {
+    console.error("Failed to delete the target variants:", err);
+    throw err;
+  }
+};
 
 export const getColors = async (
   colorId: string = ""

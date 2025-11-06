@@ -1,5 +1,6 @@
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
+import React from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 
 type EnrichedProduct = ProductType & {
@@ -16,9 +17,10 @@ type Props = {
   product: EnrichedProduct;
   idx: number;
   soldProducts: TSoldProducts[];
+  onClick: (id: string) => void;
 };
 
-const ProductListItem = ({ product, idx, soldProducts }: Props) => {
+const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
   const targetSoldProduct = soldProducts.find((o) => o.id === product.id);
 
   return (
@@ -74,7 +76,10 @@ const ProductListItem = ({ product, idx, soldProducts }: Props) => {
         <button className="btn hover:text-accentB duration-200 ease-in-out">
           <MdEdit size={19} />
         </button>
-        <button className="btn hover:text-accentB duration-200 ease-in-out">
+        <button
+          className="btn hover:text-accentB duration-200 ease-in-out"
+          onClick={() => onClick(product.id)}
+        >
           <MdDelete size={19} />
         </button>
       </div>
@@ -82,4 +87,4 @@ const ProductListItem = ({ product, idx, soldProducts }: Props) => {
   );
 };
 
-export default ProductListItem;
+export default React.memo(ProductListItem);

@@ -5,8 +5,9 @@ import { SkeletonCard } from "@/components/common/SkeletonCard";
 import { useSoldProducts } from "@/hooks/useSoldProducts";
 import useOrders from "@/hooks/useOrders";
 import useOrderItems from "@/hooks/useOrderItems";
+import React from "react";
 
-const ProductsList = () => {
+const ProductsList = ({ onClick }: { onClick: (id: string) => void }) => {
   const { data: products = [] } = useShowProducts();
   const { data: enrichedProducts = [], isLoading } = useEnrichedProducts({
     products,
@@ -37,10 +38,11 @@ const ProductsList = () => {
           idx={i}
           product={product}
           soldProducts={soldProducts}
+          onClick={onClick}
         />
       ))}
     </div>
   );
 };
 
-export default ProductsList;
+export default React.memo(ProductsList);

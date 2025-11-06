@@ -33,4 +33,24 @@ export const getProducts = async (
   }
 };
 
-export const deleteProduct = async () => {};
+export const deleteProduct = async (productId: string) => {
+  try {
+    if (!productId) {
+      console.error("Product ID is required to delete a product");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", productId);
+
+    if (error) {
+      console.error("Failed to delete the target product:", error.message);
+      throw error;
+    }
+  } catch (err) {
+    console.error("Failed to delete the target product:", err);
+    throw err;
+  }
+};

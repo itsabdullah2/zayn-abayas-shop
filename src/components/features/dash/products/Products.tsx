@@ -5,12 +5,24 @@ import ProductsList from "./ProductsList";
 import { FaThLarge } from "react-icons/fa";
 import { MdTableChart } from "react-icons/md";
 import ProductsTable from "./ProductsTable";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 const Products = () => {
   const [view, setView] = useState<"table" | "cards">("table");
+  const [targetProductId, setTargetProductId] = useState<string | null>(null);
 
   const handleView = () => {
     setView((prev) => (prev === "table" ? "cards" : "table"));
+  };
+
+  const handleDeleteConfirmation = (productId: string) => {
+    if (productId) {
+      setTargetProductId(productId);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setTargetProductId(null);
   };
 
   return (
@@ -30,8 +42,17 @@ const Products = () => {
             )}
           </button>
         </div>
-        {view === "table" ? <ProductsTable /> : <ProductsList />}
+        {view === "table" ? (
+          <ProductsTable onClick={handleDeleteConfirmation} />
+        ) : (
+          <ProductsList onClick={handleDeleteConfirmation} />
+        )}
       </section>
+
+      <DeleteConfirmation
+        productId={targetProductId}
+        onCancel={handleDeleteCancel}
+      />
     </>
   );
 };
