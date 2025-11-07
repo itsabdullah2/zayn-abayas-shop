@@ -165,10 +165,11 @@ const Table = ({ orders, loading }: Props) => {
           orderItemId={isOrderId && isOrderId.orderItemId}
         />
       )}
-      <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg max-h-[calc(100vh-250px)]">
+      <div className="flex flex-col gap-2 mt-8 bg-neutral py-5 px-3 rounded-lg min-h-[calc(100vh-270px)] max-h-[calc(100vh-270px)]">
         <Button
           className="w-fit px-4 sm:px-10 bg-transparent border border-primary text-primary hover:bg-primary hover:text-neutral cursor-pointer"
           onClick={handleDownloadPDF}
+          disabled={!localOrders.length}
         >
           طباعة
         </Button>
@@ -176,6 +177,10 @@ const Table = ({ orders, loading }: Props) => {
           {loading ? (
             <div className="text-center text-2xl font-medium text-primary">
               Loading...
+            </div>
+          ) : !localOrders.length ? (
+            <div className="text-center mt-5 font-medium text-primary text-lg">
+              لا يوجد طلبات
             </div>
           ) : (
             <table className="min-w-full">
