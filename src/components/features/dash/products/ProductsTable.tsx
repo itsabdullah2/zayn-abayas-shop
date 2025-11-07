@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { AppContext } from "@/context/AppContext";
 import { useEnrichedProducts } from "@/hooks/useEnrichedProducts";
 import useOrderItems from "@/hooks/useOrderItems";
 import useOrders from "@/hooks/useOrders";
@@ -7,8 +8,13 @@ import { useSoldProducts } from "@/hooks/useSoldProducts";
 import { PriceFormatter } from "@/utils/formatePrice";
 import React from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
+import { useContextSelector } from "use-context-selector";
 
 const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
+  const setIsEditPopupForm = useContextSelector(
+    AppContext,
+    (ctx) => ctx?.setIsEditPopupForm
+  )!;
   const { data: products = [] } = useShowProducts();
   const { data: enrichedProducts = [], isLoading } = useEnrichedProducts({
     products,
@@ -97,7 +103,10 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
                     </td>
                     <td className="rounded-tl-md rounded-bl-md relative">
                       <div className="absolute-center flex items-center gap-2">
-                        <button className="btn hover:text-accentB duration-200 ease-in-out">
+                        <button
+                          className="btn hover:text-accentB duration-200 ease-in-out"
+                          onClick={() => setIsEditPopupForm(product.id)}
+                        >
                           <MdEdit size={19} />
                         </button>
                         <button

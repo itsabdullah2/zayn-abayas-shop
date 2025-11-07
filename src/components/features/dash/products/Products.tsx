@@ -1,11 +1,12 @@
-// import React from "react";
+import React from "react";
 import { useState } from "react";
 import DashboardNavbar from "../DashboardNavbar";
 import ProductsList from "./ProductsList";
 import { FaThLarge } from "react-icons/fa";
 import { MdTableChart } from "react-icons/md";
-import ProductsTable from "./ProductsTable";
-import DeleteConfirmation from "./DeleteConfirmation";
+const EditPopupForm = React.lazy(() => import("./EditPopupForm"));
+const ProductsTable = React.lazy(() => import("./ProductsTable"));
+const DeleteConfirmation = React.lazy(() => import("./DeleteConfirmation"));
 
 const Products = () => {
   const [view, setView] = useState<"table" | "cards">("table");
@@ -53,6 +54,8 @@ const Products = () => {
         productId={targetProductId}
         onCancel={handleDeleteCancel}
       />
+
+      <EditPopupForm />
     </>
   );
 };

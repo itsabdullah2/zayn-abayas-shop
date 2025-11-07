@@ -31,17 +31,19 @@ const ProductsList = ({ onClick }: { onClick: (id: string) => void }) => {
   }
 
   return (
-    <div className="responsive-grid mt-8 items-stretch">
-      {enrichedProducts.map((product, i) => (
-        <ProductListItem
-          key={product.id}
-          idx={i}
-          product={product}
-          soldProducts={soldProducts}
-          onClick={onClick}
-        />
-      ))}
-    </div>
+    <>
+      <div className="responsive-grid mt-8 items-stretch">
+        {enrichedProducts.map((product, i) => (
+          <ProductListItem
+            key={product.id}
+            idx={i}
+            product={product}
+            soldProducts={soldProducts}
+            onClick={onClick}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 
