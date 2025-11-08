@@ -54,3 +54,47 @@ export const deleteProduct = async (productId: string) => {
     throw err;
   }
 };
+
+type TEditingData = {
+  product_name: string;
+  product_desc: string;
+  product_price: number;
+  product_img: string;
+};
+export const updateProduct = async (
+  editedData: TEditingData,
+  productId: string
+) => {
+  try {
+    const { product_name, product_desc, product_price, product_img } =
+      editedData;
+
+    const updatePayload: Partial<TEditingData> = {};
+
+    if (product_name) updatePayload.product_name = product_name;
+    if (product_desc) updatePayload.product_desc = product_desc;
+    if (product_price) updatePayload.product_price = product_price;
+    if (product_img) updatePayload.product_img = product_img;
+
+    // Remove undefined fields to avoid overwriting
+    Object.keys(updatePayload).forEach(
+      (key) =>
+        updatePayload[key as keyof TEditingData] === undefined &&
+        delete updatePayload[key as keyof TEditingData]
+    );
+
+    const { data, error } = await supabase
+      .from("products")
+      .update(updatePayload)
+      .eq("id", productId)
+      .select("*")
+      .single();
+
+    if (error) throw error;
+
+    return data;
+  } catch (err) {
+    console.error("Failed to update the product:", err);
+    throw err;
+  }
+};
