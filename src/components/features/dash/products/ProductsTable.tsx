@@ -11,9 +11,9 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { useContextSelector } from "use-context-selector";
 
 const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
-  const setIsEditPopupForm = useContextSelector(
+  const handleEditClick = useContextSelector(
     AppContext,
-    (ctx) => ctx?.setIsEditPopupForm
+    (ctx) => ctx?.handleEditClick
   )!;
   const { data: products = [] } = useShowProducts();
   const { data: enrichedProducts = [], isLoading } = useEnrichedProducts({
@@ -105,7 +105,7 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
                       <div className="absolute-center flex items-center gap-2">
                         <button
                           className="btn hover:text-accentB duration-200 ease-in-out"
-                          onClick={() => setIsEditPopupForm(product.id)}
+                          onClick={() => handleEditClick(product)}
                         >
                           <MdEdit size={19} />
                         </button>

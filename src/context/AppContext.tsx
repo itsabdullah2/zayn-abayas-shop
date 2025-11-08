@@ -1,13 +1,12 @@
+import type { ProductType } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 
 type TEditingData = {
-  productImg: string;
+  productImg: string | File;
   productName: string;
   productDesc: string;
-  productPrice: string;
-  isAvailable: boolean;
-  isBestSeller: boolean;
+  productPrice: number;
 };
 type AppContextType = {
   isNavMenu: boolean;
@@ -27,7 +26,11 @@ type AppContextType = {
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditPopupForm: React.Dispatch<React.SetStateAction<string | null>>;
   handleCancel: () => void;
-  handleSubmitEdits: (data: TEditingData) => void;
+  handleSubmitEdits: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleEditFieldChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  handleEditClick: (product: ProductType) => void;
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -36,9 +39,7 @@ const INITIAL_STATE = {
   productImg: "",
   productName: "",
   productDesc: "",
-  productPrice: "",
-  isAvailable: true,
-  isBestSeller: false,
+  productPrice: 0,
 };
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
@@ -53,13 +54,45 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isEditPopupForm, setIsEditPopupForm] = useState<string | null>(null);
   const [editingData, setEditingData] = useState<TEditingData>(INITIAL_STATE);
 
-  const handleSubmitEdits = (editedData: TEditingData) => {
-    console.log("The Edited Data is:", editedData);
+  const handleSubmitEdits = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("The Edited Data is:", editingData);
+  };
+  const handleEditClick = (product: ProductType) => {
+    setEditingData({
+      productImg: product.product_img,
+      productName: product.product_name,
+      productDesc: product.product_desc,
+      productPrice: product.product_price,
+    });
+
+    setIsEditPopupForm(product.id);
   };
   const handleCancel = () => {
     setIsEditPopupForm(null);
     setEditingData(INITIAL_STATE);
   };
+  const handleEditFieldChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    if (e.target instanceof HTMLInputElement && e.target.type === "file") {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      // Upload the new image to Supabase bucket and get the public url
+
+      setEditingData((prev) => ({
+        ...prev,
+        [name]: file,
+      }));
+
+      return;
+    }
+
+    setEditingData((prev) => ({ ...prev, [name]: value }));
+  };
+  // End of States & functions of Admin products page
 
   const handleCloseSearchPopup = useCallback(() => {
     setSearchPopup(false);
@@ -126,6 +159,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setIsEditPopupForm,
     handleCancel,
     handleSubmitEdits,
+    handleEditFieldChange,
+    handleEditClick,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

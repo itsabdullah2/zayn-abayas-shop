@@ -23,9 +23,9 @@ type Props = {
 };
 
 const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
-  const setIsEditPopupForm = useContextSelector(
+  const handleEditClick = useContextSelector(
     AppContext,
-    (ctx) => ctx?.setIsEditPopupForm
+    (ctx) => ctx?.handleEditClick
   )!;
   const targetSoldProduct = soldProducts.find((o) => o.id === product.id);
 
@@ -84,7 +84,7 @@ const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
         <div className="action-btns group-hover:top-2">
           <button
             className="btn hover:text-accentB duration-200 ease-in-out"
-            onClick={() => setIsEditPopupForm(product.id)}
+            onClick={() => handleEditClick(product)}
           >
             <MdEdit size={19} />
           </button>
