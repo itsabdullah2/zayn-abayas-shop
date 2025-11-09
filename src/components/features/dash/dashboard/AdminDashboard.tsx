@@ -1,7 +1,7 @@
 import DashboardAnalytics from "./DashboardAnalytics";
 import DashboardNavbar from "../DashboardNavbar";
 import DashboardUpperBoxes from "./DashboardUpperBoxes";
-import TableAndHighestProducts from "./TableAndHighestProducts";
+// import TableAndHighestProducts from "./TableAndHighestProducts";
 
 const AdminDashboard = () => {
   return (
@@ -12,7 +12,7 @@ const AdminDashboard = () => {
         <div className="flex flex-col gap-8 mt-10">
           <DashboardUpperBoxes />
           <DashboardAnalytics />
-          <TableAndHighestProducts />
+          {/* <TableAndHighestProducts /> */}
         </div>
       </section>
     </>
