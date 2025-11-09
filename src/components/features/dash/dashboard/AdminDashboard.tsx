@@ -1,7 +1,8 @@
-import DashboardAnalytics from "./DashboardAnalytics";
+import { lazy } from "react";
 import DashboardNavbar from "../DashboardNavbar";
-import DashboardUpperBoxes from "./DashboardUpperBoxes";
-// import TableAndHighestProducts from "./TableAndHighestProducts";
+
+const DashboardAnalytics = lazy(() => import("./DashboardAnalytics"));
+const DashboardUpperBoxes = lazy(() => import("./DashboardUpperBoxes"));
 
 const AdminDashboard = () => {
   return (
