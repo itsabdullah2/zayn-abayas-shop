@@ -7,6 +7,7 @@ import { AiFillProduct } from "react-icons/ai";
 import React from "react";
 import { useContextSelector } from "use-context-selector";
 import { SidebarContext } from "@/context/SidebarContext";
+import useOrders from "@/hooks/useOrders";
 
 const Sidebar = ({ className }: { className?: string }) => {
   const isOpen = useContextSelector(SidebarContext, (ctx) => ctx?.isOpen);
@@ -14,6 +15,8 @@ const Sidebar = ({ className }: { className?: string }) => {
     SidebarContext,
     (ctx) => ctx?.handleToggle
   );
+  const { data: orders } = useOrders();
+  const filteredOrders = orders?.filter((o) => o.status === "paid");
 
   const handleLogout = async () => await signOut();
 
@@ -28,7 +31,7 @@ const Sidebar = ({ className }: { className?: string }) => {
       </h1>
 
       <ul className="flex-1 flex flex-col gap-3">
-        <li>
+        <li className="hover:bg-primary hover:text-secondary duration-150 rounded-md">
           <NavLink
             to="/admin/dashboard"
             className={({ isActive }) =>
@@ -41,7 +44,9 @@ const Sidebar = ({ className }: { className?: string }) => {
             <span className={`${isOpen ? "" : "hidden"}`}>لوحة التحكم</span>
           </NavLink>
         </li>
-        <li>
+        <li
+          className={`relative hover:bg-primary hover:text-secondary duration-150 rounded-md`}
+        >
           <NavLink
             to="/admin/orders"
             className={({ isActive }) =>
@@ -53,8 +58,18 @@ const Sidebar = ({ className }: { className?: string }) => {
             <LuBox size={22} />
             <span className={`${isOpen ? "" : "hidden"}`}>الطلبات</span>
           </NavLink>
+
+          {filteredOrders?.length ? (
+            <span
+              className={`text-xs text-neutral absolute left-2 ${
+                isOpen ? "top-1/2 -translate-y-1/2" : "top-0"
+              } bg-red-500 w-4 h-4 rounded-full flex-center`}
+            >
+              {filteredOrders.length}
+            </span>
+          ) : null}
         </li>
-        <li>
+        <li className="hover:bg-primary hover:text-secondary duration-150 rounded-md">
           <NavLink
             to="/admin/products"
             className={({ isActive }) =>
