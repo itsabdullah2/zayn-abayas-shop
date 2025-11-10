@@ -6,6 +6,7 @@ import { supabase, updateProduct } from "@/supabase";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
 import { AuthContext } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 interface UseProductProps {
   selectedCategory: string;
@@ -118,6 +119,7 @@ export const useUpdateProduct = () => {
 
       // Close the popup
       if (setIsEditPopupForm) setIsEditPopupForm(null);
+      toast.success("تم تعديل المنتج بنجاح");
     },
     onError: (error) => {
       console.error("Failed to update product:", error);

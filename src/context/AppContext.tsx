@@ -1,5 +1,6 @@
 import type { ProductType } from "@/types";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { createContext } from "use-context-selector";
 
 type TEditingData = {
@@ -71,6 +72,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const handleCancel = () => {
     setIsEditPopupForm(null);
     setEditingData(INITIAL_STATE);
+    toast.success("تم حذف المنتج بنجاح");
   };
   const handleEditFieldChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
