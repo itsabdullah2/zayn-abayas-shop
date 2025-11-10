@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase, updateProduct } from "@/supabase";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
+import { AuthContext } from "@/context/AuthContext";
 
 interface UseProductProps {
   selectedCategory: string;
@@ -42,10 +43,12 @@ export const useProducts = ({
 };
 
 export const useShowProducts = () => {
+  const session = useContextSelector(AuthContext, (ctx) => ctx?.session);
   return useQuery<ProductType[]>({
     queryKey: ["show-products"],
     queryFn: () => getProducts(),
     staleTime: 3 * 1000 * 60, // 3 minute
+    enabled: !!session,
   });
 };
 

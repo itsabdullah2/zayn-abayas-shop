@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 import { supabase } from "@/supabase/client";
-import type { User, Subscription } from "@supabase/supabase-js";
+import type { User, Subscription, Session } from "@supabase/supabase-js";
 import { getUserProfile } from "@/supabase/db/users";
 import type { UserTableType } from "@/supabase/types";
 
@@ -10,6 +10,7 @@ interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   profile: UserTableType | null;
+  session: Session | null;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserTableType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
     let subscription: Subscription;
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (!mounted) return;
         const authUser = session?.user ?? null;
         setUser(authUser);
+        setSession(session);
 
         if (authUser) {
           const profileData = await getUserProfile(authUser.id);
@@ -77,6 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     loading,
     isAuthenticated: !!user,
     profile,
+    session,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

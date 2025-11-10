@@ -11,6 +11,7 @@ const ProductsList = ({ onClick }: { onClick: (id: string) => void }) => {
   const { data: products = [] } = useShowProducts();
   const { data: enrichedProducts = [], isLoading } = useEnrichedProducts({
     products,
+    enabled: products.length > 0,
   });
   const { data: orders = [] } = useOrders();
   const { orderItemsData } = useOrderItems();
