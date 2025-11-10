@@ -13,7 +13,7 @@ const SubmitButton = ({
     type="submit"
     disabled={!stripeAvailable || loading}
     className={`w-full py-3 rounded-lg text-white font-semibold cursor-pointer ${
-      loading
+      loading || !stripeAvailable
         ? "bg-soft-gray cursor-not-allowed"
         : "bg-primary relative overflow-hidden group"
     }`}

@@ -48,7 +48,10 @@ const OrderSummary = () => {
         <div className="flex items-center justify-between">
           <span className="text-sm text-text">الشحن</span>
           <span className="text-sm text-text">
-            {priceBreakdown.shippingFee.toFixed(2)} ج.م
+            {priceBreakdown.subtotal > 0
+              ? priceBreakdown.shippingFee.toFixed(2)
+              : 0}{" "}
+            ج.م
           </span>
         </div>
         <div className="flex items-center justify-between">
@@ -63,7 +66,8 @@ const OrderSummary = () => {
         <div className="flex items-center justify-between">
           <span className="text-primary font-medium">الإجمالي</span>
           <span className="text-primary font-medium">
-            {priceBreakdown.total.toFixed(2)} ج.م
+            {priceBreakdown.subtotal > 0 ? priceBreakdown.total.toFixed(2) : 0}{" "}
+            ج.م
           </span>
         </div>
       </div>

@@ -60,6 +60,11 @@ const CheckoutForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (priceBreakdown.subtotal <= 0 || cartItems.length === 0) {
+      setError("السلة فارغة. يرجى إضافة منتجات قبل الدفع");
+      return;
+    }
+
     if (!stripe || !elements) return;
     const cardElement = elements.getElement("card");
     if (!cardElement) return;
@@ -243,8 +248,8 @@ const CheckoutForm = () => {
       </div>
       <SubmitButton
         loading={loading}
-        total={priceBreakdown.total}
-        stripeAvailable={!!stripe}
+        total={priceBreakdown.subtotal > 0 ? priceBreakdown.total : 0}
+        stripeAvailable={!!stripe && !!priceBreakdown.subtotal}
       />
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
     </form>
