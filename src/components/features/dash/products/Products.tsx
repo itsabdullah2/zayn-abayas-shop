@@ -2,19 +2,19 @@ import React from "react";
 import { useState } from "react";
 import DashboardNavbar from "../DashboardNavbar";
 import ProductsList from "./ProductsList";
-import { FaThLarge } from "react-icons/fa";
-import { MdTableChart } from "react-icons/md";
+// import { FaThLarge } from "react-icons/fa";
+// import { MdTableChart } from "react-icons/md";
 const EditPopupForm = React.lazy(() => import("./EditPopupForm"));
-const ProductsTable = React.lazy(() => import("./ProductsTable"));
+// const ProductsTable = React.lazy(() => import("./ProductsTable"));
 const DeleteConfirmation = React.lazy(() => import("./DeleteConfirmation"));
 
 const Products = () => {
-  const [view, setView] = useState<"table" | "cards">("table");
+  // const [view, setView] = useState<"table" | "cards">("table");
   const [targetProductId, setTargetProductId] = useState<string | null>(null);
 
-  const handleView = () => {
-    setView((prev) => (prev === "table" ? "cards" : "table"));
-  };
+  // const handleView = () => {
+  //   setView((prev) => (prev === "table" ? "cards" : "table"));
+  // };
 
   const handleDeleteConfirmation = (productId: string) => {
     if (productId) {
@@ -32,7 +32,7 @@ const Products = () => {
       <section className="section-container">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-medium text-primary">المنتجات</h2>
-          <button
+          {/* <button
             className={`cursor-pointer border border-gray-300 p-1 text-primary rounded-md hover:text-accentA duration-150`}
             onClick={handleView}
           >
@@ -41,13 +41,14 @@ const Products = () => {
             ) : (
               <FaThLarge size={23} />
             )}
-          </button>
+          </button> */}
         </div>
-        {view === "table" ? (
+        {/* {view === "table" ? (
           <ProductsTable onClick={handleDeleteConfirmation} />
         ) : (
           <ProductsList onClick={handleDeleteConfirmation} />
-        )}
+        )} */}
+        <ProductsList onClick={handleDeleteConfirmation} />
       </section>
 
       <DeleteConfirmation
