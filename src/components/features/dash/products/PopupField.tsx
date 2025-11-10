@@ -12,6 +12,7 @@ type Props = {
   ) => void;
   isTextarea?: boolean;
   isFileInput?: boolean;
+  imgName?: string;
 };
 
 const filedStyles =
@@ -29,6 +30,7 @@ const PopupField = ({
   onValChange,
   isTextarea,
   isFileInput,
+  imgName,
 }: Props) => {
   return (
     <div className="flex flex-col gap-2">
@@ -38,7 +40,10 @@ const PopupField = ({
       >
         <span>{label}</span>
         {labelIcon ? (
-          <img src={labelIcon} alt="labe-icon" className="w-14" />
+          <div className="flex flex-col gap-2">
+            <img src={labelIcon} alt="labe-icon" className="w-14" />
+            <span>{imgName}</span>
+          </div>
         ) : null}
       </label>
       {!isTextarea ? (

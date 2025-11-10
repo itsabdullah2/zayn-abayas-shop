@@ -3,6 +3,7 @@ import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
 import React from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
+import { toast } from "sonner";
 import { useContextSelector } from "use-context-selector";
 
 type EnrichedProduct = ProductType & {
@@ -90,7 +91,10 @@ const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
           </button>
           <button
             className="btn hover:text-accentB duration-200 ease-in-out"
-            onClick={() => onClick(product.id)}
+            onClick={() => {
+              onClick(product.id);
+              toast.success("تم حذف المنتج بنجاح");
+            }}
           >
             <MdDelete size={19} />
           </button>

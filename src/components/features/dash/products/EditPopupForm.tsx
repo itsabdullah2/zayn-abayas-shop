@@ -42,6 +42,11 @@ const EditPopupForm = () => {
           <PopupField
             label="تحميل صورة المنتج"
             labelIcon={uploadImage}
+            imgName={
+              editingData.productImg instanceof File
+                ? editingData.productImg.name
+                : editingData.productImg
+            }
             type="file"
             name="productImg"
             inputVal={editingData.productImg}
