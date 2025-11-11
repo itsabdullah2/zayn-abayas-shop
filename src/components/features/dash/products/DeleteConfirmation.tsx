@@ -1,6 +1,7 @@
 import { deleteProduct, deleteVariants } from "@/supabase";
 import React from "react";
 import { MdErrorOutline } from "react-icons/md";
+import { toast } from "sonner";
 
 type Props = {
   productId: string | null;
@@ -30,9 +31,10 @@ const DeleteConfirmation = ({ productId, onCancel }: Props) => {
         <div className="flex items-center justify-between gap-5">
           <button
             className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"
-            onClick={() =>
-              productId ? handleDeleteProduct(productId) : undefined
-            }
+            onClick={() => {
+              productId ? handleDeleteProduct(productId) : undefined;
+              toast.success("تم حذف المنتج بنجاح");
+            }}
           >
             تأكيد
           </button>
