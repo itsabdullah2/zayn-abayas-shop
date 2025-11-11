@@ -38,14 +38,16 @@ const PopupField = ({
         htmlFor={name}
         className={`${labelClasses} text-sm font-medium text-dark-gray w-fit`}
       >
-        <span>{label}</span>
-        {labelIcon ? (
-          <div className="flex flex-col gap-2">
-            <img src={labelIcon} alt="labe-icon" className="w-14" />
-            <span>{imgName}</span>
-          </div>
-        ) : null}
+        {label}
       </label>
+      {labelIcon ? (
+        <div className="flex flex-col gap-2">
+          <img src={labelIcon} alt="labe-icon" className="w-14" />
+          <span className="break-words text-sm font-medium text-dark-gray">
+            {imgName}
+          </span>
+        </div>
+      ) : null}
       {!isTextarea ? (
         <input
           type={type}
