@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import AdminConfirmReturningPopup from "./AdminConfirmReturningPopup";
 import { useContextSelector } from "use-context-selector";
 import { AuthContext } from "@/context/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   orders: FullOrder[];
@@ -18,6 +19,8 @@ type Props = {
 };
 
 const Table = ({ orders, loading }: Props) => {
+  const queryClient = useQueryClient();
+
   const [users, setUsers] = useState<UserTableType[]>([]);
   const [localOrders, setLocalOrders] = useState<FullOrder[]>(orders);
   const [returnInfoPopup, setReturnInfoPopup] = useState(false);
@@ -56,6 +59,11 @@ const Table = ({ orders, loading }: Props) => {
       if (userId) {
         // Update the order status in the database
         await updateOrderStatus(newStatus, orderId, userId);
+
+        // Invalidate all order-related queries to refetch data
+        queryClient.invalidateQueries({ queryKey: ["orders"] });
+        queryClient.invalidateQueries({ queryKey: ["enrichedOrders"] });
+        queryClient.invalidateQueries({ queryKey: ["topProducts"] });
       }
 
       toast.success("تم تحديث حالة الطلب بنجاح!");
@@ -133,6 +141,12 @@ const Table = ({ orders, loading }: Props) => {
     try {
       if (profile) {
         await updateOrderStatus("returned", orderId, undefined, true);
+
+        // Invalidate all order-related queries to refetch data
+        queryClient.invalidateQueries({ queryKey: ["orders"] });
+        queryClient.invalidateQueries({ queryKey: ["enrichedOrders"] });
+        queryClient.invalidateQueries({ queryKey: ["topProducts"] });
+
         toast.success("تم تأكيد الإرجاع بنجاح!");
         setIsOrderId(null);
         setReturnInfoPopup(false);

@@ -14,8 +14,11 @@ import {
   useNotifications,
   useUpdateNotifications,
 } from "@/hooks/useNotifications";
+import { useQueryClient } from "@tanstack/react-query";
 
 const DashboardNavbar = () => {
+  const queryClient = useQueryClient();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -45,6 +48,9 @@ const DashboardNavbar = () => {
   const handleClearAll = async () => {
     if (notificationsData.length) {
       await deleteNotifications();
+
+      // refetch on after deleting
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
     }
   };
   const handleLogout = async () => await signOut();
