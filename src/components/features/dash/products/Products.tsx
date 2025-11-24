@@ -3,11 +3,13 @@ import { useState } from "react";
 import DashboardNavbar from "../DashboardNavbar";
 import ProductsList from "./ProductsList";
 import { Button } from "@/components/ui/button";
+const AddNewProduct = React.lazy(() => import("./AddNewProduct"));
 const EditPopupForm = React.lazy(() => import("./EditPopupForm"));
 const DeleteConfirmation = React.lazy(() => import("./DeleteConfirmation"));
 
 const Products = () => {
   const [targetProductId, setTargetProductId] = useState<string | null>(null);
+  const [isNewProduct, setIsNewProduct] = useState(false);
 
   const handleDeleteConfirmation = (productId: string) => {
     if (productId) {
@@ -27,8 +29,10 @@ const Products = () => {
           <h2 className="text-xl font-medium text-primary">المنتجات</h2>
           <Button
             className={`w-fit px-4 sm:px-10 bg-transparent border border-primary text-primary hover:bg-primary hover:text-neutral cursor-pointer`}
+            onClick={() => setIsNewProduct(true)}
           >
-            + إضافة منتج
+            <span className="text-2xl">+</span>
+            إضافة منتج جديد
           </Button>
         </div>
         <ProductsList onClick={handleDeleteConfirmation} />
@@ -40,6 +44,10 @@ const Products = () => {
       />
 
       <EditPopupForm />
+      <AddNewProduct
+        isNewProduct={isNewProduct}
+        setProductChange={setIsNewProduct}
+      />
     </>
   );
 };
