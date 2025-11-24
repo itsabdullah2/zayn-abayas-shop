@@ -33,6 +33,26 @@ export const getProducts = async (
   }
 };
 
+export const addProduct = async (productData: Omit<ProductType, "id">) => {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .insert(productData)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Failed to add product:", error.message);
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Failed to add product:", error);
+    throw error;
+  }
+};
+
 export const deleteProduct = async (productId: string) => {
   try {
     if (!productId) {
