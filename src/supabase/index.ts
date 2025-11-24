@@ -7,7 +7,12 @@ import { signInWithOAuth } from "./auth/OAuth";
 
 import { getReviews, addReview, updateReview } from "./db/reviews";
 
-import { getProducts, deleteProduct, updateProduct } from "./db/products";
+import {
+  getProducts,
+  addProduct,
+  deleteProduct,
+  updateProduct,
+} from "./db/products";
 
 import {
   clearCart,
@@ -55,6 +60,7 @@ export {
   updateReview,
   //
   getProducts,
+  addProduct,
   deleteProduct,
   updateProduct,
   //
