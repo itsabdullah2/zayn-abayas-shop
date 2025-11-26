@@ -1,15 +1,24 @@
 import { memo } from "react";
 import PopupField from "./PopupField";
 import uploadImage from "@/assets/upload.png";
+import { useContextSelector } from "use-context-selector";
+import { ProductContext } from "@/context/ProductContext";
 
 type Props = {
   isNewProduct: boolean;
   setProductChange: React.Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: (e: React.FormEvent) => void;
 };
 
-const AddNewProduct = ({ isNewProduct, setProductChange }: Props) => {
-  const handleFieldChange = () => {};
-
+const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
+  const newProductData = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.newProductData
+  )!;
+  const handleFieldChange = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.handleFieldChange
+  )!;
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
@@ -18,7 +27,11 @@ const AddNewProduct = ({ isNewProduct, setProductChange }: Props) => {
           قم بإضافة منتج جديد
         </h2>
         {/* Popup Fields */}
-        <form id="adding_form" className="flex flex-col gap-2 mt-4">
+        <form
+          id="adding_form"
+          className="flex flex-col gap-2 mt-4"
+          onSubmit={onSubmit}
+        >
           <PopupField
             label="تحميل صورة المنتج"
             labelIcon={uploadImage}
@@ -29,7 +42,7 @@ const AddNewProduct = ({ isNewProduct, setProductChange }: Props) => {
             // }
             type="file"
             name="productImg"
-            inputVal={""}
+            inputVal={newProductData?.productImg}
             onValChange={handleFieldChange}
             inputClasses="hidden"
             isFileInput
@@ -39,7 +52,7 @@ const AddNewProduct = ({ isNewProduct, setProductChange }: Props) => {
             type="text"
             name="productName"
             placeholder="أدخل اسم المنتج"
-            inputVal={""}
+            inputVal={newProductData?.productName}
             onValChange={handleFieldChange}
           />
           <PopupField
@@ -47,7 +60,7 @@ const AddNewProduct = ({ isNewProduct, setProductChange }: Props) => {
             type="number"
             name="productPrice"
             placeholder="أدخل سعر المنتج"
-            inputVal={""}
+            inputVal={newProductData?.productPrice}
             onValChange={handleFieldChange}
           />
           <PopupField
@@ -55,7 +68,7 @@ const AddNewProduct = ({ isNewProduct, setProductChange }: Props) => {
             type="text"
             name="productDesc"
             placeholder="وصف المنتج"
-            inputVal={""}
+            inputVal={newProductData?.productDesc}
             onValChange={handleFieldChange}
             isTextarea
           />
