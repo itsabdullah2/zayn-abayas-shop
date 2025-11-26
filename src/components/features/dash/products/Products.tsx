@@ -21,6 +21,15 @@ const Products = () => {
     setTargetProductId(null);
   };
 
+  const handleSubmitNewProduct = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Handle new product submission logic here
+
+    // Close the new product popup after submission
+    setIsNewProduct(false);
+  };
+
   return (
     <>
       <DashboardNavbar />
@@ -47,6 +56,7 @@ const Products = () => {
       <AddNewProduct
         isNewProduct={isNewProduct}
         setProductChange={setIsNewProduct}
+        onSubmit={handleSubmitNewProduct}
       />
     </>
   );
