@@ -15,10 +15,15 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
     ProductContext,
     (ctx) => ctx?.newProductData
   )!;
+  const setNewProductData = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.setNewProductData
+  )!;
   const handleFieldChange = useContextSelector(
     ProductContext,
     (ctx) => ctx?.handleFieldChange
   )!;
+
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
@@ -35,11 +40,11 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
           <PopupField
             label="تحميل صورة المنتج"
             labelIcon={uploadImage}
-            // imgName={
-            //   editingData.productImg instanceof File
-            //     ? editingData.productImg.name
-            //     : editingData.productImg
-            // }
+            imgName={
+              newProductData.productImg instanceof File
+                ? newProductData.productImg.name
+                : newProductData.productImg
+            }
             type="file"
             name="productImg"
             inputVal={newProductData?.productImg}
@@ -84,8 +89,17 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
               name="productCategory"
               id="productCategory"
               className="w-1/2 border border-primary rounded-md focus:outline-none"
+              value={newProductData.categoryName}
+              onChange={(e) =>
+                setNewProductData((prev) => ({
+                  ...prev,
+                  categoryName: e.target.value,
+                }))
+              }
             >
-              <option disabled>قم باختيار فئة المنتج</option>
+              <option value="" disabled>
+                قم باختيار فئة المنتج
+              </option>
               <option value="luxury">فاخرة</option>
               <option value="modern">عصرية</option>
               <option value="classic">كلاسيكية</option>
