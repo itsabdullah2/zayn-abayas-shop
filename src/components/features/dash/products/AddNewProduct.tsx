@@ -23,7 +23,6 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
     ProductContext,
     (ctx) => ctx?.handleFieldChange
   )!;
-
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
