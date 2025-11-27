@@ -6,6 +6,7 @@ export type TProductData = {
   productPrice: number;
   productDesc: string;
   productImg: string | File;
+  categoryName: string;
 };
 
 type OrderContextType = {
@@ -13,6 +14,7 @@ type OrderContextType = {
   handleFieldChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  setNewProductData: React.Dispatch<React.SetStateAction<TProductData>>;
 };
 
 export const ProductContext = createContext<OrderContextType | null>(null);
@@ -22,6 +24,7 @@ const INITIAL_STATE: TProductData = {
   productPrice: 0,
   productDesc: "",
   productImg: "",
+  categoryName: "",
 };
 
 export const ProductProvider = ({
@@ -59,6 +62,7 @@ export const ProductProvider = ({
   const values: OrderContextType = {
     newProductData,
     // Functions
+    setNewProductData,
     handleFieldChange,
   };
 
