@@ -46,7 +46,7 @@ import {
   updateVariant,
   deleteVariants,
 } from "./db/variants";
-import { getCategories } from "./db/categories";
+import { addNewCategory, getCategories } from "./db/categories";
 
 export {
   supabase,
@@ -91,4 +91,5 @@ export {
   deleteVariants,
   //
   getCategories,
+  addNewCategory,
 };
