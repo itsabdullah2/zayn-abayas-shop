@@ -13,3 +13,27 @@ export const getCategories = async (): Promise<CategoriesTableType[]> => {
     throw err;
   }
 };
+
+export const addNewCategory = async (
+  category: string
+): Promise<CategoriesTableType | undefined> => {
+  try {
+    if (!category.trim()) return;
+
+    const { data, error } = await supabase
+      .from("categories")
+      .insert({ category })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Failed to add new category:", error);
+      throw error;
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Failed to add new category:", err);
+    throw err;
+  }
+};
