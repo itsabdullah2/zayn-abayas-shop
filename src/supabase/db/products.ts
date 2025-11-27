@@ -33,7 +33,12 @@ export const getProducts = async (
   }
 };
 
-export const addProduct = async (productData: Omit<ProductType, "id">) => {
+export const addProduct = async (
+  productData: Omit<
+    ProductType,
+    "id" | "created_at" | "is_best_seller" | "available" | "category_id"
+  >
+) => {
   try {
     const { data, error } = await supabase
       .from("products")
