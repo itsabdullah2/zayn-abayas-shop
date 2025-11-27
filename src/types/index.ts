@@ -4,7 +4,7 @@ export interface ProductType {
   id: string;
   product_name: string;
   product_desc: string;
-  product_img: string;
+  product_img: string | File;
   category_id: string;
   product_price: number;
   available: boolean;
