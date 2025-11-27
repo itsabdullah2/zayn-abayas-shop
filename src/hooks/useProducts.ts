@@ -1,12 +1,13 @@
-import { getProducts } from "@/supabase";
+import { addNewCategory, getProducts } from "@/supabase";
 import type { CategoriesTableType } from "@/supabase/types";
 import type { ProductType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase, updateProduct } from "@/supabase";
+import { supabase, updateProduct, addProduct } from "@/supabase";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
 import { AuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";
+import { ProductContext } from "@/context/ProductContext";
 
 interface UseProductProps {
   selectedCategory: string;
@@ -125,4 +126,73 @@ export const useUpdateProduct = () => {
       console.error("Failed to update product:", error);
     },
   });
+};
+
+export const useAddNewProduct = () => {
+  const queryClient = useQueryClient();
+
+  const newProductData = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.newProductData
+  )!;
+
+  return useMutation({
+    mutationFn: async () => {
+      let productImgUrl =
+        typeof newProductData.productImg === "string"
+          ? newProductData.productImg
+          : "";
+
+      // Upload image if it's a File
+      if (newProductData.productImg instanceof File) {
+        productImgUrl = await uploadProductImage(newProductData.productImg);
+      }
+
+      // Insert new category to DB First
+      const category = await addNewCategory(
+        newProductData.categoryName || "Uncategorized"
+      );
+      const categoryId = category?.id || "";
+
+      // Insert new product to DB
+      const productData = {
+        product_name: newProductData.productName,
+        product_desc: newProductData.productDesc,
+        product_price: newProductData.productPrice,
+        product_img: productImgUrl,
+        category_id: categoryId,
+      };
+      const { data, error } = await addProduct(productData);
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      // Invalidate and refetch products query
+      queryClient.invalidateQueries({ queryKey: ["show-products"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+    onError: (error) => {
+      console.error("Failed to add new product:", error);
+      toast.error("فشل في إضافة المنتج الجديد");
+    },
+  });
+};
+
+const uploadProductImage = async (file: File): Promise<string> => {
+  const fileName = `${Date.now()}_${file.name}`;
+
+  // Upload to supabase
+  const { error: uploadError } = await supabase.storage
+    .from("products-images")
+    .upload(fileName, file);
+
+  if (uploadError) throw uploadError;
+
+  // Get Public Url
+  const { data: urlData } = supabase.storage
+    .from("products-images")
+    .getPublicUrl(fileName);
+
+  return urlData.publicUrl;
 };
