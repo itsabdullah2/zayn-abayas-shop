@@ -45,7 +45,7 @@ const useCartData = () => {
             ...variant,
             product_name: product?.product_name,
             product_desc: product?.product_desc,
-            product_img: product?.product_img,
+            product_img: product?.product_img as string,
           };
         });
 

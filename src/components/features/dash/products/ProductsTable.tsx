@@ -83,18 +83,22 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
                     <picture className="rounded-md">
                       {/* avif version */}
                       <source
-                        srcSet={`${product.product_img}?quality=80?format=avif`}
+                        srcSet={`${
+                          product.product_img as string
+                        }?quality=80?format=avif`}
                         type="image/avif"
                         className="rounded-md"
                       />
                       {/* webp version */}
                       <source
-                        srcSet={`${product.product_img}?quality=80?format=webp`}
+                        srcSet={`${
+                          product.product_img as string
+                        }?quality=80?format=webp`}
                         type="image/webp"
                         className="rounded-md"
                       />
                       <img
-                        src={product.product_img}
+                        src={product.product_img as string}
                         alt={product.product_name}
                         loading="lazy"
                         className="w-[100px] max-w-full object-cover rounded-md"

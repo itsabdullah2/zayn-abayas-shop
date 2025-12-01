@@ -80,7 +80,7 @@ const ProductDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="lg:col-span-1">
           <img
-            src={product?.product_img}
+            src={product?.product_img as string}
             alt={product?.product_name}
             className="rounded-lg"
           />

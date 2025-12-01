@@ -39,16 +39,16 @@ const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
         <picture>
           {/* avif version */}
           <source
-            srcSet={`${product.product_img}?quality=80?format=avif`}
+            srcSet={`${product.product_img as string}?quality=80?format=avif`}
             type="image/avif"
           />
           {/* webp version */}
           <source
-            srcSet={`${product.product_img}?quality=80?format=webp`}
+            srcSet={`${product.product_img as string}?quality=80?format=webp`}
             type="image/webp"
           />
           <img
-            src={product.product_img}
+            src={product.product_img as string}
             alt={product.product_name}
             loading="lazy"
             className="w-full object-cover"
