@@ -171,6 +171,7 @@ export const useAddNewProduct = () => {
       // Invalidate and refetch products query
       queryClient.invalidateQueries({ queryKey: ["show-products"] });
       queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
     onError: (error) => {
       console.error("Failed to add new product:", error);

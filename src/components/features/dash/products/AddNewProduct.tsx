@@ -3,6 +3,7 @@ import PopupField from "./PopupField";
 import uploadImage from "@/assets/upload.png";
 import { useContextSelector } from "use-context-selector";
 import { ProductContext } from "@/context/ProductContext";
+import { useAddNewProduct } from "@/hooks/useProducts";
 
 type Props = {
   isNewProduct: boolean;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
+  const addNewProductMutation = useAddNewProduct();
   const newProductData = useContextSelector(
     ProductContext,
     (ctx) => ctx?.newProductData
@@ -111,10 +113,9 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
             type="submit"
             form="adding_form"
             className={`cursor-pointer bg-accentA text-neutral rounded-lg px-10 py-1 hover:bg-accentA duration-150`}
-            // disabled={updateProductMutation.isPending}
+            disabled={addNewProductMutation.isPending}
           >
-            {/* {updateProductMutation.isPending ? "جاري التحديث..." : "تأكيد"} */}
-            تأكيد
+            {addNewProductMutation.isPending ? "جاري الاضافة..." : "تأكيد"}
           </button>
           <button
             className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"

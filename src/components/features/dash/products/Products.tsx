@@ -3,6 +3,8 @@ import { useState } from "react";
 import DashboardNavbar from "../DashboardNavbar";
 import ProductsList from "./ProductsList";
 import { Button } from "@/components/ui/button";
+import { useAddNewProduct } from "@/hooks/useProducts";
+import { toast } from "sonner";
 const AddNewProduct = React.lazy(() => import("./AddNewProduct"));
 const EditPopupForm = React.lazy(() => import("./EditPopupForm"));
 const DeleteConfirmation = React.lazy(() => import("./DeleteConfirmation"));
@@ -10,6 +12,7 @@ const DeleteConfirmation = React.lazy(() => import("./DeleteConfirmation"));
 const Products = () => {
   const [targetProductId, setTargetProductId] = useState<string | null>(null);
   const [isNewProduct, setIsNewProduct] = useState(false);
+  const addNewProductMutation = useAddNewProduct();
 
   const handleDeleteConfirmation = (productId: string) => {
     if (productId) {
@@ -21,13 +24,18 @@ const Products = () => {
     setTargetProductId(null);
   };
 
-  const handleSubmitNewProduct = (e: React.FormEvent) => {
+  const handleSubmitNewProduct = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Handle new product submission logic here
-
-    // Close the new product popup after submission
-    setIsNewProduct(false);
+    try {
+      // Handle new product submission logic here
+      await addNewProductMutation.mutateAsync();
+      // Close the new product popup after submission
+      setIsNewProduct(false);
+      toast.success("تم إضافة المنتج بنجاح");
+    } catch (err) {
+      console.error("Failed to add new product:", err);
+    }
   };
 
   return (
