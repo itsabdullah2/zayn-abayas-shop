@@ -79,16 +79,16 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
             <picture>
               {/* avif version */}
               <source
-                srcSet={`${item.product_img}?quality=80?format=avif`}
+                srcSet={`${item.product_img as string}?quality=80?format=avif`}
                 type="image/avif"
               />
               {/* webp version */}
               <source
-                srcSet={`${item.product_img}?quality=80?format=webp`}
+                srcSet={`${item.product_img as string}?quality=80?format=webp`}
                 type="image/webp"
               />
               <img
-                src={item.product_img}
+                src={item.product_img as string}
                 alt={item.product_name}
                 loading="lazy"
                 className="object-cover w-full"

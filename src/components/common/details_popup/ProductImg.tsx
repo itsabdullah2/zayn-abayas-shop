@@ -4,7 +4,7 @@ const ProductImg = ({ product }: { product: ProductType }) => {
   return (
     <figure className="col-span-2 flex flex-col items-center">
       <img
-        src={product?.product_img}
+        src={product?.product_img as string}
         alt={product?.product_name}
         className="rounded-md w-40 md:w-full"
       />
