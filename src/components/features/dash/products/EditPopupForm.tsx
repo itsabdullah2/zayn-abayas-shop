@@ -1,11 +1,14 @@
+import React from "react";
 import { AppContext } from "@/context/AppContext";
 // import { FaTimes } from "react-icons/fa";
 import { useContextSelector } from "use-context-selector";
 import PopupField from "./PopupField";
 import uploadImage from "@/assets/upload.png";
 import { useUpdateProduct } from "@/hooks/useProducts";
+import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
 
 const EditPopupForm = () => {
+  const popupRef = React.useRef<HTMLDivElement | null>(null);
   const productId = useContextSelector(
     AppContext,
     (ctx) => ctx?.isEditPopupForm
@@ -27,10 +30,19 @@ const EditPopupForm = () => {
     updateProductMutation.mutate();
   };
 
+  // Handle close on outside click or escape key pass
+  useCloseOnOutsideOrEscape({
+    ref: popupRef,
+    onClose: () => onCancel && onCancel(),
+  });
+
   return productId ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
-      <div className="w-[95vw] sm:w-[500px] bg-white rounded-xl py-4 px-5 fixed top-1/2 left-1/2 z-200 -translate-x-1/2 -translate-y-1/2">
+      <div
+        ref={popupRef}
+        className="w-[95vw] sm:w-125 bg-white rounded-xl py-4 px-5 fixed top-1/2 left-1/2 z-200 -translate-x-1/2 -translate-y-1/2"
+      >
         <h2 className="font-medium text-primary text-lg">قم بتعديل المنتج</h2>
 
         {/* Popup Fields */}

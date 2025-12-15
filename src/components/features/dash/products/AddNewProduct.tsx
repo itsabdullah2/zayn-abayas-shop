@@ -1,9 +1,10 @@
-import { memo } from "react";
+import { memo, useRef } from "react";
 import PopupField from "./PopupField";
 import uploadImage from "@/assets/upload.png";
 import { useContextSelector } from "use-context-selector";
 import { ProductContext } from "@/context/ProductContext";
 import { useAddNewProduct } from "@/hooks/useProducts";
+import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
 
 type Props = {
   isNewProduct: boolean;
@@ -12,6 +13,8 @@ type Props = {
 };
 
 const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
+  const popupRef = useRef<HTMLDivElement | null>(null);
+
   const addNewProductMutation = useAddNewProduct();
   const newProductData = useContextSelector(
     ProductContext,
@@ -25,10 +28,19 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
     ProductContext,
     (ctx) => ctx?.handleFieldChange
   )!;
+
+  // Handle close on outside click or escape key pass
+  useCloseOnOutsideOrEscape({
+    ref: popupRef,
+    onClose: () => setProductChange(false),
+  });
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
-      <div className="w-[95vw] sm:w-[500px] bg-white rounded-xl py-4 px-5 fixed top-1/2 left-1/2 z-200 -translate-x-1/2 -translate-y-1/2">
+      <div
+        ref={popupRef}
+        className="w-[95vw] sm:w-125 bg-white rounded-xl py-4 px-5 fixed top-1/2 left-1/2 z-200 -translate-x-1/2 -translate-y-1/2"
+      >
         <h2 className="font-medium text-primary text-lg">
           قم بإضافة منتج جديد
         </h2>
