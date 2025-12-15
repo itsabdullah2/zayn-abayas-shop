@@ -10,6 +10,14 @@ type Props = {
 const NotificationItem = ({ onClick }: Props) => {
   const { notificationsData, isLoading } = useNotifications();
 
+  // Sorted notifications by created_at
+  const renderedNotifications = React.useMemo(() => {
+    return [...notificationsData].sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+  }, [notificationsData]);
+
   if (!notificationsData.length) {
     return (
       <div className="text-base font-medium text-secondary text-center">
@@ -24,7 +32,7 @@ const NotificationItem = ({ onClick }: Props) => {
 
   return (
     <ul className="flex flex-col gap-3 max-h-60 overflow-y-auto">
-      {notificationsData.map((notify) => (
+      {renderedNotifications.map((notify) => (
         <li
           key={notify.id}
           className={`border-b border-gray-300 pb-3 last:border-0 ${
