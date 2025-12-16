@@ -42,7 +42,7 @@ const PopupField = ({
         {labelIcon ? (
           <div className="flex flex-col gap-2">
             <img src={labelIcon} alt="labe-icon" className="w-14" />
-            <span className="break-words text-sm font-medium text-dark-gray">
+            <span className="wrap-break-word text-sm font-medium text-dark-gray">
               {imgName}
             </span>
           </div>
