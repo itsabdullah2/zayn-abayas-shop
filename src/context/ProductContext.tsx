@@ -7,6 +7,10 @@ export type TProductData = {
   productDesc: string;
   productImg: string | File;
   categoryName: string;
+  variants: {
+    color: string;
+    size: string;
+  };
 };
 
 type OrderContextType = {
@@ -25,6 +29,10 @@ const INITIAL_STATE: TProductData = {
   productDesc: "",
   productImg: "",
   categoryName: "",
+  variants: {
+    color: "",
+    size: "",
+  },
 };
 
 export const ProductProvider = ({
