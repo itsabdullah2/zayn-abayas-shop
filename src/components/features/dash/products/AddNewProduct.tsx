@@ -5,6 +5,7 @@ import { useContextSelector } from "use-context-selector";
 import { ProductContext } from "@/context/ProductContext";
 import { useAddNewProduct } from "@/hooks/useProducts";
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
+import PopupDropdown from "./PopupDropdown";
 
 type Props = {
   isNewProduct: boolean;
@@ -29,11 +30,31 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
     (ctx) => ctx?.handleFieldChange
   )!;
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setNewProductData((prev) => ({
+      ...prev,
+      categoryName: e.target.value,
+    }));
+  const handleVariantChange =
+    (k: string) => (e: React.ChangeEvent<HTMLSelectElement>) => {
+      // const { value } = e.target;
+
+      setNewProductData((prev) => ({
+        ...prev,
+        variants: {
+          ...prev.variants,
+          [k]: e.target.value,
+        },
+      }));
+    };
+
   // Handle close on outside click or escape key pass
   useCloseOnOutsideOrEscape({
     ref: popupRef,
     onClose: () => setProductChange(false),
   });
+
+  console.log("Testing new product data:", newProductData);
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
@@ -91,32 +112,33 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
             isTextarea
           />
 
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="productCategory"
-              className="text-sm font-medium text-dark-gray w-fit"
-            >
-              فئة المنتج
-            </label>
-            <select
-              name="productCategory"
-              id="productCategory"
-              className="w-1/2 border border-primary rounded-md focus:outline-none"
-              value={newProductData.categoryName}
-              onChange={(e) =>
-                setNewProductData((prev) => ({
-                  ...prev,
-                  categoryName: e.target.value,
-                }))
-              }
-            >
-              <option value="" disabled>
-                قم باختيار فئة المنتج
-              </option>
-              <option value="luxury">فاخرة</option>
-              <option value="modern">عصرية</option>
-              <option value="classic">كلاسيكية</option>
-            </select>
+          <PopupDropdown
+            name="productCategory"
+            value={newProductData.categoryName}
+            onChange={handleSelectChange}
+            label="فئة المنتج"
+            options={categoryOpts}
+          />
+
+          <div className="flex items-center gap-5">
+            <PopupDropdown
+              name="productColor"
+              value={newProductData.variants.color}
+              onChange={handleVariantChange("color")}
+              label="اللون"
+              options={variantsOpts.colors}
+              className="flex-1"
+              selectClasses="w-full!"
+            />
+            <PopupDropdown
+              name="productSize"
+              value={newProductData.variants.size}
+              onChange={handleVariantChange("size")}
+              label="المقاس"
+              options={variantsOpts.sizes}
+              className="flex-1"
+              selectClasses="w-full!"
+            />
           </div>
         </form>
 
@@ -142,3 +164,23 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
 };
 
 export default memo(AddNewProduct);
+
+const categoryOpts = [
+  { optLabel: "فاخرة", optValue: "luxury" },
+  { optLabel: "عصرية", optValue: "modern" },
+  { optLabel: "كلاسيكية", optValue: "classic" },
+];
+const variantsOpts = {
+  colors: [
+    { optLabel: "أبيض", optValue: "white" },
+    { optLabel: "أسود", optValue: "black" },
+  ],
+  sizes: [
+    { optLabel: "xs", optValue: "xs" },
+    { optLabel: "s", optValue: "s" },
+    { optLabel: "m", optValue: "m" },
+    { optLabel: "l", optValue: "l" },
+    { optLabel: "xl", optValue: "xl" },
+    { optLabel: "2xl", optValue: "2xl" },
+  ],
+};
