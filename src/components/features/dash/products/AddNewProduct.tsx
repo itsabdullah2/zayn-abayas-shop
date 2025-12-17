@@ -6,6 +6,8 @@ import { ProductContext } from "@/context/ProductContext";
 import { useAddNewProduct } from "@/hooks/useProducts";
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
 import PopupDropdown from "./PopupDropdown";
+import { useCategories } from "@/hooks/useCategories";
+import { useColors, useSizes } from "@/hooks/useVariants";
 
 type Props = {
   isNewProduct: boolean;
@@ -17,6 +19,10 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
   const popupRef = useRef<HTMLDivElement | null>(null);
 
   const addNewProductMutation = useAddNewProduct();
+  const { data: categories } = useCategories();
+  const { data: colors } = useColors();
+  const { data: sizes } = useSizes();
+
   const newProductData = useContextSelector(
     ProductContext,
     (ctx) => ctx?.newProductData
@@ -33,12 +39,10 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setNewProductData((prev) => ({
       ...prev,
-      categoryName: e.target.value,
+      categoryId: e.target.value,
     }));
   const handleVariantChange =
     (k: string) => (e: React.ChangeEvent<HTMLSelectElement>) => {
-      // const { value } = e.target;
-
       setNewProductData((prev) => ({
         ...prev,
         variants: {
@@ -54,7 +58,8 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
     onClose: () => setProductChange(false),
   });
 
-  console.log("Testing new product data:", newProductData);
+  console.log("New Product Data:", newProductData);
+
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
@@ -68,7 +73,7 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
         {/* Popup Fields */}
         <form
           id="adding_form"
-          className="flex flex-col gap-2 mt-4"
+          className="flex flex-col gap-2 mt-4 h-[65vh] overflow-y-auto"
           onSubmit={onSubmit}
         >
           <PopupField
@@ -103,6 +108,14 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
             onValChange={handleFieldChange}
           />
           <PopupField
+            label="مخزون المنتج"
+            type="number"
+            name="productStock"
+            placeholder="أدخل مخزون المنتج"
+            inputVal={newProductData?.productStock}
+            onValChange={handleFieldChange}
+          />
+          <PopupField
             label="وصف المنتج"
             type="text"
             name="productDesc"
@@ -114,10 +127,16 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
 
           <PopupDropdown
             name="productCategory"
-            value={newProductData.categoryName}
+            value={newProductData.categoryId}
             onChange={handleSelectChange}
             label="فئة المنتج"
-            options={categoryOpts}
+            options={
+              categories?.map((cat) => ({
+                id: cat.id,
+                name: cat.category,
+                created_at: cat.created_at,
+              })) || []
+            }
           />
 
           <div className="flex items-center gap-5">
@@ -126,16 +145,18 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
               value={newProductData.variants.color}
               onChange={handleVariantChange("color")}
               label="اللون"
-              options={variantsOpts.colors}
+              options={colors || []}
               className="flex-1"
               selectClasses="w-full!"
+              isVariant
             />
             <PopupDropdown
               name="productSize"
               value={newProductData.variants.size}
               onChange={handleVariantChange("size")}
               label="المقاس"
-              options={variantsOpts.sizes}
+              options={sizes || []}
+              isVariant
               className="flex-1"
               selectClasses="w-full!"
             />
@@ -164,23 +185,3 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
 };
 
 export default memo(AddNewProduct);
-
-const categoryOpts = [
-  { optLabel: "فاخرة", optValue: "luxury" },
-  { optLabel: "عصرية", optValue: "modern" },
-  { optLabel: "كلاسيكية", optValue: "classic" },
-];
-const variantsOpts = {
-  colors: [
-    { optLabel: "أبيض", optValue: "white" },
-    { optLabel: "أسود", optValue: "black" },
-  ],
-  sizes: [
-    { optLabel: "xs", optValue: "xs" },
-    { optLabel: "s", optValue: "s" },
-    { optLabel: "m", optValue: "m" },
-    { optLabel: "l", optValue: "l" },
-    { optLabel: "xl", optValue: "xl" },
-    { optLabel: "2xl", optValue: "2xl" },
-  ],
-};

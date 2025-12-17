@@ -16,9 +16,9 @@ export const getCategories = async (): Promise<CategoriesTableType[]> => {
 
 export const addNewCategory = async (
   category: string
-): Promise<CategoriesTableType | undefined> => {
+): Promise<CategoriesTableType> => {
   try {
-    if (!category.trim()) return;
+    if (!category.trim()) throw new Error("Category cannot be empty");
 
     const { data, error } = await supabase
       .from("categories")

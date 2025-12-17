@@ -45,6 +45,7 @@ import {
   getSizes,
   updateVariant,
   deleteVariants,
+  addVariants,
 } from "./db/variants";
 import { addNewCategory, getCategories } from "./db/categories";
 
@@ -89,6 +90,7 @@ export {
   getSizes,
   updateVariant,
   deleteVariants,
+  addVariants,
   //
   getCategories,
   addNewCategory,

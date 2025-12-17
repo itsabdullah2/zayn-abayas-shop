@@ -59,3 +59,52 @@ export const useUpdateVariant = () => {
     },
   });
 };
+
+// Get Colors and Sizes for variants options
+type TSingleVariant = {
+  id: string;
+  name: string;
+  created_at: Date;
+};
+export const useColors = () => {
+  return useQuery<TSingleVariant[]>({
+    queryKey: ["variants-colors"],
+    queryFn: async () => {
+      try {
+        const { data, error } = await supabase
+          .from("colors")
+          .select<"*", TSingleVariant>("*");
+
+        if (error) throw new Error(error.message);
+        if (!data) throw new Error("No Colors Found!");
+
+        return data || [];
+      } catch (err) {
+        console.error("Failed to get colors:", err);
+        throw err;
+      }
+    },
+    staleTime: 5 * 1000 * 60, // 5 minutes
+  });
+};
+
+export const useSizes = () => {
+  return useQuery<TSingleVariant[]>({
+    queryKey: ["variants-sizes"],
+    queryFn: async () => {
+      try {
+        const { data, error } = await supabase
+          .from("sizes")
+          .select<"*", TSingleVariant>("*");
+
+        if (error) throw new Error(error.message);
+        if (!data) throw new Error("No Sizes Found!");
+        return data || [];
+      } catch (err) {
+        console.error("Failed to get sizes:", err);
+        throw err;
+      }
+    },
+    staleTime: 5 * 1000 * 60, // 5 minutes
+  });
+};

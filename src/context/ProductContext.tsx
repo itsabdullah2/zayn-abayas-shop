@@ -6,11 +6,12 @@ export type TProductData = {
   productPrice: number;
   productDesc: string;
   productImg: string | File;
-  categoryName: string;
+  categoryId: string;
   variants: {
     color: string;
     size: string;
   };
+  productStock: number;
 };
 
 type OrderContextType = {
@@ -28,11 +29,12 @@ const INITIAL_STATE: TProductData = {
   productPrice: 0,
   productDesc: "",
   productImg: "",
-  categoryName: "",
+  categoryId: "",
   variants: {
     color: "",
     size: "",
   },
+  productStock: 0,
 };
 
 export const ProductProvider = ({

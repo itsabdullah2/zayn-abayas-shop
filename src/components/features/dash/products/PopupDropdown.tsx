@@ -1,13 +1,26 @@
+// import type { CategoriesTableType } from "@/supabase/types";
+import {
+  translateCategoriesOpts,
+  translateVariantsOpts,
+} from "@/utils/translateOptsInAddProductPopup";
 import React from "react";
+
+type TOptions = {
+  id: string;
+  name: string;
+  created_at: Date;
+  is_available?: boolean;
+};
 
 type Props = {
   value: string;
   name: string;
   label: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: { optLabel: string; optValue: string }[];
+  options?: TOptions[];
   className?: string;
   selectClasses?: string;
+  isVariant?: boolean;
 };
 const PopupDropdown = ({
   value,
@@ -17,6 +30,7 @@ const PopupDropdown = ({
   options,
   className,
   selectClasses,
+  isVariant = false,
 }: Props) => {
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -36,9 +50,15 @@ const PopupDropdown = ({
         <option value="" disabled>
           قم باختيار {label}
         </option>
-        {options.map((opt) => (
-          <option key={opt.optValue} value={opt.optValue}>
-            {opt.optLabel}
+        {options?.map((opt) => (
+          <option
+            key={opt.id}
+            value={opt.id}
+            disabled={opt.is_available === false}
+          >
+            {isVariant
+              ? translateVariantsOpts(opt.name).toUpperCase()
+              : translateCategoriesOpts(opt.name)}
           </option>
         ))}
       </select>

@@ -1,4 +1,4 @@
-import { addNewCategory, getProducts } from "@/supabase";
+import { addVariants, getProducts } from "@/supabase";
 import type { CategoriesTableType } from "@/supabase/types";
 import type { ProductType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -138,6 +138,11 @@ export const useAddNewProduct = () => {
 
   return useMutation({
     mutationFn: async () => {
+      // Validation
+      if (!newProductData) {
+        throw new Error("New product data is missing");
+      }
+
       let productImgUrl =
         typeof newProductData.productImg === "string"
           ? newProductData.productImg
@@ -148,30 +153,40 @@ export const useAddNewProduct = () => {
         productImgUrl = await uploadProductImage(newProductData.productImg);
       }
 
-      // Insert new category to DB First
-      const category = await addNewCategory(
-        newProductData.categoryName || "Uncategorized"
-      );
-      const categoryId = category?.id || "";
-
       // Insert new product to DB
       const productData = {
         product_name: newProductData.productName,
         product_desc: newProductData.productDesc,
         product_price: newProductData.productPrice,
         product_img: productImgUrl,
-        category_id: categoryId,
+        category_id: newProductData.categoryId,
       };
       const { data, error } = await addProduct(productData);
-
       if (error) throw error;
-      return data;
+
+      // Insert new variant
+      const variants = await addVariants({
+        product_id: data?.id,
+        size_id: newProductData.variants.size,
+        color_id: newProductData.variants.color,
+        price: newProductData.productPrice,
+        stock: newProductData.productStock,
+      });
+      console.log("Added Product:", data);
+      console.log("Added Variants:", variants);
+
+      return { data, variants };
     },
     onSuccess: () => {
       // Invalidate and refetch products query
       queryClient.invalidateQueries({ queryKey: ["show-products"] });
       queryClient.invalidateQueries({ queryKey: ["products"] });
       queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: ["variants-colors"] });
+      queryClient.invalidateQueries({ queryKey: ["variants-sizes"] });
+      queryClient.invalidateQueries({ queryKey: ["variants"] });
+
+      toast.success("تم إضافة المنتج الجديد بنجاح");
     },
     onError: (error) => {
       console.error("Failed to add new product:", error);
