@@ -20,6 +20,7 @@ type OrderContextType = {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   setNewProductData: React.Dispatch<React.SetStateAction<TProductData>>;
+  resetProductData: () => void;
 };
 
 export const ProductContext = createContext<OrderContextType | null>(null);
@@ -69,11 +70,16 @@ export const ProductProvider = ({
     }));
   };
 
+  const resetProductData = () => {
+    setNewProductData(INITIAL_STATE);
+  };
+
   const values: OrderContextType = {
     newProductData,
     // Functions
     setNewProductData,
     handleFieldChange,
+    resetProductData,
   };
 
   return (

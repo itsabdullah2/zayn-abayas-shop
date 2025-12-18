@@ -112,7 +112,7 @@ export default function DashboardAnalytics() {
           </button>
         </div>
       </div>
-      <div className="col-span-2 py-3 rounded-lg min-h-20 max-h-[300px]">
+      <div className="col-span-2 py-3 rounded-lg min-h-20 max-h-75">
         <AnalyticsChart />
       </div>
     </div>

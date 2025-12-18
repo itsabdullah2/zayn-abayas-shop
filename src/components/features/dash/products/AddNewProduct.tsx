@@ -58,8 +58,6 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
     onClose: () => setProductChange(false),
   });
 
-  console.log("New Product Data:", newProductData);
-
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
@@ -161,24 +159,23 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
               selectClasses="w-full!"
             />
           </div>
+          <div className="items-center flex justify-between mt-7">
+            <button
+              type="submit"
+              form="adding_form"
+              className={`cursor-pointer bg-accentA text-neutral rounded-lg px-10 py-1 hover:bg-accentA duration-150`}
+              disabled={addNewProductMutation.isPending}
+            >
+              {addNewProductMutation.isPending ? "جاري الاضافة..." : "تأكيد"}
+            </button>
+            <button
+              className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"
+              onClick={() => setProductChange(false)}
+            >
+              الغاء
+            </button>
+          </div>
         </form>
-
-        <div className="items-center flex justify-between mt-7">
-          <button
-            type="submit"
-            form="adding_form"
-            className={`cursor-pointer bg-accentA text-neutral rounded-lg px-10 py-1 hover:bg-accentA duration-150`}
-            disabled={addNewProductMutation.isPending}
-          >
-            {addNewProductMutation.isPending ? "جاري الاضافة..." : "تأكيد"}
-          </button>
-          <button
-            className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"
-            onClick={() => setProductChange(false)}
-          >
-            الغاء
-          </button>
-        </div>
       </div>
     </>
   ) : null;

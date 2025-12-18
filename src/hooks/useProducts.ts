@@ -135,6 +135,10 @@ export const useAddNewProduct = () => {
     ProductContext,
     (ctx) => ctx?.newProductData
   )!;
+  const resetProductData = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.resetProductData
+  )!;
 
   return useMutation({
     mutationFn: async () => {
@@ -143,14 +147,18 @@ export const useAddNewProduct = () => {
         throw new Error("New product data is missing");
       }
 
-      let productImgUrl =
-        typeof newProductData.productImg === "string"
-          ? newProductData.productImg
-          : "";
+      let productImgUrl = "";
 
       // Upload image if it's a File
       if (newProductData.productImg instanceof File) {
-        productImgUrl = await uploadProductImage(newProductData.productImg);
+        try {
+          productImgUrl = await uploadProductImage(newProductData.productImg);
+        } catch (err) {
+          console.error("Image upload failed:", err);
+          throw new Error("Failed to upload product image");
+        }
+      } else if (typeof newProductData.productImg === "string") {
+        productImgUrl = newProductData.productImg;
       }
 
       // Insert new product to DB
@@ -161,8 +169,11 @@ export const useAddNewProduct = () => {
         product_img: productImgUrl,
         category_id: newProductData.categoryId,
       };
-      const { data, error } = await addProduct(productData);
-      if (error) throw error;
+      const data = await addProduct(productData);
+
+      if (!data?.id) {
+        throw new Error("Failed to get product ID after insertion");
+      }
 
       // Insert new variant
       const variants = await addVariants({
@@ -172,8 +183,9 @@ export const useAddNewProduct = () => {
         price: newProductData.productPrice,
         stock: newProductData.productStock,
       });
-      console.log("Added Product:", data);
-      console.log("Added Variants:", variants);
+
+      console.log("Added product:", data);
+      console.log("Added variants:", variants);
 
       return { data, variants };
     },
@@ -185,8 +197,11 @@ export const useAddNewProduct = () => {
       queryClient.invalidateQueries({ queryKey: ["variants-colors"] });
       queryClient.invalidateQueries({ queryKey: ["variants-sizes"] });
       queryClient.invalidateQueries({ queryKey: ["variants"] });
+      queryClient.invalidateQueries({ queryKey: ["enriched-products"] });
 
       toast.success("تم إضافة المنتج الجديد بنجاح");
+      // Reset new product data
+      resetProductData();
     },
     onError: (error) => {
       console.error("Failed to add new product:", error);

@@ -58,8 +58,8 @@ const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
           <div className="flex flex-col items-start gap-2">
             <p className="card-title">{product.product_name}</p>
             <span className="font-medium text-accentA">
-              {product.price
-                ? `ج.م ${PriceFormatter(product.price, "en-EG")}`
+              {product.product_price
+                ? `ج.م ${PriceFormatter(product.product_price, "en-EG")}`
                 : "N/A"}
             </span>
           </div>

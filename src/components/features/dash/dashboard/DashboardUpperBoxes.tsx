@@ -24,7 +24,7 @@ export default function DashboardUpperBoxes() {
           <FaBox size={23} />
         </div>
         <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-medium text-primary">إجمالي المنتجات</h3>
+          <h3 className="text-lg font-medium text-primary">إجمالي الطلبات</h3>
           <span className="text-[15px] text-gray">{orders?.length ?? 0}</span>
         </div>
       </div>
