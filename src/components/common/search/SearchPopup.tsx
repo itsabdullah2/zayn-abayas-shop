@@ -34,7 +34,7 @@ const SearchPopup = () => {
     <>
       <div className="fixed bg-black/70 top-0 left-0 w-full h-full z-90" />
       <div
-        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-100 bg-neutral text-primary py-8 px-5 rounded-xl w-[95vw] sm:w-[40.625rem] h-[28.125rem] max-h-[37.5rem] overflow-y-auto `}
+        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-100 bg-neutral text-primary py-8 px-5 rounded-xl w-[95vw] sm:w-162.5 h-112.5 max-h-150 overflow-y-auto `}
         ref={popupRef}
         role="dialog"
         aria-modal={true}
