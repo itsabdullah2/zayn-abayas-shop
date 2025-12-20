@@ -1,5 +1,5 @@
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
-import { deleteProduct, deleteVariants } from "@/supabase";
+import { useDeleteProduct } from "@/hooks/useProducts";
 import React from "react";
 import { MdErrorOutline } from "react-icons/md";
 import { toast } from "sonner";
@@ -11,10 +11,11 @@ type Props = {
 
 const DeleteConfirmation = ({ productId, onCancel }: Props) => {
   const modalRef = React.useRef<HTMLDivElement | null>(null);
+  const deleteMutation = useDeleteProduct();
+
   const handleDeleteProduct = async (productId: string) => {
     if (productId) {
-      await deleteProduct(productId);
-      await deleteVariants(productId);
+      await deleteMutation.mutateAsync(productId);
     }
     onCancel();
   };

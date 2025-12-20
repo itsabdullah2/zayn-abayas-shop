@@ -1,4 +1,9 @@
-import { addVariants, getProducts } from "@/supabase";
+import {
+  addVariants,
+  deleteProduct,
+  deleteVariants,
+  getProducts,
+} from "@/supabase";
 import type { CategoriesTableType } from "@/supabase/types";
 import type { ProductType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -128,20 +133,28 @@ export const useUpdateProduct = () => {
   });
 };
 
+type TNewProductPayload = {
+  productName: string;
+  productDesc: string;
+  productPrice: number;
+  productImg: File | string;
+  categoryId: string;
+  variants: {
+    size: string;
+    color: string;
+  };
+  productStock: number;
+};
+
 export const useAddNewProduct = () => {
   const queryClient = useQueryClient();
-
-  const newProductData = useContextSelector(
-    ProductContext,
-    (ctx) => ctx?.newProductData
-  )!;
   const resetProductData = useContextSelector(
     ProductContext,
     (ctx) => ctx?.resetProductData
   )!;
 
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async (newProductData: TNewProductPayload) => {
       // Validation
       if (!newProductData) {
         throw new Error("New product data is missing");
@@ -206,6 +219,26 @@ export const useAddNewProduct = () => {
     onError: (error) => {
       console.error("Failed to add new product:", error);
       toast.error("فشل في إضافة المنتج الجديد");
+    },
+  });
+};
+
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (productId: string) => {
+      await deleteProduct(productId);
+      await deleteVariants(productId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["show-products"] });
+      // queryClient.invalidateQueries({queryKey: ["enriched-products"]})
+    },
+    onError: (error) => {
+      console.error("Failed to delete product:", error);
+      toast.error("فشل في حذف المنتج");
     },
   });
 };

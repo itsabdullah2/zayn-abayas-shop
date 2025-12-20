@@ -3,7 +3,6 @@ import PopupField from "./PopupField";
 import uploadImage from "@/assets/upload.png";
 import { useContextSelector } from "use-context-selector";
 import { ProductContext } from "@/context/ProductContext";
-import { useAddNewProduct } from "@/hooks/useProducts";
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
 import PopupDropdown from "./PopupDropdown";
 import { useCategories } from "@/hooks/useCategories";
@@ -13,12 +12,17 @@ type Props = {
   isNewProduct: boolean;
   setProductChange: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: (e: React.FormEvent) => void;
+  isPending?: boolean;
 };
 
-const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
+const AddNewProduct = ({
+  isNewProduct,
+  setProductChange,
+  onSubmit,
+  isPending,
+}: Props) => {
   const popupRef = useRef<HTMLDivElement | null>(null);
 
-  const addNewProductMutation = useAddNewProduct();
   const { data: categories } = useCategories();
   const { data: colors } = useColors();
   const { data: sizes } = useSizes();
@@ -164,9 +168,9 @@ const AddNewProduct = ({ isNewProduct, setProductChange, onSubmit }: Props) => {
               type="submit"
               form="adding_form"
               className={`cursor-pointer bg-accentA text-neutral rounded-lg px-10 py-1 hover:bg-accentA duration-150`}
-              disabled={addNewProductMutation.isPending}
+              disabled={isPending}
             >
-              {addNewProductMutation.isPending ? "جاري الاضافة..." : "تأكيد"}
+              {isPending ? "جاري الاضافة..." : "تأكيد"}
             </button>
             <button
               className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"

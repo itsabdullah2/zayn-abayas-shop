@@ -4,6 +4,8 @@ import DashboardNavbar from "../DashboardNavbar";
 import ProductsList from "./ProductsList";
 import { Button } from "@/components/ui/button";
 import { useAddNewProduct } from "@/hooks/useProducts";
+import { useContextSelector } from "use-context-selector";
+import { ProductContext } from "@/context/ProductContext";
 const AddNewProduct = React.lazy(() => import("./AddNewProduct"));
 const EditPopupForm = React.lazy(() => import("./EditPopupForm"));
 const DeleteConfirmation = React.lazy(() => import("./DeleteConfirmation"));
@@ -11,6 +13,12 @@ const DeleteConfirmation = React.lazy(() => import("./DeleteConfirmation"));
 const Products = () => {
   const [targetProductId, setTargetProductId] = useState<string | null>(null);
   const [isNewProduct, setIsNewProduct] = useState(false);
+
+  const newProductData = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.newProductData
+  );
+
   const addNewProductMutation = useAddNewProduct();
 
   const handleDeleteConfirmation = (productId: string) => {
@@ -29,8 +37,9 @@ const Products = () => {
     if (addNewProductMutation.isPending) return;
 
     try {
-      // Handle new product submission logic here
-      await addNewProductMutation.mutateAsync();
+      if (newProductData) {
+        await addNewProductMutation.mutateAsync(newProductData);
+      }
       setIsNewProduct(false);
     } catch (err) {
       console.error("Failed to add new product:", err);
@@ -64,6 +73,7 @@ const Products = () => {
         isNewProduct={isNewProduct}
         setProductChange={setIsNewProduct}
         onSubmit={handleSubmitNewProduct}
+        isPending={addNewProductMutation.isPending}
       />
     </>
   );
