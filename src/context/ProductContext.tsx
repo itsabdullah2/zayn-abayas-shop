@@ -1,5 +1,6 @@
 import { createContext } from "use-context-selector";
 import { useState } from "react";
+import useDebounce from "@/hooks/useDebounce";
 
 export type TProductData = {
   productName: string;
@@ -21,6 +22,7 @@ type OrderContextType = {
   ) => void;
   setNewProductData: React.Dispatch<React.SetStateAction<TProductData>>;
   resetProductData: () => void;
+  debouncedProductData: TProductData;
 };
 
 export const ProductContext = createContext<OrderContextType | null>(null);
@@ -45,6 +47,8 @@ export const ProductProvider = ({
 }) => {
   const [newProductData, setNewProductData] =
     useState<TProductData>(INITIAL_STATE);
+
+  const debouncedProductData = useDebounce<TProductData>(newProductData, 300);
 
   const handleFieldChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -76,6 +80,7 @@ export const ProductProvider = ({
 
   const values: OrderContextType = {
     newProductData,
+    debouncedProductData,
     // Functions
     setNewProductData,
     handleFieldChange,

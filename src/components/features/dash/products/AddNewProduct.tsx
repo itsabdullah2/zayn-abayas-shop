@@ -61,7 +61,7 @@ const AddNewProduct = ({
     ref: popupRef,
     onClose: () => setProductChange(false),
   });
-
+  console.log("New Product Data:", newProductData);
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
