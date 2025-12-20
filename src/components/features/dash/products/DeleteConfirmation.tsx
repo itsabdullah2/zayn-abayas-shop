@@ -16,7 +16,6 @@ const DeleteConfirmation = ({ productId, onCancel }: Props) => {
       await deleteProduct(productId);
       await deleteVariants(productId);
     }
-    console.log("Product deleted successfully:", productId);
     onCancel();
   };
 

@@ -56,7 +56,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleSubmitEdits = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("The Edited Data is:", editingData);
+    // console.log("The Edited Data is:", editingData);
   };
   const handleEditClick = (product: ProductType) => {
     setEditingData({

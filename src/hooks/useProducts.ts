@@ -184,8 +184,8 @@ export const useAddNewProduct = () => {
         stock: newProductData.productStock,
       });
 
-      console.log("Added product:", data);
-      console.log("Added variants:", variants);
+      // console.log("Added product:", data);
+      // console.log("Added variants:", variants);
 
       return { data, variants };
     },
