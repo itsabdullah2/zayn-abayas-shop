@@ -16,7 +16,7 @@ export const useOrdersRealtime = () => {
           schema: "public",
           table: "orders",
         },
-        (payload) => {
+        () => {
           // console.log("Realtime change received:", payload);
           // Refetch all order-related queries
           queryClient.invalidateQueries({ queryKey: ["orders"] });
