@@ -30,7 +30,7 @@ const ProductsList = ({ onClick }: { onClick: (id: string) => void }) => {
       </div>
     );
   }
-  console.log("Enriched Products in ProductsList:", enrichedProducts);
+
   return (
     <>
       <div className="responsive-grid mt-8 items-stretch">
