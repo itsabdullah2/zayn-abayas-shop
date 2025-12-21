@@ -7,6 +7,7 @@ import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
 import PopupDropdown from "./PopupDropdown";
 import { useCategories } from "@/hooks/useCategories";
 import { useColors, useSizes } from "@/hooks/useVariants";
+import DropdownSelection from "./DropdownSelection";
 
 type Props = {
   isNewProduct: boolean;
@@ -181,6 +182,9 @@ const AddNewProduct = ({
               selectClasses="w-full!"
             />
           </div>
+          {/* DROPDOWN SELECTION - TESTING */}
+          <DropdownSelection />
+          {/* DROPDOWN SELECTION - TESTING */}
           <div className="items-center flex justify-between mt-7">
             <button
               type="submit"
