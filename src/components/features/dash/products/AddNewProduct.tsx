@@ -2,7 +2,7 @@ import { memo, useRef } from "react";
 import PopupField from "./PopupField";
 import uploadImage from "@/assets/upload.png";
 import { useContextSelector } from "use-context-selector";
-import { ProductContext } from "@/context/ProductContext";
+import { ProductContext, type TProductData } from "@/context/ProductContext";
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
 import PopupDropdown from "./PopupDropdown";
 import { useCategories } from "@/hooks/useCategories";
@@ -13,6 +13,19 @@ type Props = {
   setProductChange: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: (e: React.FormEvent) => void;
   isPending?: boolean;
+};
+
+const INITIAL_STATE: TProductData = {
+  productName: "",
+  productPrice: 0,
+  productDesc: "",
+  productImg: "",
+  categoryId: "",
+  variants: {
+    color: "",
+    size: "",
+  },
+  productStock: 0,
 };
 
 const AddNewProduct = ({
@@ -56,12 +69,17 @@ const AddNewProduct = ({
       }));
     };
 
+  const handleClose = () => {
+    setProductChange(false);
+    setNewProductData(INITIAL_STATE);
+  };
+
   // Handle close on outside click or escape key pass
   useCloseOnOutsideOrEscape({
     ref: popupRef,
-    onClose: () => setProductChange(false),
+    onClose: handleClose,
   });
-  console.log("New Product Data:", newProductData);
+  console.log("New Local Product Data:", newProductData);
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
@@ -174,7 +192,7 @@ const AddNewProduct = ({
             </button>
             <button
               className="cursor-pointer border border-accentA rounded-lg px-10 py-1 hover:bg-accentA duration-150 hover:text-white"
-              onClick={() => setProductChange(false)}
+              onClick={handleClose}
             >
               الغاء
             </button>

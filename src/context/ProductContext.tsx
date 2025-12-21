@@ -48,7 +48,7 @@ export const ProductProvider = ({
   const [newProductData, setNewProductData] =
     useState<TProductData>(INITIAL_STATE);
 
-  const debouncedProductData = useDebounce<TProductData>(newProductData, 300);
+  const debouncedProductData = useDebounce<TProductData>(newProductData, 500);
 
   const handleFieldChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
