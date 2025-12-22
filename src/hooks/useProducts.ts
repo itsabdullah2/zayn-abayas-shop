@@ -140,8 +140,8 @@ type TNewProductPayload = {
   productImg: File | string;
   categoryId: string;
   variants: {
-    size: string;
-    color: string;
+    sizes: string[];
+    colors: string[];
   };
   productStock: number;
 };
@@ -192,8 +192,8 @@ export const useAddNewProduct = () => {
       const variants = await addVariants([
         {
           product_id: data?.id,
-          size_id: newProductData.variants.size,
-          color_id: newProductData.variants.color,
+          size_id: newProductData.variants.sizes,
+          color_id: newProductData.variants.colors,
           price: newProductData.productPrice,
           stock: newProductData.productStock,
         },
