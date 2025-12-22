@@ -65,18 +65,17 @@ export const updateVariant = async (
 
 type TVariants = {
   product_id: string;
-  size_id: string;
-  color_id: string;
-  stock: number;
+  size_id?: string;
+  color_id?: string;
+  stock?: number;
   price: number;
 };
-export const addVariants = async (variants: TVariants) => {
+export const addVariants = async (variants: TVariants[]) => {
   try {
     const { data, error } = await supabase
       .from("product_variants")
       .insert(variants)
-      .select()
-      .single();
+      .select();
 
     if (error) {
       console.error("Failed to add variants:", error.message);

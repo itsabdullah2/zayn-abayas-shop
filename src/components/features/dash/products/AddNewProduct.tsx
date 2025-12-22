@@ -23,8 +23,8 @@ const INITIAL_STATE: TProductData = {
   productImg: "",
   categoryId: "",
   variants: {
-    color: "",
-    size: "",
+    colors: [],
+    sizes: [],
   },
   productStock: 0,
 };
@@ -60,12 +60,12 @@ const AddNewProduct = ({
       categoryId: e.target.value,
     }));
   const handleVariantChange =
-    (k: string) => (e: React.ChangeEvent<HTMLSelectElement>) => {
+    (k: "colors" | "sizes") => (selectedIds: string[]) => {
       setNewProductData((prev) => ({
         ...prev,
         variants: {
           ...prev.variants,
-          [k]: e.target.value,
+          [k]: selectedIds,
         },
       }));
     };
@@ -80,7 +80,7 @@ const AddNewProduct = ({
     ref: popupRef,
     onClose: handleClose,
   });
-
+  console.log("New product data:", newProductData);
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
@@ -160,11 +160,11 @@ const AddNewProduct = ({
             }
           />
 
-          <div className="flex items-center gap-5">
+          {/* <div className="flex items-center gap-5">
             <PopupDropdown
               name="productColor"
-              value={newProductData.variants.color}
-              onChange={handleVariantChange("color")}
+              value={newProductData.variants.colors}
+              onChange={handleVariantChange("colors")}
               label="اللون"
               options={colors || []}
               className="flex-1"
@@ -173,17 +173,26 @@ const AddNewProduct = ({
             />
             <PopupDropdown
               name="productSize"
-              value={newProductData.variants.size}
-              onChange={handleVariantChange("size")}
+              value={newProductData.variants.sizes}
+              onChange={handleVariantChange("sizes")}
               label="المقاس"
               options={sizes || []}
               isVariant
               className="flex-1"
               selectClasses="w-full!"
             />
-          </div>
+          </div> */}
           {/* DROPDOWN SELECTION - TESTING */}
-          <DropdownSelection />
+          <DropdownSelection
+            options={sizes || []}
+            selectedIds={newProductData.variants.sizes}
+            onChange={handleVariantChange("sizes")}
+          />
+          <DropdownSelection
+            options={colors || []}
+            selectedIds={newProductData.variants.colors}
+            onChange={handleVariantChange("colors")}
+          />
           {/* DROPDOWN SELECTION - TESTING */}
           <div className="items-center flex justify-between mt-7">
             <button

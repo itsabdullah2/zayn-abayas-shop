@@ -188,14 +188,16 @@ export const useAddNewProduct = () => {
         throw new Error("Failed to get product ID after insertion");
       }
 
-      // Insert new variant
-      const variants = await addVariants({
-        product_id: data?.id,
-        size_id: newProductData.variants.size,
-        color_id: newProductData.variants.color,
-        price: newProductData.productPrice,
-        stock: newProductData.productStock,
-      });
+      // Insert new variant - wrap in a array to match updated addVariants signature
+      const variants = await addVariants([
+        {
+          product_id: data?.id,
+          size_id: newProductData.variants.size,
+          color_id: newProductData.variants.color,
+          price: newProductData.productPrice,
+          stock: newProductData.productStock,
+        },
+      ]);
 
       // console.log("Added product:", data);
       // console.log("Added variants:", variants);

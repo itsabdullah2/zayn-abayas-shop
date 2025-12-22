@@ -9,8 +9,8 @@ export type TProductData = {
   productImg: string | File;
   categoryId: string;
   variants: {
-    color: string;
-    size: string;
+    colors: string[];
+    sizes: string[];
   };
   productStock: number;
 };
@@ -34,8 +34,8 @@ const INITIAL_STATE: TProductData = {
   productImg: "",
   categoryId: "",
   variants: {
-    color: "",
-    size: "",
+    colors: [],
+    sizes: [],
   },
   productStock: 0,
 };
