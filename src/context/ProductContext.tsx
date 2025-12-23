@@ -1,6 +1,8 @@
 import { createContext } from "use-context-selector";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
+
+type TVariantsState = { color_id: string; size_id: string; stock: number };
 
 export type TProductData = {
   productName: string;
@@ -12,7 +14,7 @@ export type TProductData = {
     colors: string[];
     sizes: string[];
   };
-  productStock: number;
+  // productStock: number;
 };
 
 type OrderContextType = {
@@ -23,6 +25,8 @@ type OrderContextType = {
   setNewProductData: React.Dispatch<React.SetStateAction<TProductData>>;
   resetProductData: () => void;
   debouncedProductData: TProductData;
+  variants: TVariantsState[];
+  setVariants: React.Dispatch<React.SetStateAction<TVariantsState[]>>;
 };
 
 export const ProductContext = createContext<OrderContextType | null>(null);
@@ -37,7 +41,7 @@ const INITIAL_STATE: TProductData = {
     colors: [],
     sizes: [],
   },
-  productStock: 0,
+  // productStock: 0,
 };
 
 export const ProductProvider = ({
@@ -47,6 +51,20 @@ export const ProductProvider = ({
 }) => {
   const [newProductData, setNewProductData] =
     useState<TProductData>(INITIAL_STATE);
+  const [variants, setVariants] = useState<TVariantsState[]>([]);
+
+  useEffect(() => {
+    const generatedVariants = newProductData.variants.colors.flatMap(
+      (color_id) =>
+        newProductData.variants.sizes.map((size_id) => ({
+          color_id,
+          size_id,
+          stock: 0,
+        }))
+    );
+
+    setVariants(generatedVariants);
+  }, [newProductData.variants.colors, newProductData.variants.sizes]);
 
   const debouncedProductData = useDebounce<TProductData>(newProductData, 500);
 
@@ -81,10 +99,12 @@ export const ProductProvider = ({
   const values: OrderContextType = {
     newProductData,
     debouncedProductData,
+    variants,
     // Functions
     setNewProductData,
     handleFieldChange,
     resetProductData,
+    setVariants,
   };
 
   return (

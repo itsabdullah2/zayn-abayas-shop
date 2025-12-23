@@ -143,8 +143,10 @@ type TNewProductPayload = {
     sizes: string[];
     colors: string[];
   };
-  productStock: number;
+  // productStock: number;
 };
+
+type TVariantsState = { color_id: string; size_id: string; stock: number };
 
 export const useAddNewProduct = () => {
   const queryClient = useQueryClient();
@@ -154,7 +156,13 @@ export const useAddNewProduct = () => {
   )!;
 
   return useMutation({
-    mutationFn: async (newProductData: TNewProductPayload) => {
+    mutationFn: async ({
+      newProductData,
+      variants,
+    }: {
+      newProductData: TNewProductPayload;
+      variants: TVariantsState[];
+    }) => {
       // Validation
       if (!newProductData) {
         throw new Error("New product data is missing");
@@ -182,27 +190,28 @@ export const useAddNewProduct = () => {
         product_img: productImgUrl,
         category_id: newProductData.categoryId,
       };
-      const data = await addProduct(productData);
+      // const data = await addProduct(productData);
 
-      if (!data?.id) {
-        throw new Error("Failed to get product ID after insertion");
-      }
+      // if (!data?.id) {
+      //   throw new Error("Failed to get product ID after insertion");
+      // }
 
       // Insert new variant - wrap in a array to match updated addVariants signature
-      const variants = await addVariants([
-        {
-          product_id: data?.id,
-          size_id: newProductData.variants.sizes,
-          color_id: newProductData.variants.colors,
-          price: newProductData.productPrice,
-          stock: newProductData.productStock,
-        },
-      ]);
+      // const variants = await addVariants([
+      //   {
+      //     product_id: data?.id,
+      //     size_id: newProductData.variants.sizes,
+      //     color_id: newProductData.variants.colors,
+      //     price: newProductData.productPrice,
+      //     stock: newProductData.productStock,
+      //   },
+      // ]);
 
-      // console.log("Added product:", data);
-      // console.log("Added variants:", variants);
+      // TESTING: Log the added product data and variants
+      console.log("Added product:", productData);
+      console.log("Added variants:", variants);
 
-      return { data, variants };
+      // return { data, variants };
     },
     onSuccess: () => {
       // Invalidate and refetch products query

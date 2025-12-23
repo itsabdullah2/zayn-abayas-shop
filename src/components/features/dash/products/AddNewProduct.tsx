@@ -1,4 +1,4 @@
-import { memo, useRef } from "react";
+import { memo, useRef, useState } from "react";
 import PopupField from "./PopupField";
 import uploadImage from "@/assets/upload.png";
 import { useContextSelector } from "use-context-selector";
@@ -8,6 +8,7 @@ import PopupDropdown from "./PopupDropdown";
 import { useCategories } from "@/hooks/useCategories";
 import { useColors, useSizes } from "@/hooks/useVariants";
 import DropdownSelection from "./DropdownSelection";
+import RenderSelectedVariants from "./RenderSelectedVariants";
 
 type Props = {
   isNewProduct: boolean;
@@ -26,7 +27,7 @@ const INITIAL_STATE: TProductData = {
     colors: [],
     sizes: [],
   },
-  productStock: 0,
+  // productStock: 0,
 };
 
 const AddNewProduct = ({
@@ -36,6 +37,7 @@ const AddNewProduct = ({
   isPending,
 }: Props) => {
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { data: categories } = useCategories();
   const { data: colors } = useColors();
@@ -45,6 +47,7 @@ const AddNewProduct = ({
     ProductContext,
     (ctx) => ctx?.newProductData
   )!;
+  const variants = useContextSelector(ProductContext, (ctx) => ctx?.variants)!;
   const setNewProductData = useContextSelector(
     ProductContext,
     (ctx) => ctx?.setNewProductData
@@ -79,8 +82,15 @@ const AddNewProduct = ({
   useCloseOnOutsideOrEscape({
     ref: popupRef,
     onClose: handleClose,
+    excludeSelectors: [
+      "[data-radix-popper-content-wrapper]",
+      '[role="menu"]',
+      "[data-radix-dropdown-menu-content]",
+    ],
+    disabled: isDropdownOpen,
   });
   console.log("New product data:", newProductData);
+  console.log("Selected Variants:", variants);
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
@@ -128,14 +138,14 @@ const AddNewProduct = ({
             inputVal={newProductData?.productPrice}
             onValChange={handleFieldChange}
           />
-          <PopupField
+          {/* <PopupField
             label="مخزون المنتج"
             type="number"
             name="productStock"
             placeholder="أدخل مخزون المنتج"
             inputVal={newProductData?.productStock}
             onValChange={handleFieldChange}
-          />
+          /> */}
           <PopupField
             label="وصف المنتج"
             type="text"
@@ -160,39 +170,26 @@ const AddNewProduct = ({
             }
           />
 
-          {/* <div className="flex items-center gap-5">
-            <PopupDropdown
-              name="productColor"
-              value={newProductData.variants.colors}
-              onChange={handleVariantChange("colors")}
-              label="اللون"
-              options={colors || []}
-              className="flex-1"
-              selectClasses="w-full!"
-              isVariant
-            />
-            <PopupDropdown
-              name="productSize"
-              value={newProductData.variants.sizes}
-              onChange={handleVariantChange("sizes")}
-              label="المقاس"
-              options={sizes || []}
-              isVariant
-              className="flex-1"
-              selectClasses="w-full!"
-            />
-          </div> */}
-          {/* DROPDOWN SELECTION - TESTING */}
-          <DropdownSelection
-            options={sizes || []}
-            selectedIds={newProductData.variants.sizes}
-            onChange={handleVariantChange("sizes")}
-          />
-          <DropdownSelection
-            options={colors || []}
-            selectedIds={newProductData.variants.colors}
-            onChange={handleVariantChange("colors")}
-          />
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-5">
+              {/* DROPDOWN SELECTION - TESTING */}
+              <DropdownSelection
+                label="اختر المقاس"
+                options={sizes || []}
+                selectedIds={newProductData.variants.sizes}
+                onChange={handleVariantChange("sizes")}
+                onOpenChange={setIsDropdownOpen}
+              />
+              <DropdownSelection
+                label="اختر اللون"
+                options={colors || []}
+                selectedIds={newProductData.variants.colors}
+                onChange={handleVariantChange("colors")}
+                // onOpenChange={setIsDropdownOpen}
+              />
+            </div>
+            <RenderSelectedVariants />
+          </div>
           {/* DROPDOWN SELECTION - TESTING */}
           <div className="items-center flex justify-between mt-7">
             <button

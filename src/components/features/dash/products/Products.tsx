@@ -38,7 +38,7 @@ const Products = () => {
 
     try {
       if (newProductData) {
-        await addNewProductMutation.mutateAsync(newProductData);
+        await addNewProductMutation.mutateAsync(newProductData, variants);
       }
       setIsNewProduct(false);
     } catch (err) {
