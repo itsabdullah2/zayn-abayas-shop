@@ -1,5 +1,5 @@
 import {
-  addVariants,
+  // addVariants,
   deleteProduct,
   deleteVariants,
   getProducts,
@@ -7,7 +7,11 @@ import {
 import type { CategoriesTableType } from "@/supabase/types";
 import type { ProductType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase, updateProduct, addProduct } from "@/supabase";
+import {
+  supabase,
+  updateProduct,
+  // addProduct
+} from "@/supabase";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
 import { AuthContext } from "@/context/AuthContext";
@@ -133,7 +137,7 @@ export const useUpdateProduct = () => {
   });
 };
 
-type TNewProductPayload = {
+type TProductData = {
   productName: string;
   productDesc: string;
   productPrice: number;
@@ -160,7 +164,7 @@ export const useAddNewProduct = () => {
       newProductData,
       variants,
     }: {
-      newProductData: TNewProductPayload;
+      newProductData: TProductData;
       variants: TVariantsState[];
     }) => {
       // Validation

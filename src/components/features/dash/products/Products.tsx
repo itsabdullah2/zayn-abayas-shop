@@ -18,6 +18,7 @@ const Products = () => {
     ProductContext,
     (ctx) => ctx?.newProductData
   );
+  const variants = useContextSelector(ProductContext, (ctx) => ctx?.variants);
 
   const addNewProductMutation = useAddNewProduct();
 
@@ -37,8 +38,8 @@ const Products = () => {
     if (addNewProductMutation.isPending) return;
 
     try {
-      if (newProductData) {
-        await addNewProductMutation.mutateAsync(newProductData, variants);
+      if (newProductData && variants) {
+        await addNewProductMutation.mutateAsync({ newProductData, variants });
       }
       setIsNewProduct(false);
     } catch (err) {
