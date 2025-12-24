@@ -2,7 +2,12 @@ import { createContext } from "use-context-selector";
 import { useEffect, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 
-type TVariantsState = { color_id: string; size_id: string; stock: number };
+type TVariant = { color_id: string; size_id: string; stock: number };
+
+type TColorSelection = {
+  color_id: string;
+  sizes_id: string[];
+};
 
 export type TProductData = {
   productName: string;
@@ -11,8 +16,7 @@ export type TProductData = {
   productImg: string | File;
   categoryId: string;
   variants: {
-    colors: string[];
-    sizes: string[];
+    selections: TColorSelection[];
   };
   // productStock: number;
 };
@@ -25,8 +29,9 @@ type OrderContextType = {
   setNewProductData: React.Dispatch<React.SetStateAction<TProductData>>;
   resetProductData: () => void;
   debouncedProductData: TProductData;
-  variants: TVariantsState[];
-  setVariants: React.Dispatch<React.SetStateAction<TVariantsState[]>>;
+
+  variants: TVariant[];
+  setVariants: React.Dispatch<React.SetStateAction<TVariant[]>>;
 };
 
 export const ProductContext = createContext<OrderContextType | null>(null);
@@ -38,8 +43,7 @@ const INITIAL_STATE: TProductData = {
   productImg: "",
   categoryId: "",
   variants: {
-    colors: [],
-    sizes: [],
+    selections: [],
   },
   // productStock: 0,
 };
@@ -51,20 +55,31 @@ export const ProductProvider = ({
 }) => {
   const [newProductData, setNewProductData] =
     useState<TProductData>(INITIAL_STATE);
-  const [variants, setVariants] = useState<TVariantsState[]>([]);
+  const [variants, setVariants] = useState<TVariant[]>([]);
 
   useEffect(() => {
-    const generatedVariants = newProductData.variants.colors.flatMap(
-      (color_id) =>
-        newProductData.variants.sizes.map((size_id) => ({
-          color_id,
-          size_id,
-          stock: 0,
-        }))
-    );
+    setVariants((prev) => {
+      // Preserve Stock if Varian Already Exists
+      const existingMap = new Map(
+        prev.map((v) => [`${v.color_id}-${v.size_id}`, v])
+      );
 
-    setVariants(generatedVariants);
-  }, [newProductData.variants.colors, newProductData.variants.sizes]);
+      return newProductData.variants.selections.flatMap(
+        ({ color_id, sizes_id }) =>
+          sizes_id.map((size_id) => {
+            const key = `${color_id}-${size_id}`;
+
+            return (
+              existingMap.get(key) ?? {
+                color_id,
+                size_id,
+                stock: 0,
+              }
+            );
+          })
+      );
+    });
+  }, [newProductData.variants.selections]);
 
   const debouncedProductData = useDebounce<TProductData>(newProductData, 500);
 

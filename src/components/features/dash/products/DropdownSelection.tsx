@@ -5,6 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { translateVariantsOpts } from "@/utils/translateOptsInAddProductPopup";
 import React from "react";
 
 type TOptions = {
@@ -20,6 +21,7 @@ type Props = {
   selectedIds: string[];
   onChange: (selectedIds: string[]) => void;
   onOpenChange?: (open: boolean) => void;
+  isColors?: boolean;
 };
 
 const DropdownSelection = ({
@@ -28,6 +30,7 @@ const DropdownSelection = ({
   onChange,
   onOpenChange,
   label,
+  isColors,
 }: Props) => {
   const handleChange = (id: string) => {
     if (selectedIds.includes(id)) {
@@ -43,7 +46,9 @@ const DropdownSelection = ({
       <div className="flex item-center justify-between border border-[#eee] py-2 rounded-lg">
         <div className="flex flex-col gap-3 w-full">
           <DropdownMenu onOpenChange={onOpenChange} modal={false}>
-            <DropdownMenuTrigger>{label}</DropdownMenuTrigger>
+            <DropdownMenuTrigger className="text-sm">
+              {label}
+            </DropdownMenuTrigger>
             <DropdownMenuContent className="z-10000">
               {options.map((opt) => (
                 <div
@@ -57,7 +62,9 @@ const DropdownSelection = ({
                       htmlFor={`checkbox-of-${opt.name}`}
                       className="cursor-pointer text-sm"
                     >
-                      {opt.name.toUpperCase()}
+                      {isColors
+                        ? translateVariantsOpts(opt.name)
+                        : opt.name.toUpperCase()}
                     </label>
                     <Checkbox
                       id={`checkbox-of-${opt.name}`}

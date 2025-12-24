@@ -9,6 +9,8 @@ import { useCategories } from "@/hooks/useCategories";
 import { useColors, useSizes } from "@/hooks/useVariants";
 import DropdownSelection from "./DropdownSelection";
 import RenderSelectedVariants from "./RenderSelectedVariants";
+import { translateVariantsOpts } from "@/utils/translateOptsInAddProductPopup";
+import { getColorName } from "@/utils/getVariantName";
 
 type Props = {
   isNewProduct: boolean;
@@ -24,8 +26,7 @@ const INITIAL_STATE: TProductData = {
   productImg: "",
   categoryId: "",
   variants: {
-    colors: [],
-    sizes: [],
+    selections: [],
   },
   // productStock: 0,
 };
@@ -62,16 +63,24 @@ const AddNewProduct = ({
       ...prev,
       categoryId: e.target.value,
     }));
-  const handleVariantChange =
-    (k: "colors" | "sizes") => (selectedIds: string[]) => {
-      setNewProductData((prev) => ({
+
+  const handleColorChange = (selectedColorIds: string[]) => {
+    setNewProductData((prev) => {
+      const newSelections = selectedColorIds.map((id) => {
+        const existing = prev.variants.selections.find(
+          (sel) => sel.color_id === id
+        );
+        return existing ?? { color_id: id, sizes_id: [] };
+      });
+
+      return {
         ...prev,
         variants: {
-          ...prev.variants,
-          [k]: selectedIds,
+          selections: newSelections,
         },
-      }));
-    };
+      };
+    });
+  };
 
   const handleClose = () => {
     setProductChange(false);
@@ -96,7 +105,7 @@ const AddNewProduct = ({
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
       <div
         ref={popupRef}
-        className="w-[95vw] sm:w-125 bg-white rounded-xl py-4 px-5 fixed top-1/2 left-1/2 z-200 -translate-x-1/2 -translate-y-1/2"
+        className="w-[95vw] sm:w-130 bg-white rounded-xl py-4 px-5 fixed top-1/2 left-1/2 z-200 -translate-x-1/2 -translate-y-1/2"
       >
         <h2 className="font-medium text-primary text-lg">
           قم بإضافة منتج جديد
@@ -172,25 +181,44 @@ const AddNewProduct = ({
 
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-5">
-              {/* DROPDOWN SELECTION - TESTING */}
-              <DropdownSelection
-                label="اختر المقاس"
-                options={sizes || []}
-                selectedIds={newProductData.variants.sizes}
-                onChange={handleVariantChange("sizes")}
-                onOpenChange={setIsDropdownOpen}
-              />
+              {newProductData.variants.selections.map((sel) => (
+                <DropdownSelection
+                  key={sel.color_id}
+                  label={`اختر المقاس لل${translateVariantsOpts(
+                    getColorName(sel.color_id, colors!)
+                  )}`}
+                  options={sizes || []}
+                  selectedIds={sel.sizes_id}
+                  // onChange={handleVariantChange("sizes")}
+                  onChange={(newSize) => {
+                    setNewProductData((prev) => ({
+                      ...prev,
+                      variants: {
+                        selections: prev.variants.selections.map((s) =>
+                          s.color_id === sel.color_id
+                            ? { ...s, sizes_id: newSize }
+                            : s
+                        ),
+                      },
+                    }));
+                  }}
+                  onOpenChange={setIsDropdownOpen}
+                />
+              ))}
               <DropdownSelection
                 label="اختر اللون"
                 options={colors || []}
-                selectedIds={newProductData.variants.colors}
-                onChange={handleVariantChange("colors")}
-                // onOpenChange={setIsDropdownOpen}
+                selectedIds={newProductData.variants.selections.map(
+                  (s) => s.color_id
+                )}
+                // onChange={handleVariantChange("colors")}
+                onChange={handleColorChange}
+                isColors
               />
             </div>
-            <RenderSelectedVariants />
+            <RenderSelectedVariants sizes={sizes || []} colors={colors || []} />
           </div>
-          {/* DROPDOWN SELECTION - TESTING */}
+
           <div className="items-center flex justify-between mt-7">
             <button
               type="submit"
