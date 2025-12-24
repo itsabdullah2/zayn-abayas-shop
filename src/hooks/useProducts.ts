@@ -144,8 +144,7 @@ type TProductData = {
   productImg: File | string;
   categoryId: string;
   variants: {
-    sizes: string[];
-    colors: string[];
+    selections: { color_id: string; sizes_id: string[] }[];
   };
   // productStock: number;
 };
