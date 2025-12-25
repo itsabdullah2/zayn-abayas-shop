@@ -65,8 +65,8 @@ export const updateVariant = async (
 
 type TVariants = {
   product_id: string;
-  size_id?: string[];
-  color_id?: string[];
+  size_id?: string;
+  color_id?: string;
   stock?: number;
   price: number;
 };

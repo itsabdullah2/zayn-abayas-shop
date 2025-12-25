@@ -1,5 +1,5 @@
 import {
-  // addVariants,
+  addVariants,
   deleteProduct,
   deleteVariants,
   getProducts,
@@ -7,11 +7,7 @@ import {
 import type { CategoriesTableType } from "@/supabase/types";
 import type { ProductType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  supabase,
-  updateProduct,
-  // addProduct
-} from "@/supabase";
+import { supabase, updateProduct, addProduct } from "@/supabase";
 import { useContextSelector } from "use-context-selector";
 import { AppContext } from "@/context/AppContext";
 import { AuthContext } from "@/context/AuthContext";
@@ -170,11 +166,33 @@ export const useAddNewProduct = () => {
       if (!newProductData) {
         throw new Error("New product data is missing");
       }
+      if (!newProductData.productName.trim()) {
+        throw new Error("Product name is required");
+      }
+      if (!newProductData.categoryId) {
+        throw new Error("Category is required");
+      }
+      if (newProductData.productPrice <= 0) {
+        throw new Error("Product price must be greater than 0");
+      }
+      if (variants.length === 0) {
+        throw new Error("At least one variant is required");
+      }
 
       let productImgUrl = "";
 
       // Upload image if it's a File
       if (newProductData.productImg instanceof File) {
+        const file = newProductData.productImg;
+        const validTypes = ["image/jpeg", "image/png", "image/webp"];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (!validTypes.includes(file.type)) {
+          throw new Error("Invalid image type. Use JPEG, PNG, or WebP");
+        }
+        if (file.size > maxSize) {
+          throw new Error("Image size must be less than 5MB");
+        }
         try {
           productImgUrl = await uploadProductImage(newProductData.productImg);
         } catch (err) {
@@ -193,26 +211,26 @@ export const useAddNewProduct = () => {
         product_img: productImgUrl,
         category_id: newProductData.categoryId,
       };
-      // const data = await addProduct(productData);
+      const data = await addProduct(productData);
 
-      // if (!data?.id) {
-      //   throw new Error("Failed to get product ID after insertion");
-      // }
+      if (!data?.id) {
+        throw new Error("Failed to get product ID after insertion");
+      }
 
       // Insert new variant - wrap in a array to match updated addVariants signature
-      // const variants = await addVariants([
-      //   {
-      //     product_id: data?.id,
-      //     size_id: newProductData.variants.sizes,
-      //     color_id: newProductData.variants.colors,
-      //     price: newProductData.productPrice,
-      //     stock: newProductData.productStock,
-      //   },
-      // ]);
+      const variantsRes = await addVariants(
+        variants.map((v) => ({
+          product_id: data.id,
+          color_id: v.color_id,
+          size_id: v.size_id,
+          stock: v.stock,
+          price: newProductData.productPrice,
+        }))
+      );
 
       // TESTING: Log the added product data and variants
       console.log("Added product:", productData);
-      console.log("Added variants:", variants);
+      console.log("Added variants:", variantsRes);
 
       // return { data, variants };
     },

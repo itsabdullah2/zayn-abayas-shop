@@ -109,6 +109,7 @@ export const ProductProvider = ({
 
   const resetProductData = () => {
     setNewProductData(INITIAL_STATE);
+    setVariants([]);
   };
 
   const values: OrderContextType = {
