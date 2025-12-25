@@ -228,11 +228,7 @@ export const useAddNewProduct = () => {
         }))
       );
 
-      // TESTING: Log the added product data and variants
-      console.log("Added product:", productData);
-      console.log("Added variants:", variantsRes);
-
-      // return { data, variants };
+      return { data, variantsRes };
     },
     onSuccess: () => {
       // Invalidate and refetch products query

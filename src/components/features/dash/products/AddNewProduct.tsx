@@ -48,7 +48,6 @@ const AddNewProduct = ({
     ProductContext,
     (ctx) => ctx?.newProductData
   )!;
-  const variants = useContextSelector(ProductContext, (ctx) => ctx?.variants)!;
   const setNewProductData = useContextSelector(
     ProductContext,
     (ctx) => ctx?.setNewProductData
@@ -98,8 +97,7 @@ const AddNewProduct = ({
     ],
     disabled: isDropdownOpen,
   });
-  console.log("New product data:", newProductData);
-  console.log("Selected Variants:", variants);
+
   return isNewProduct ? (
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
