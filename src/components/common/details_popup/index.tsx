@@ -8,6 +8,7 @@ import type { ProductType } from "@/types";
 import ProductImg from "./ProductImg";
 import ProductInfo from "./ProductInfo";
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
+import { IoClose } from "react-icons/io5";
 
 const ProductDetailsPopup = ({ productId }: { productId: string }) => {
   const popupRef = useRef<HTMLDivElement | null>(null);
@@ -20,7 +21,7 @@ const ProductDetailsPopup = ({ productId }: { productId: string }) => {
 
   const closeProductPopup = useContextSelector(
     AppContext,
-    (ctx) => ctx?.closeProductPopup
+    (ctx) => ctx?.closeProductPopup,
   )!;
 
   useEffect(() => {
@@ -79,11 +80,11 @@ const ProductDetailsPopup = ({ productId }: { productId: string }) => {
 
           <button
             role="button"
-            // size="sm"
-            className="bg-gray/30 py-1 px-3 rounded-md text-primary border border-text absolute top-2 right-5 cursor-pointer hover:bg-light-gray duration-200"
+            aria-label="Close product details popup"
+            className="p-1 rounded-md text-primary border border-text absolute top-2 right-5 cursor-pointer hover:bg-light-gray duration-200"
             onClick={() => closeProductPopup()}
           >
-            Esc
+            <IoClose size={21} />
           </button>
         </div>
       </section>

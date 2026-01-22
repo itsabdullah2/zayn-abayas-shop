@@ -22,7 +22,7 @@ const ProductDetails = () => {
   const { handleCart } = useCartData();
   const closeProductPopup = useContextSelector(
     AppContext,
-    (ctx) => ctx?.closeProductPopup
+    (ctx) => ctx?.closeProductPopup,
   );
 
   const buyNow = useBuyNow();
@@ -33,7 +33,7 @@ const ProductDetails = () => {
 
   // Find the current variant based on selection
   const currentVariant = variants.find(
-    (v) => v.color_id === selectedColorId && v.size_id === selectedSizeId
+    (v) => v.color_id === selectedColorId && v.size_id === selectedSizeId,
   );
 
   const handleAddToCart = () => {
@@ -74,6 +74,11 @@ const ProductDetails = () => {
     return <Loading />;
   }
 
+  const targetVariant = variants.find(
+    (v) => v.color_id === selectedColorId && v.size_id === selectedSizeId,
+  );
+  const isVariantAvailable = targetVariant && targetVariant.stock > 0;
+
   return (
     <section className="section-container flex-1 bg-neutral flex flex-col gap-5 lg:gap-8 xl:gap-10">
       <h1 className="text-2xl font-semibold text-primary">تفاصيل المنتج</h1>
@@ -112,6 +117,23 @@ const ProductDetails = () => {
                 onSizeChange={setSelectedSizeId}
               />
             </div>
+
+            {selectedColorId && selectedSizeId && (
+              <div className="">
+                <span className="text-text">الكمية: </span>
+                <span
+                  className={`font-medium ${
+                    targetVariant?.stock && targetVariant.stock > 0
+                      ? "text-success"
+                      : "text-red-600"
+                  }`}
+                >
+                  {targetVariant?.stock && targetVariant.stock > 0
+                    ? targetVariant.stock
+                    : "غير متوفر في المخزون"}
+                </span>
+              </div>
+            )}
           </div>
 
           <QuantityBtns variantId={variants[0]?.id} />

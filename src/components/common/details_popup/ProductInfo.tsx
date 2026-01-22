@@ -19,17 +19,17 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
 
   // state for selected color and size
   const [selectedColorId, setSelectedColorId] = useState<string>(
-    colors[0].id || ""
+    colors[0].id || "",
   );
   const [selectedSizeId, setSelectedSizeId] = useState<string>(
-    sizes[0].id || ""
+    sizes[0].id || "",
   );
   // Find the current variant based on selection
   const currentVariant = variants.find(
     (v) =>
       v.color_id === selectedColorId &&
       v.size_id === selectedSizeId &&
-      v.product_id === product.id
+      v.product_id === product.id,
   );
 
   const handleAddToCart = () => {
@@ -64,6 +64,25 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
             selectedSizeId={selectedSizeId}
             onSizeChange={setSelectedSizeId}
           />
+        </div>
+
+        <div>
+          {currentVariant && (
+            <div className="">
+              <span className="text-text">الكمية: </span>
+              <span
+                className={`font-medium ${
+                  currentVariant?.stock && currentVariant.stock > 0
+                    ? "text-success"
+                    : "text-red-600"
+                }`}
+              >
+                {currentVariant?.stock && currentVariant.stock > 0
+                  ? currentVariant.stock
+                  : "غير متوفر في المخزون"}
+              </span>
+            </div>
+          )}
         </div>
 
         <button
