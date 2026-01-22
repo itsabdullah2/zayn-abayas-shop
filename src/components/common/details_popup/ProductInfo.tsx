@@ -39,6 +39,8 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
     }
   };
 
+  const isVariantAvailable = currentVariant && currentVariant.stock > 0;
+
   return (
     <div className="col-span-2">
       <div className=" pb-2 border-b border-soft-gray">
@@ -58,11 +60,13 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
             colors={colors}
             selectedColorId={selectedColorId}
             onColorChange={setSelectedColorId}
+            isAvailable={isVariantAvailable}
           />
           <SizeSelection
             sizes={sizes}
             selectedSizeId={selectedSizeId}
             onSizeChange={setSelectedSizeId}
+            isAvailable={isVariantAvailable}
           />
         </div>
 

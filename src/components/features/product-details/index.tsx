@@ -77,7 +77,7 @@ const ProductDetails = () => {
   const targetVariant = variants.find(
     (v) => v.color_id === selectedColorId && v.size_id === selectedSizeId,
   );
-  const isVariantAvailable = targetVariant && targetVariant.stock > 0;
+  const isVariantAvailable = variants.some((v) => v.stock && v.stock > 0);
 
   return (
     <section className="section-container flex-1 bg-neutral flex flex-col gap-5 lg:gap-8 xl:gap-10">
@@ -110,11 +110,13 @@ const ProductDetails = () => {
                 colors={colors}
                 selectedColorId={selectedColorId}
                 onColorChange={setSelectedColorId}
+                isAvailable={isVariantAvailable}
               />
               <SizeSelection
                 sizes={sizes}
                 selectedSizeId={selectedSizeId}
                 onSizeChange={setSelectedSizeId}
+                isAvailable={isVariantAvailable}
               />
             </div>
 

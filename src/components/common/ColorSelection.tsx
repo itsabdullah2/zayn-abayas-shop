@@ -5,6 +5,7 @@ type Props = {
   colors: ColorsAndSizesType[];
   selectedColorId: string;
   onColorChange: (colorId: string) => void;
+  isAvailable: boolean | undefined;
 };
 
 const sharedColorStyles =
@@ -12,7 +13,12 @@ const sharedColorStyles =
 const activeColorStyle = "border-primary p-[3px]";
 const inactiveColorStyle = "bg-light-gray border-soft-gray p-[2px]";
 
-const ColorSelection = ({ colors, selectedColorId, onColorChange }: Props) => {
+const ColorSelection = ({
+  colors,
+  selectedColorId,
+  onColorChange,
+  isAvailable,
+}: Props) => {
   return (
     <div className="flex-1 flex flex-col gap-1">
       <h4 className="text-primary font-medium text-[15px]">اختر اللون</h4>
@@ -22,8 +28,10 @@ const ColorSelection = ({ colors, selectedColorId, onColorChange }: Props) => {
             key={c.id}
             className={`${sharedColorStyles} ${
               selectedColorId === c.id ? activeColorStyle : inactiveColorStyle
-            }`}
+            } ${isAvailable ? "" : "cursor-not-allowed opacity-50"}`}
             onClick={() => onColorChange(c.id)}
+            disabled={!isAvailable}
+            aria-label={`Select color ${c.name}`}
           >
             <span
               className={`${
