@@ -24,9 +24,12 @@ html {
   --color-soft-gray: #99a1af;
   --color-light-gray: #e5e7eb;
   --color-dark-gray: #6a7282;
+  --color-success: oklch(62.7% 0.194 149.214);
+
   --font-noto-kufi: "Noto Kufi Arabic", Tahoma, Arial, sans-serif;
-  --font-roboto: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Helvetica Neue", Arial, sans-serif;
+  --font-roboto:
+    "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
 
   --animate-shine: shine 0.8s ease-in-out;
   --animate-appear: appear 0.5s ease-in-out;
