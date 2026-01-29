@@ -37,7 +37,7 @@ export const createOrder = async ({
         quantity: item.quantity,
         order_id: order.id,
         order_price: item.price,
-      })
+      }),
     );
 
     const { error: itemsError } = await supabase
@@ -61,7 +61,7 @@ export const updateOrderStatus = async (
   status: string,
   orderId: string,
   userId?: string,
-  isAdmin: boolean = false
+  isAdmin: boolean = false,
 ) => {
   try {
     let query = supabase.from("orders").update({ status }).eq("id", orderId);
@@ -104,7 +104,7 @@ export const cancelOrder = async (orderId: string, userId: string) => {
 export const getUserOrders = async (
   userId: string,
   limit: number = 10,
-  offset: number = 0
+  offset: number = 0,
 ): Promise<FullOrder[]> => {
   try {
     const { data, error } = await supabase
@@ -123,7 +123,7 @@ export const getUserOrders = async (
           product_price
         )
       )
-      `
+      `,
       )
       .eq("user_id", userId)
       .range(offset, offset + limit - 1)
@@ -143,7 +143,7 @@ export const getUserOrders = async (
 
 export const getAllOrders = async (
   limit: number = 10,
-  offset: number = 0
+  offset: number = 0,
 ): Promise<FullOrder[]> => {
   try {
     const { data, error } = await supabase
@@ -162,7 +162,7 @@ export const getAllOrders = async (
           product_price
         )
       )
-      `
+      `,
       )
       .range(offset, offset + limit - 1)
       .order("created_at", { ascending: false });
@@ -198,7 +198,7 @@ export const getAllOrdersFromOrdersTableOnly = async (): Promise<
 };
 
 export const getTopProducts = async (
-  limit: number = 10
+  limit: number = 10,
 ): Promise<TTopProducts[]> => {
   try {
     // The rpc stands for Remote Procedure Call and this let's you execute functions created inside DB in PostgreSQL directly inside your frontend.

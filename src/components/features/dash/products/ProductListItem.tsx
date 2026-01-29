@@ -13,6 +13,7 @@ type TSoldProducts = ProductType & {
   stock: number;
   remainingStock: number;
   soldQuantity: number;
+  totalStock: number;
 };
 
 type Props = {
@@ -25,8 +26,9 @@ type Props = {
 const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
   const handleEditClick = useContextSelector(
     AppContext,
-    (ctx) => ctx?.handleEditClick
+    (ctx) => ctx?.handleEditClick,
   )!;
+
   const targetSoldProduct = soldProducts.find((o) => o.id === product.id);
 
   return (
@@ -69,7 +71,7 @@ const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
                 المخزون:
               </span>
               <span className={`font-medium text-primary text-sm`}>
-                {targetSoldProduct?.remainingStock ?? product.stock}
+                {targetSoldProduct?.totalStock}
               </span>
             </div>
             <div className="flex items-center gap-1">

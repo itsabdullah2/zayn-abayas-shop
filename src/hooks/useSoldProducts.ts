@@ -1,4 +1,4 @@
-import type { Order, OrderItem } from "@/supabase/types";
+import type { Order, OrderItem, VariantsTableType } from "@/supabase/types";
 import type { ProductType } from "@/types";
 import { calculateSoldProducts } from "@/utils/calculateSoldProducts";
 import { useMemo } from "react";
@@ -11,11 +11,18 @@ type EnrichedProduct = ProductType & {
 export function useSoldProducts(
   products: EnrichedProduct[],
   orders: Order[],
-  orderItems: OrderItem[]
+  orderItems: OrderItem[],
+  variants: VariantsTableType[],
 ) {
   return useMemo(() => {
-    if (!products?.length || !orders?.length || !orderItems?.length) return [];
+    if (
+      !products?.length ||
+      // !orders?.length ||
+      // !orderItems?.length ||
+      !variants?.length
+    )
+      return [];
 
-    return calculateSoldProducts(products, orders, orderItems);
-  }, [products, orders, orderItems]);
+    return calculateSoldProducts(products, orders, orderItems, variants);
+  }, [products, orders, orderItems, variants]);
 }

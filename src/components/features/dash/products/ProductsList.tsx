@@ -6,6 +6,7 @@ import { useSoldProducts } from "@/hooks/useSoldProducts";
 import useOrders from "@/hooks/useOrders";
 import useOrderItems from "@/hooks/useOrderItems";
 import React from "react";
+import { useVariants } from "@/hooks/useVariants";
 
 const ProductsList = ({ onClick }: { onClick: (id: string) => void }) => {
   const { data: products = [] } = useShowProducts();
@@ -15,15 +16,19 @@ const ProductsList = ({ onClick }: { onClick: (id: string) => void }) => {
   });
   const { data: orders = [] } = useOrders();
   const { orderItemsData } = useOrderItems();
+
+  const { data: variants = [] } = useVariants();
+  // console.log("============ \n", variants);
   const soldProducts = useSoldProducts(
     enrichedProducts,
     orders,
-    orderItemsData
+    orderItemsData,
+    variants,
   );
 
   if (isLoading) {
     return (
-      <div className="responsive-grid">
+      <div className="responsive-grid mt-8">
         {Array.from({ length: 8 }).map((_, i) => (
           <SkeletonCard key={i} />
         ))}
