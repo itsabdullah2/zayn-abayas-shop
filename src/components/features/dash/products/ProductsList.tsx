@@ -18,7 +18,7 @@ const ProductsList = ({ onClick }: { onClick: (id: string) => void }) => {
   const { orderItemsData } = useOrderItems();
 
   const { data: variants = [] } = useVariants();
-  // console.log("============ \n", variants);
+
   const soldProducts = useSoldProducts(
     enrichedProducts,
     orders,

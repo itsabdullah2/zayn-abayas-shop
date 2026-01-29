@@ -15,13 +15,7 @@ export function useSoldProducts(
   variants: VariantsTableType[],
 ) {
   return useMemo(() => {
-    if (
-      !products?.length ||
-      // !orders?.length ||
-      // !orderItems?.length ||
-      !variants?.length
-    )
-      return [];
+    if (!products?.length || !variants?.length) return [];
 
     return calculateSoldProducts(products, orders, orderItems, variants);
   }, [products, orders, orderItems, variants]);
