@@ -5,6 +5,7 @@ import useOrderItems from "@/hooks/useOrderItems";
 import useOrders from "@/hooks/useOrders";
 import { useShowProducts } from "@/hooks/useProducts";
 import { useSoldProducts } from "@/hooks/useSoldProducts";
+import { useVariants } from "@/hooks/useVariants";
 import { PriceFormatter } from "@/utils/formatePrice";
 import React from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
@@ -13,7 +14,7 @@ import { useContextSelector } from "use-context-selector";
 const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
   const handleEditClick = useContextSelector(
     AppContext,
-    (ctx) => ctx?.handleEditClick
+    (ctx) => ctx?.handleEditClick,
   )!;
   const { data: products = [] } = useShowProducts();
   const { data: enrichedProducts = [], isLoading } = useEnrichedProducts({
@@ -21,10 +22,12 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
   });
   const { data: orders = [] } = useOrders();
   const { orderItemsData } = useOrderItems();
+  const { data: variants = [] } = useVariants();
   const soldProducts = useSoldProducts(
     enrichedProducts,
     orders,
-    orderItemsData
+    orderItemsData,
+    variants,
   );
 
   if (isLoading) {
@@ -63,7 +66,7 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
           <tbody>
             {enrichedProducts.map((product) => {
               const targetSoldProduct = soldProducts.find(
-                (o) => o.id === product.id
+                (o) => o.id === product.id,
               );
               return (
                 <tr key={product.id} className="even:bg-gray-300">
