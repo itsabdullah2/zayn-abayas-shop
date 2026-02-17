@@ -21,7 +21,7 @@ const Home = () => {
         />
         <ProductGrid
           title="المنتجات الجديدة"
-          limit={4}
+          limit={3}
           eqCol="is_best_seller"
           eqVal={false}
         />
