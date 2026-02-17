@@ -23,6 +23,10 @@ const ProductDetailsPopup = ({ productId }: { productId: string }) => {
     AppContext,
     (ctx) => ctx?.closeProductPopup,
   )!;
+  const productPopup = useContextSelector(
+    AppContext,
+    (ctx) => ctx?.productPopup,
+  );
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -49,6 +53,18 @@ const ProductDetailsPopup = ({ productId }: { productId: string }) => {
     if (productId) fetchProduct();
   }, [productId]);
 
+  useEffect(() => {
+    if (productPopup) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [productPopup]);
+
   // Handle close on outside click or escape key pass
   useCloseOnOutsideOrEscape({
     ref: popupRef,
@@ -60,7 +76,7 @@ const ProductDetailsPopup = ({ productId }: { productId: string }) => {
       <div className="fixed bg-black/70 top-0 left-0 w-full h-full z-90" />
       <section className="">
         <div
-          className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-100 bg-neutral text-primary py-8 px-5 rounded-xl w-[95vw] sm:w-162.5 min-h-112.5 overflow-y-auto `}
+          className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-100 bg-neutral text-primary py-8 px-5 rounded-xl w-[95vw] sm:w-162.5 max-h-175 overflow-y-auto `}
           ref={popupRef}
         >
           <LoadingOrError loading={loading} error={error} />
