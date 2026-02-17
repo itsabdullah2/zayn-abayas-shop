@@ -6,7 +6,7 @@ const ProductImg = ({ product }: { product: ProductType }) => {
       <img
         src={product?.product_img as string}
         alt={product?.product_name}
-        className="rounded-md w-40 md:w-full"
+        className="rounded-md w-60 md:w-100"
       />
 
       <figcaption className="mt-1 text-center font-bold mb-2 text-[1.125rem]">
