@@ -51,8 +51,8 @@ const Table = ({ orders, loading }: Props) => {
     // Optimistic UI Update
     setLocalOrders((prev) =>
       prev.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
+        order.id === orderId ? { ...order, status: newStatus } : order,
+      ),
     );
     try {
       const userId = localOrders.find((order) => order.id === orderId)?.user_id;
@@ -77,8 +77,8 @@ const Table = ({ orders, loading }: Props) => {
                 ...order,
                 status: orders.find((origin) => origin.id === orderId)!.status,
               }
-            : order
-        )
+            : order,
+        ),
       );
       toast.error("حدث خطأ أثناء تحديث حالة الطلب. حاول مرة أخرى.");
       throw err;
@@ -134,8 +134,8 @@ const Table = ({ orders, loading }: Props) => {
     // Optimistic UI Update
     setLocalOrders((prev) =>
       prev.map((order) =>
-        order.id === orderId ? { ...order, status: "returned" } : order
-      )
+        order.id === orderId ? { ...order, status: "returned" } : order,
+      ),
     );
 
     try {
@@ -161,8 +161,8 @@ const Table = ({ orders, loading }: Props) => {
                 ...order,
                 status: orders.find((origin) => origin.id === orderId)!.status,
               }
-            : order
-        )
+            : order,
+        ),
       );
       toast.error("حدث خطأ أثناء تأكيد الإرجاع");
     }
@@ -197,68 +197,70 @@ const Table = ({ orders, loading }: Props) => {
               لا يوجد طلبات
             </div>
           ) : (
-            <table className="min-w-full">
-              <thead>
-                <tr>
-                  <th className="text-center p-3">رقم الطلب</th>
-                  <th className="text-center p-3">العميل</th>
-                  <th className="text-center p-3">الكمية</th>
-                  <th className="text-center p-3">المجموع</th>
-                  <th className="text-center p-3">الحالة</th>
-                  <th className="text-center p-3">تاريخ الطلب</th>
-                </tr>
-              </thead>
-              <tbody>
-                {localOrders.map((order) => {
-                  const user = users.find((u) => u.id === order.user_id);
-                  return (
-                    <tr key={order.id} className="odd:bg-gray-300">
-                      <td className="text-center p-2 rounded-tr-md rounded-br-md">
-                        {order.order_number}
-                      </td>
-                      <td className="text-center p-2 first-letter:capitalize">
-                        {user?.username ?? "مستخدم غير معروف"}
-                      </td>
+            <div className="w-full overflow-x-auto">
+              <table className="min-w-125 w-full">
+                <thead>
+                  <tr>
+                    <th className="text-center p-3">رقم الطلب</th>
+                    <th className="text-center p-3">العميل</th>
+                    <th className="text-center p-3">الكمية</th>
+                    <th className="text-center p-3">المجموع</th>
+                    <th className="text-center p-3">الحالة</th>
+                    <th className="text-center p-3">تاريخ الطلب</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {localOrders.map((order) => {
+                    const user = users.find((u) => u.id === order.user_id);
+                    return (
+                      <tr key={order.id} className="odd:bg-gray-300">
+                        <td className="text-center p-2 rounded-tr-md rounded-br-md">
+                          {order.order_number}
+                        </td>
+                        <td className="text-center p-2 first-letter:capitalize">
+                          {user?.username ?? "مستخدم غير معروف"}
+                        </td>
 
-                      <td className="text-center p-2">
-                        {order.order_items[0]?.quantity}
-                      </td>
-                      <td className="text-center p-2">
-                        {order.total_price} E.L
-                      </td>
-                      {/* <td className="text-center p-2">{order.status}</td> */}
-                      <td className="text-center p-2 relative">
-                        {order.status === "return" ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <Button
-                              className="cursor-pointer bg-transparent border border-red-400 text-primary hover:bg-transparent animate-return-ripple"
-                              onClick={() => {
-                                openReturnInfoPopup();
-                                setIsOrderId({
-                                  orderItemId: order.order_items[0].id,
-                                  orderId: order.id,
-                                });
-                              }}
-                            >
-                              العميل يريد استرجاع المنتج
-                            </Button>
-                          </div>
-                        ) : (
-                          <Dropdown
-                            status={order.status}
-                            handleStatusChange={handleStatusChange}
-                            orderId={order.id}
-                          />
-                        )}
-                      </td>
-                      <td className="text-center p-2 rounded-tl-md rounded-bl-md">
-                        {formateDate(order.created_at)}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        <td className="text-center p-2">
+                          {order.order_items[0]?.quantity}
+                        </td>
+                        <td className="text-center p-2">
+                          {order.total_price} E.L
+                        </td>
+                        {/* <td className="text-center p-2">{order.status}</td> */}
+                        <td className="text-center p-2 relative">
+                          {order.status === "return" ? (
+                            <div className="flex items-center justify-center gap-2">
+                              <Button
+                                className="cursor-pointer bg-transparent border border-red-400 text-primary hover:bg-transparent animate-return-ripple"
+                                onClick={() => {
+                                  openReturnInfoPopup();
+                                  setIsOrderId({
+                                    orderItemId: order.order_items[0].id,
+                                    orderId: order.id,
+                                  });
+                                }}
+                              >
+                                العميل يريد استرجاع المنتج
+                              </Button>
+                            </div>
+                          ) : (
+                            <Dropdown
+                              status={order.status}
+                              handleStatusChange={handleStatusChange}
+                              orderId={order.id}
+                            />
+                          )}
+                        </td>
+                        <td className="text-center p-2 rounded-tl-md rounded-bl-md">
+                          {formateDate(order.created_at)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
