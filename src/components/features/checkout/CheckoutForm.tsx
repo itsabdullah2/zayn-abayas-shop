@@ -69,6 +69,11 @@ const CheckoutForm = () => {
     const cardElement = elements.getElement("card");
     if (!cardElement) return;
 
+    if (formData.country.length > 2) {
+      setError("رمز البلد يجب أن يكون حرفين فقط (مثال: US, EG)");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -92,16 +97,16 @@ const CheckoutForm = () => {
             price: variant.price,
             stock: variant.stock,
           };
-        })
+        }),
       );
 
       // Step 1: Check the stock if the product is available
       const outOfStock = enrichedItems.find(
-        (item) => item.stock < item.quantity
+        (item) => item.stock < item.quantity,
       );
       if (outOfStock) {
         setError(
-          `الكمية المطلوبة من المنتج غير متوفرة (variant ${outOfStock.variant_id})`
+          `الكمية المطلوبة من المنتج غير متوفرة (variant ${outOfStock.variant_id})`,
         );
         setLoading(false);
         return;
@@ -173,7 +178,7 @@ const CheckoutForm = () => {
             id: item.variant_id,
             stock: newStock,
           });
-        })
+        }),
       );
 
       setSubmitted(true);
@@ -198,7 +203,7 @@ const CheckoutForm = () => {
     return (
       <>
         <div className="absolute top-0 left-0 w-full h-full bg-black/70 z-10" />
-        <div className="flex flex-col items-center justify-center w-[95vw] sm:w-[500px] bg-white rounded-xl py-4 px-5 absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 overflow-y-hidden">
+        <div className="flex flex-col items-center justify-center w-[95vw] sm:w-125 bg-white rounded-xl py-4 px-5 absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 overflow-y-hidden">
           <div className="bg-green-100 p-6 rounded-full mb-4 animate-bounce">
             <svg
               className="w-12 h-12 text-green-600"
