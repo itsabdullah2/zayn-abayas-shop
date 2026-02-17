@@ -25,7 +25,7 @@ type ProductGridProps = {
 const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
   const openProductPopup = useContextSelector(
     AppContext,
-    (ctx) => ctx?.openProductPopup
+    (ctx) => ctx?.openProductPopup,
   )!;
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["home-products"],
+    queryKey: ["home-products", eqCol, eqVal, limit],
     queryFn: async (): Promise<EnrichedProductType[]> => {
       const products = await getProducts({ eqCol, eqVal, limit });
 
@@ -49,8 +49,9 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
           } catch (err) {
             return { ...product };
           }
-        })
+        }),
       );
+      console.log("Fetched products:", enriched);
       return enriched;
     },
     staleTime: 5 * 1000 * 60, // 5 minutes
