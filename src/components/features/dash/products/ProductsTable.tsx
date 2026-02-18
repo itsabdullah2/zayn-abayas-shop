@@ -44,7 +44,7 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
     <>
       {/* <div className={`mt-8 w-full overflow-x-auto`}> */}
       <div className="mt-8 overflow-x-auto w-full">
-        <table className="w-full min-w-[800px]">
+        <table className="w-full min-w-200">
           <thead className="">
             <tr className="">
               <th
@@ -77,7 +77,7 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
                     {PriceFormatter(product.product_price, "en")}
                   </td>
                   <td className="p-3 text-sm">
-                    {targetSoldProduct?.remainingStock ?? product.stock}
+                    {targetSoldProduct?.remainingStock}
                   </td>
                   <td className="p-3 text-sm">
                     {targetSoldProduct?.soldQuantity ?? 0}
@@ -104,7 +104,7 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
                         src={product.product_img as string}
                         alt={product.product_name}
                         loading="lazy"
-                        className="w-[100px] max-w-full object-cover rounded-md"
+                        className="w-25 max-w-full object-cover rounded-md"
                       />
                     </picture>
                   </td>
