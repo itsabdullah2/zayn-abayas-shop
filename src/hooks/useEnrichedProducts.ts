@@ -22,13 +22,15 @@ export const useEnrichedProducts = ({
       return await Promise.all(
         products.map(async (product) => {
           try {
+            // We need to enrich the whole variants stock not just the first one
+            // So, we should calculate the stock of the whole variants
             const variants = await getVariants({ productId: product.id });
             const { price, stock } = variants[0];
             return { ...product, price, stock };
           } catch (err) {
             return { ...product, stock: 0 };
           }
-        })
+        }),
       );
     },
     enabled: enabled && products.length > 0,
