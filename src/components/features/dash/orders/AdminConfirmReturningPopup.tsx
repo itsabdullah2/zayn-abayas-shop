@@ -38,7 +38,7 @@ const AdminConfirmReturningPopup = ({
   return (
     <>
       <div className="fixed inset-0 bg-black/70 w-full h-full z-20" />
-      <div className="absolute-center fixed! z-50 w-[95vw] sm:w-[500px] bg-white rounded-xl py-4 px-5">
+      <div className="absolute-center fixed! z-50 w-[95vw] sm:w-125 bg-white rounded-xl py-4 px-5">
         <div className="flex flex-col gap-2 mb-5">
           <div className="flex flex-col gap-1">
             <h3 className={`${sharedQuestionsStyles}`}>سبب الاسترجاع</h3>
