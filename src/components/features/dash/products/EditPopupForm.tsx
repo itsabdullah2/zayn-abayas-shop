@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AppContext } from "@/context/AppContext";
 // import { FaTimes } from "react-icons/fa";
 import { useContextSelector } from "use-context-selector";
@@ -11,16 +11,16 @@ const EditPopupForm = () => {
   const popupRef = React.useRef<HTMLDivElement | null>(null);
   const productId = useContextSelector(
     AppContext,
-    (ctx) => ctx?.isEditPopupForm
+    (ctx) => ctx?.isEditPopupForm,
   )!;
   const onCancel = useContextSelector(AppContext, (ctx) => ctx?.handleCancel);
   const editingData = useContextSelector(
     AppContext,
-    (ctx) => ctx?.editingData
+    (ctx) => ctx?.editingData,
   )!;
   const handleEditFieldChange = useContextSelector(
     AppContext,
-    (ctx) => ctx?.handleEditFieldChange
+    (ctx) => ctx?.handleEditFieldChange,
   )!;
 
   const updateProductMutation = useUpdateProduct();
@@ -35,6 +35,18 @@ const EditPopupForm = () => {
     ref: popupRef,
     onClose: () => onCancel && onCancel(),
   });
+
+  useEffect(() => {
+    if (productId) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [productId]);
 
   return productId ? (
     <>

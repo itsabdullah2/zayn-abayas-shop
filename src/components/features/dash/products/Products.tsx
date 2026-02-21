@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import DashboardNavbar from "../DashboardNavbar";
 import ProductsList from "./ProductsList";
@@ -16,7 +16,7 @@ const Products = () => {
 
   const newProductData = useContextSelector(
     ProductContext,
-    (ctx) => ctx?.newProductData
+    (ctx) => ctx?.newProductData,
   );
   const variants = useContextSelector(ProductContext, (ctx) => ctx?.variants);
 
@@ -46,6 +46,18 @@ const Products = () => {
       console.error("Failed to add new product:", err);
     }
   };
+
+  useEffect(() => {
+    if (targetProductId) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [targetProductId]);
 
   return (
     <>
