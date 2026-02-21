@@ -2,7 +2,7 @@ import type { Order, OrderItem, VariantsTableType } from "@/supabase/types";
 import type { ProductType } from "@/types";
 
 type EnrichedProduct = ProductType & {
-  stock: number;
+  enrichedVariants: { id: string; stock: number; price: number }[];
 };
 
 export function calculateSoldProducts(
@@ -36,7 +36,10 @@ export function calculateSoldProducts(
       .reduce((sum, v) => sum + v.stock, 0);
 
     // return remaining stock and sold quantity
-    const remainingStock = product.stock - soldQuantity;
+    const remainingStock = product.enrichedVariants.reduce(
+      (sum, variant) => sum + (variant.stock || 0),
+      0,
+    );
     return {
       ...product,
       soldQuantity,
