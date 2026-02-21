@@ -28,7 +28,7 @@ type AppContextType = {
   handleCancel: () => void;
   handleSubmitEdits: (e: React.FormEvent<HTMLFormElement>) => void;
   handleEditFieldChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
   handleEditClick: (product: ProductType) => void;
 };
@@ -56,7 +56,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleSubmitEdits = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log("The Edited Data is:", editingData);
   };
   const handleEditClick = (product: ProductType) => {
     setEditingData({
@@ -73,7 +72,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setEditingData(INITIAL_STATE);
   };
   const handleEditFieldChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
 

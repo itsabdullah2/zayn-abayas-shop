@@ -17,10 +17,9 @@ export const useOrdersRealtime = () => {
           table: "orders",
         },
         () => {
-          // console.log("Realtime change received:", payload);
           // Refetch all order-related queries
           queryClient.invalidateQueries({ queryKey: ["orders"] });
-        }
+        },
       )
       .subscribe();
 

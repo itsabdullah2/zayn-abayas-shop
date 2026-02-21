@@ -51,7 +51,7 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
           }
         }),
       );
-      console.log("Fetched products:", enriched);
+
       return enriched;
     },
     staleTime: 5 * 1000 * 60, // 5 minutes
