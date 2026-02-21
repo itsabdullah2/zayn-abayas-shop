@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 type EnrichedProduct = ProductType & {
   //   price?: number;
-  stock: number;
+  enrichedVariants: { id: string; stock: number; price: number }[];
 };
 
 export function useSoldProducts(
