@@ -59,6 +59,18 @@ const Products = () => {
     };
   }, [targetProductId]);
 
+  useEffect(() => {
+    if (isNewProduct) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [isNewProduct]);
+
   return (
     <>
       <DashboardNavbar />
