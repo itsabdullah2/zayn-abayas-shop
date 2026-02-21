@@ -6,11 +6,9 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import { useContextSelector } from "use-context-selector";
 
 type EnrichedProduct = ProductType & {
-  price?: number;
-  stock: number;
+  enrichedVariants: { id: string; stock: number; price: number }[];
 };
 type TSoldProducts = ProductType & {
-  stock: number;
   remainingStock: number;
   soldQuantity: number;
   totalStock: number;
