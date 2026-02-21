@@ -3,8 +3,7 @@ import type { ProductType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 type EnrichedProductType = ProductType & {
-  price?: number;
-  stock: number;
+  enrichedVariants: { id: string; stock: number; price: number }[];
 };
 
 interface UseEnrichedProductsProps {
@@ -22,13 +21,16 @@ export const useEnrichedProducts = ({
       return await Promise.all(
         products.map(async (product) => {
           try {
-            // We need to enrich the whole variants stock not just the first one
-            // So, we should calculate the stock of the whole variants
+            // Fetch and attach minimal variant data (id, stock, price) to product
             const variants = await getVariants({ productId: product.id });
-            const { price, stock } = variants[0];
-            return { ...product, price, stock };
+            const enriched = variants.map((v) => ({
+              id: v.id,
+              stock: v.stock,
+              price: v.price,
+            }));
+            return { ...product, enrichedVariants: enriched };
           } catch (err) {
-            return { ...product, stock: 0 };
+            return { ...product, enrichedVariants: [] };
           }
         }),
       );
