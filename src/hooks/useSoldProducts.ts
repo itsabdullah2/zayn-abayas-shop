@@ -4,7 +4,6 @@ import { calculateSoldProducts } from "@/utils/calculateSoldProducts";
 import { useMemo } from "react";
 
 type EnrichedProduct = ProductType & {
-  //   price?: number;
   enrichedVariants: { id: string; stock: number; price: number }[];
 };
 
