@@ -22,16 +22,19 @@ export type TProductData = {
 };
 
 type OrderContextType = {
+  // States
   newProductData: TProductData;
+  debouncedProductData: TProductData;
+  variants: TVariant[];
+  isTargetDialog: string | null;
+  // Functions
   handleFieldChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
   setNewProductData: React.Dispatch<React.SetStateAction<TProductData>>;
   resetProductData: () => void;
-  debouncedProductData: TProductData;
-
-  variants: TVariant[];
   setVariants: React.Dispatch<React.SetStateAction<TVariant[]>>;
+  handleTargetDialog: (productId: string | null) => void;
 };
 
 export const ProductContext = createContext<OrderContextType | null>(null);
@@ -56,12 +59,13 @@ export const ProductProvider = ({
   const [newProductData, setNewProductData] =
     useState<TProductData>(INITIAL_STATE);
   const [variants, setVariants] = useState<TVariant[]>([]);
+  const [isTargetDialog, setIsTargetDialog] = useState<string | null>(null);
 
   useEffect(() => {
     setVariants((prev) => {
       // Preserve Stock if Varian Already Exists
       const existingMap = new Map(
-        prev.map((v) => [`${v.color_id}-${v.size_id}`, v])
+        prev.map((v) => [`${v.color_id}-${v.size_id}`, v]),
       );
 
       return newProductData.variants.selections.flatMap(
@@ -76,7 +80,7 @@ export const ProductProvider = ({
                 stock: 0,
               }
             );
-          })
+          }),
       );
     });
   }, [newProductData.variants.selections]);
@@ -84,7 +88,7 @@ export const ProductProvider = ({
   const debouncedProductData = useDebounce<TProductData>(newProductData, 500);
 
   const handleFieldChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
 
@@ -112,15 +116,21 @@ export const ProductProvider = ({
     setVariants([]);
   };
 
+  const handleTargetDialog = (productId: string | null) => {
+    setIsTargetDialog((prev) => (prev === productId ? null : productId));
+  };
+
   const values: OrderContextType = {
     newProductData,
     debouncedProductData,
     variants,
+    isTargetDialog,
     // Functions
     setNewProductData,
     handleFieldChange,
     resetProductData,
     setVariants,
+    handleTargetDialog,
   };
 
   return (
