@@ -41,6 +41,30 @@ export const useGetVariantById = (id: string) => {
   });
 };
 
+export const useGetVariantByProductId = (productId: string) => {
+  return useQuery({
+    queryKey: ["product-variant", productId],
+    queryFn: async () => {
+      if (!productId) {
+        throw new Error("Product ID is required");
+      }
+
+      const { data, error } = await supabase
+        .from("product_variants")
+        .select("*")
+        .eq("product_id", productId);
+      // .single();
+
+      if (error) {
+        console.error("Failed to get product variants", error.message);
+        throw error;
+      }
+
+      return data;
+    },
+  });
+};
+
 type TMutationProps = {
   id: string;
   stock: number;
