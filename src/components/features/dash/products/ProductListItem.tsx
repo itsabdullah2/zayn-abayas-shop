@@ -1,9 +1,11 @@
 import { AppContext } from "@/context/AppContext";
 import type { ProductType } from "@/types";
 import { PriceFormatter } from "@/utils/formatePrice";
-import React from "react";
+import React, { useRef } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { useContextSelector } from "use-context-selector";
+import VariantsDialog from "./VariantsDialog";
+import { ProductContext } from "@/context/ProductContext";
 
 type EnrichedProduct = ProductType & {
   enrichedVariants: { id: string; stock: number; price: number }[];
@@ -26,11 +28,21 @@ const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
     AppContext,
     (ctx) => ctx?.handleEditClick,
   )!;
+  const isTargetDialog = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.isTargetDialog,
+  );
+  const handleTargetDialog = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.handleTargetDialog,
+  )!;
+
+  const dialogRef = useRef<HTMLDivElement | null>(null);
 
   const targetSoldProduct = soldProducts.find((o) => o.id === product.id);
 
   return (
-    <>
+    <div className="relative">
       <figure
         key={product.id}
         className="card-style group animate-appear "
@@ -79,6 +91,13 @@ const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
               </span>
             </div>
           </div>
+
+          <button
+            onClick={() => handleTargetDialog(product.id)}
+            className={`cursor-pointer text-sm py-1 px-2 border border-primary rounded `}
+          >
+            اظهار قائمة الخيارات
+          </button>
         </figcaption>
 
         <div className="action-btns group-hover:top-2">
@@ -96,7 +115,10 @@ const ProductListItem = ({ product, idx, soldProducts, onClick }: Props) => {
           </button>
         </div>
       </figure>
-    </>
+      {isTargetDialog === product.id ? (
+        <VariantsDialog productId={isTargetDialog} ref={dialogRef} />
+      ) : null}
+    </div>
   );
 };
 
