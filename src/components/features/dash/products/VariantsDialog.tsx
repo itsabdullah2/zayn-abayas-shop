@@ -27,7 +27,7 @@ const VariantsDialog = ({
   return (
     <div
       ref={ref}
-      className={`w-full bg-light-gray py-1 px-2 rounded-lg absolute left-0 top-[calc(100%+10px)] shadow-md z-10 min-h-20`}
+      className={`w-full bg-light-gray py-3 px-5 rounded-lg absolute left-0 top-[calc(100%+10px)] shadow-md z-10 max-h-50 overflow-y-auto`}
     >
       <ul className="flex flex-col gap-2">
         {isLoading
