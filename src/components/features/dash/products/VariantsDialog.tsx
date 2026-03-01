@@ -1,6 +1,6 @@
 import { ProductContext } from "@/context/ProductContext";
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
-import { useGetVariantByProductId } from "@/hooks/useVariants";
+import { useGetProductVariantsViewModel } from "@/hooks/useVariants";
 import React from "react";
 import { useContextSelector } from "use-context-selector";
 
@@ -11,8 +11,8 @@ const VariantsDialog = ({
   productId: string;
   ref: React.RefObject<HTMLDivElement | null>;
 }) => {
-  const { data: variants = [], isLoading } =
-    useGetVariantByProductId(productId);
+  const { data: variantsVM = [], isLoading } =
+    useGetProductVariantsViewModel(productId);
 
   const handleTargetDialog = useContextSelector(
     ProductContext,
@@ -32,7 +32,7 @@ const VariantsDialog = ({
       <ul className="flex flex-col gap-2">
         {isLoading
           ? "Loading..."
-          : variants.map((v) => <li key={v.id}>{v.price}</li>)}
+          : variantsVM.map((v) => <li key={v.id}>{v.price}</li>)}
       </ul>
     </div>
   );
