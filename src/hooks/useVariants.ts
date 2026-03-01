@@ -112,6 +112,29 @@ export const useColors = () => {
   });
 };
 
+export const getColorById = (colorId: string) => {
+  return useQuery({
+    queryKey: ["target-color", colorId],
+    queryFn: async () => {
+      if (!colorId) {
+        throw new Error("Color ID is required");
+      }
+
+      const { data, error } = await supabase
+        .from("colors")
+        .select("*")
+        .single();
+
+      if (error) {
+        console.error("Failed to get the color:", error.message);
+        throw error;
+      }
+
+      return data;
+    },
+  });
+};
+
 export const useSizes = () => {
   return useQuery<TSingleVariant[]>({
     queryKey: ["variants-sizes"],
@@ -130,5 +153,68 @@ export const useSizes = () => {
       }
     },
     staleTime: 5 * 1000 * 60, // 5 minutes
+  });
+};
+
+export const getSizeById = (sizeId: string) => {
+  return useQuery({
+    queryKey: ["target-size", sizeId],
+    queryFn: async () => {
+      if (!sizeId) {
+        throw new Error("Size ID is required");
+      }
+
+      const { data, error } = await supabase.from("sizes").select("*").single();
+
+      if (error) {
+        console.error("Failed to get the size:", error.message);
+        throw error;
+      }
+
+      return data;
+    },
+  });
+};
+
+export const useGetProductVariantsViewModel = (productId: string) => {
+  return useQuery({
+    queryKey: ["variantsVM", productId],
+    queryFn: async () => {
+      if (!productId) {
+        throw new Error("Product ID is required");
+      }
+
+      const { data, error } = await supabase
+        .from("product_variants")
+        .select(
+          `
+          id,
+          stock,
+          price,
+          colors (
+            id,
+            name,
+            is_available
+          ),
+          sizes (
+            id,
+            name,
+            is_available
+          )`,
+        )
+        .eq("product_id", productId);
+
+      if (error) {
+        console.error("Failed to fetch product variants VM:", error.message);
+        throw new Error(error.message);
+      }
+
+      if (!data || data.length === 0) {
+        throw new Error("No product variants found for the given product ID");
+      }
+
+      return data;
+    },
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
 };
