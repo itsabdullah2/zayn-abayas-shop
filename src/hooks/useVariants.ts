@@ -180,8 +180,8 @@ type TVariantsVM = {
   id: string;
   stock: number;
   price: number;
-  colors: { id: string; name: string; is_available: boolean }[];
-  sizes: { id: string; name: string; is_available: boolean }[];
+  colors: { id: string; name: string; is_available: boolean };
+  sizes: { id: string; name: string; is_available: boolean };
   isLowStock: boolean;
   isOutOfStock: boolean;
 };
@@ -201,12 +201,12 @@ export const useGetProductVariantsViewModel = (productId: string) => {
           id,
           stock,
           price,
-          colors (
+          colors:color_id (
             id,
             name,
             is_available
           ),
-          sizes (
+          sizes:size_id (
             id,
             name,
             is_available
@@ -227,8 +227,8 @@ export const useGetProductVariantsViewModel = (productId: string) => {
         id: v.id,
         stock: v.stock,
         price: v.price,
-        colors: v.colors,
-        sizes: v.sizes,
+        colors: v.colors[0], // Fix this later
+        sizes: v.sizes[0], // Fix this later
         isLowStock: v.stock > 0 && v.stock <= 5,
         isOutOfStock: v.stock === 0,
       }));
