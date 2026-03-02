@@ -176,6 +176,16 @@ export const getSizeById = (sizeId: string) => {
   });
 };
 
+type TVariantsVM = {
+  id: string;
+  stock: number;
+  price: number;
+  colors: { id: string; name: string; is_available: boolean }[];
+  sizes: { id: string; name: string; is_available: boolean }[];
+  isLowStock: boolean;
+  isOutOfStock: boolean;
+};
+
 export const useGetProductVariantsViewModel = (productId: string) => {
   return useQuery({
     queryKey: ["variantsVM", productId],
@@ -213,7 +223,17 @@ export const useGetProductVariantsViewModel = (productId: string) => {
         throw new Error("No product variants found for the given product ID");
       }
 
-      return data;
+      const variants: TVariantsVM[] = data.map((v) => ({
+        id: v.id,
+        stock: v.stock,
+        price: v.price,
+        colors: v.colors,
+        sizes: v.sizes,
+        isLowStock: v.stock > 0 && v.stock <= 5,
+        isOutOfStock: v.stock === 0,
+      }));
+
+      return variants;
     },
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
