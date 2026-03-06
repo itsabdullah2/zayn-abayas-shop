@@ -35,8 +35,8 @@ const VariantsDialog = ({
           : variantsVM.map((v) => (
               <li key={v.id} className={`flex items-center gap-2`}>
                 <span>المخزون: {v.stock}</span> -
-                <span>اللون: {v.colors.name}</span> -
-                <span>الحجم: {v.sizes.name}</span>
+                <span>اللون: {v.color?.name}</span> -
+                <span>الحجم: {v.size?.name}</span>
               </li>
             ))}
       </ul>

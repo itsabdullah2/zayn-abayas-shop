@@ -180,8 +180,8 @@ type TVariantsVM = {
   id: string;
   stock: number;
   price: number;
-  colors: { id: string; name: string; is_available: boolean };
-  sizes: { id: string; name: string; is_available: boolean };
+  color: { id: string; name: string; isAvailable: boolean };
+  size: { id: string; name: string; isAvailable: boolean };
   isLowStock: boolean;
   isOutOfStock: boolean;
 };
@@ -201,12 +201,12 @@ export const useGetProductVariantsViewModel = (productId: string) => {
           id,
           stock,
           price,
-          colors:color_id (
+          colors (
             id,
             name,
             is_available
           ),
-          sizes:size_id (
+          sizes (
             id,
             name,
             is_available
@@ -223,15 +223,27 @@ export const useGetProductVariantsViewModel = (productId: string) => {
         throw new Error("No product variants found for the given product ID");
       }
 
-      const variants: TVariantsVM[] = data.map((v) => ({
-        id: v.id,
-        stock: v.stock,
-        price: v.price,
-        colors: v.colors[0], // Fix this later
-        sizes: v.sizes[0], // Fix this later
-        isLowStock: v.stock > 0 && v.stock <= 5,
-        isOutOfStock: v.stock === 0,
-      }));
+      const variants: TVariantsVM[] = data.map((v) => {
+        const color = Array.isArray(v.colors) ? v.colors[0] : v.colors;
+        const size = Array.isArray(v.sizes) ? v.sizes[0] : v.sizes;
+        return {
+          id: v.id,
+          stock: v.stock,
+          price: v.price,
+          color: {
+            id: color.id,
+            name: color.name,
+            isAvailable: color.is_available,
+          },
+          size: {
+            id: size.id,
+            name: size.name,
+            isAvailable: size.is_available,
+          },
+          isLowStock: v.stock > 0 && v.stock <= 5,
+          isOutOfStock: v.stock === 0,
+        };
+      });
 
       return variants;
     },
