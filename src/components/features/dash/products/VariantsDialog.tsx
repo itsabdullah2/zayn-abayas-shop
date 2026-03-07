@@ -1,8 +1,10 @@
 import { ProductContext } from "@/context/ProductContext";
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
 import { useGetProductVariantsViewModel } from "@/hooks/useVariants";
-import React from "react";
+import { translateVariantsOpts } from "@/utils/translateOptsInAddProductPopup";
+import React, { useEffect } from "react";
 import { useContextSelector } from "use-context-selector";
+import StockInput from "./StockInput";
 
 const VariantsDialog = ({
   productId,
@@ -24,22 +26,65 @@ const VariantsDialog = ({
     onClose: () => handleTargetDialog(null),
   });
 
+  useEffect(() => {
+    if (productId) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [productId]);
+
   return (
     <div
       ref={ref}
-      className={`w-full bg-light-gray py-3 px-5 rounded-lg absolute left-0 top-[calc(100%+10px)] shadow-md z-10 max-h-50 overflow-y-auto`}
+      className={`w-full bg-light-gray py-3 rounded-lg absolute left-0 bottom-0 shadow-md z-10 max-h-50 overflow-y-auto`}
     >
-      <ul className="flex flex-col gap-2">
-        {isLoading
-          ? "Loading..."
-          : variantsVM.map((v) => (
-              <li key={v.id} className={`flex items-center gap-2`}>
-                <span>المخزون: {v.stock}</span> -
-                <span>اللون: {v.color?.name}</span> -
-                <span>الحجم: {v.size?.name}</span>
-              </li>
+      {isLoading ? (
+        <p className="text-center py-2 px-4">تحميل قائمة المتغيرات</p>
+      ) : (
+        <table className="w-full">
+          <thead className="">
+            <td className="text-primary py-2 px-5 text-sm font-medium">
+              المخزون
+            </td>
+            <td className="text-primary py-2 px-5 text-sm font-medium">
+              اللون
+            </td>
+            <td className="text-primary py-2 px-5 text-sm font-medium">
+              الحجم
+            </td>
+            <td className="text-primary py-2 px-5 text-sm font-medium">
+              الحالة
+            </td>
+          </thead>
+          <tbody>
+            {variantsVM.map((v) => (
+              <tr key={v.id} className={`odd:bg-accent`}>
+                <td className="py-1 px-5 text-sm flex items-center gap-2">
+                  <StockInput variant={v} onSave={() => {}} />
+                </td>
+                <td className="py-1 px-5 text-sm">
+                  {translateVariantsOpts(v.color.name)}
+                </td>
+                <td className="py-1 px-5 text-sm">
+                  {v.size.name.toUpperCase()}
+                </td>
+                <td className="py-1 px-5 text-sm">
+                  {v.isOutOfStock
+                    ? "غير متوفر"
+                    : v.isLowStock
+                      ? "كمية قليلة"
+                      : "متوفر"}
+                </td>
+              </tr>
             ))}
-      </ul>
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
