@@ -1,6 +1,7 @@
 import { getVariants, supabase } from "@/supabase";
 import { updateVariant } from "@/supabase";
 import type { VariantsTableType } from "@/supabase/types";
+import type { TVariantsVM } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useVariants = () => {
@@ -174,16 +175,6 @@ export const getSizeById = (sizeId: string) => {
       return data;
     },
   });
-};
-
-type TVariantsVM = {
-  id: string;
-  stock: number;
-  price: number;
-  color: { id: string; name: string; isAvailable: boolean };
-  size: { id: string; name: string; isAvailable: boolean };
-  isLowStock: boolean;
-  isOutOfStock: boolean;
 };
 
 export const useGetProductVariantsViewModel = (productId: string) => {
