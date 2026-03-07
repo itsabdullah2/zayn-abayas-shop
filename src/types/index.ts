@@ -37,3 +37,13 @@ export type EnrichedCartItem = {
   price: number;
   stock: number;
 };
+
+export type TVariantsVM = {
+  id: string;
+  stock: number;
+  price: number;
+  color: { id: string; name: string; isAvailable: boolean };
+  size: { id: string; name: string; isAvailable: boolean };
+  isLowStock: boolean;
+  isOutOfStock: boolean;
+};
