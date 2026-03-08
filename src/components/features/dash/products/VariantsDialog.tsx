@@ -48,24 +48,26 @@ const VariantsDialog = ({
       ) : (
         <table className="w-full">
           <thead className="">
-            <td className="text-primary py-2 px-5 text-sm font-medium">
-              المخزون
-            </td>
-            <td className="text-primary py-2 px-5 text-sm font-medium">
-              اللون
-            </td>
-            <td className="text-primary py-2 px-5 text-sm font-medium">
-              الحجم
-            </td>
-            <td className="text-primary py-2 px-5 text-sm font-medium">
-              الحالة
-            </td>
+            <tr>
+              <th className="text-primary py-2 px-5 text-sm font-medium">
+                المخزون
+              </th>
+              <th className="text-primary py-2 px-5 text-sm font-medium">
+                اللون
+              </th>
+              <th className="text-primary py-2 px-5 text-sm font-medium">
+                الحجم
+              </th>
+              <th className="text-primary py-2 px-5 text-sm font-medium">
+                الحالة
+              </th>
+            </tr>
           </thead>
           <tbody>
             {variantsVM.map((v) => (
               <tr key={v.id} className={`odd:bg-accent`}>
                 <td className="py-1 px-5 text-sm flex items-center gap-2">
-                  <StockInput variant={v} onSave={() => {}} />
+                  <StockInput variant={v} />
                 </td>
                 <td className="py-1 px-5 text-sm">
                   {translateVariantsOpts(v.color.name)}
@@ -84,6 +86,11 @@ const VariantsDialog = ({
             ))}
           </tbody>
         </table>
+      )}
+      {isLoading ? null : (
+        <button className="mr-5 mt-3 py-1 px-5 border border-secondary rounded-md text-primary font-medium cursor-pointer">
+          حفظ
+        </button>
       )}
     </div>
   );
