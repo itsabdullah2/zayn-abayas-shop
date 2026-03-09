@@ -1,38 +1,30 @@
-// import { useUpdateVariant } from "@/hooks/useVariants";
+import { ProductContext } from "@/context/ProductContext";
 import type { TVariantsVM } from "@/types";
-import { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { useContextSelector } from "use-context-selector";
 
-type Props = {
-  variant: TVariantsVM;
-};
-
-const StockInput = ({ variant }: Props) => {
-  const [stock, setStock] = useState(variant.stock);
-
-  // const updateStockMutation = useUpdateVariant();
+const StockInput = ({ variant }: { variant: TVariantsVM }) => {
+  const stockChanges = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.stockChanges,
+  )!;
+  const updateStock = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.updateStock,
+  )!;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(0, Number(e.target.value) || 0);
-    setStock(value);
+    updateStock(variant.id, Number(e.target.value), variant.stock);
   };
 
-  // const handleUpdateVariantStock = async (variantId: string, stock: number) => {
-  //   await updateStockMutation.mutateAsync({
-  //     id: variantId,
-  //     stock,
-  //   });
-  // };
-
-  const handleIncrease = () => setStock((prev) => prev + 1);
-  const handleDecrease = () => setStock((prev) => Math.max(0, prev - 1));
-
-  const handleBlur = async () => {
-    // handleUpdateVariantStock(variant.id, stock);
-    // await updateStockMutation.mutateAsync({
-    //   id: variant.id,
-    //   stock,
-    // });
+  const handleIncrease = () => {
+    const current = stockChanges[variant.id] ?? variant.stock;
+    updateStock(variant.id, current + 1, variant.stock);
+  };
+  const handleDecrease = () => {
+    const current = stockChanges[variant.id] ?? variant.stock;
+    if (current <= 0) return;
+    updateStock(variant.id, current - 1, variant.stock);
   };
 
   return (
@@ -48,11 +40,10 @@ const StockInput = ({ variant }: Props) => {
         min={0}
         step={1}
         className="w-10 text-center"
-        name="stock-field"
+        name={variant.id}
         id={variant.id}
-        value={stock}
+        value={stockChanges[variant.id] ?? variant.stock}
         onChange={handleChange}
-        onBlur={handleBlur}
       />
       <button
         onClick={handleIncrease}
