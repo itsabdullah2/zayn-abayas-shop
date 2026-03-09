@@ -27,6 +27,7 @@ type OrderContextType = {
   debouncedProductData: TProductData;
   variants: TVariant[];
   isTargetDialog: string | null;
+  stockChanges: Record<string, number>;
   // Functions
   handleFieldChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -35,6 +36,7 @@ type OrderContextType = {
   resetProductData: () => void;
   setVariants: React.Dispatch<React.SetStateAction<TVariant[]>>;
   handleTargetDialog: (productId: string | null) => void;
+  updateStock: (variantId: string, value: number, original: number) => void;
 };
 
 export const ProductContext = createContext<OrderContextType | null>(null);
@@ -60,6 +62,7 @@ export const ProductProvider = ({
     useState<TProductData>(INITIAL_STATE);
   const [variants, setVariants] = useState<TVariant[]>([]);
   const [isTargetDialog, setIsTargetDialog] = useState<string | null>(null);
+  const [stockChanges, setStockChanges] = useState<Record<string, number>>({});
 
   useEffect(() => {
     setVariants((prev) => {
@@ -120,17 +123,32 @@ export const ProductProvider = ({
     setIsTargetDialog((prev) => (prev === productId ? null : productId));
   };
 
+  const updateStock = (variantId: string, value: number, original: number) => {
+    setStockChanges((prev) => {
+      // Create a new object copy - For reminder: React state must never be mutated directly
+      const next = { ...prev };
+      if (value === original) {
+        delete next[variantId];
+      } else {
+        next[variantId] = value;
+      }
+      return next;
+    });
+  };
+
   const values: OrderContextType = {
     newProductData,
     debouncedProductData,
     variants,
     isTargetDialog,
+    stockChanges,
     // Functions
     setNewProductData,
     handleFieldChange,
     resetProductData,
     setVariants,
     handleTargetDialog,
+    updateStock,
   };
 
   return (
