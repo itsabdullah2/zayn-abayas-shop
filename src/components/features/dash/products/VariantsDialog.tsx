@@ -20,6 +20,14 @@ const VariantsDialog = ({
     ProductContext,
     (ctx) => ctx?.handleTargetDialog,
   )!;
+  const stockChanges = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.stockChanges,
+  )!;
+  const setStockChanges = useContextSelector(
+    ProductContext,
+    (ctx) => ctx?.setStockChanges,
+  )!;
 
   useCloseOnOutsideOrEscape({
     ref: ref,
@@ -37,6 +45,14 @@ const VariantsDialog = ({
       document.body.style.overflowY = "auto";
     };
   }, [productId]);
+
+  const handleSave = async () => {
+    const updates = Object.entries(stockChanges);
+
+    await Promise.all(updates.map(([id, stock]) => ({ id, stock })));
+
+    setStockChanges({});
+  };
 
   return (
     <div
@@ -88,7 +104,10 @@ const VariantsDialog = ({
         </table>
       )}
       {isLoading ? null : (
-        <button className="mr-5 mt-3 py-1 px-5 border border-secondary rounded-md text-primary font-medium cursor-pointer">
+        <button
+          onClick={handleSave}
+          className="mr-5 mt-3 py-1 px-5 border border-secondary rounded-md text-primary font-medium cursor-pointer"
+        >
           حفظ
         </button>
       )}
