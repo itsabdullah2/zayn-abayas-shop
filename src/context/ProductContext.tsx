@@ -37,6 +37,7 @@ type OrderContextType = {
   setVariants: React.Dispatch<React.SetStateAction<TVariant[]>>;
   handleTargetDialog: (productId: string | null) => void;
   updateStock: (variantId: string, value: number, original: number) => void;
+  setStockChanges: React.Dispatch<React.SetStateAction<Record<string, number>>>;
 };
 
 export const ProductContext = createContext<OrderContextType | null>(null);
@@ -149,6 +150,7 @@ export const ProductProvider = ({
     setVariants,
     handleTargetDialog,
     updateStock,
+    setStockChanges,
   };
 
   return (
