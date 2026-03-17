@@ -100,6 +100,9 @@ export const useUpdateVariantsInAdminPage = () => {
       queryClient.invalidateQueries({
         queryKey: ["variantsVM"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["variants"],
+      });
     },
   });
 };
