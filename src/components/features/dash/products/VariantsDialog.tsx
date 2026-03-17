@@ -1,6 +1,9 @@
 import { ProductContext } from "@/context/ProductContext";
 import { useCloseOnOutsideOrEscape } from "@/hooks/useCloseOnOutsideOrEscape";
-import { useGetProductVariantsViewModel } from "@/hooks/useVariants";
+import {
+  useGetProductVariantsViewModel,
+  useUpdateVariantsInAdminPage,
+} from "@/hooks/useVariants";
 import { translateVariantsOpts } from "@/utils/translateOptsInAddProductPopup";
 import React, { useEffect } from "react";
 import { useContextSelector } from "use-context-selector";
@@ -15,6 +18,7 @@ const VariantsDialog = ({
 }) => {
   const { data: variantsVM = [], isLoading } =
     useGetProductVariantsViewModel(productId);
+  const variantsMutation = useUpdateVariantsInAdminPage();
 
   const handleTargetDialog = useContextSelector(
     ProductContext,
@@ -47,9 +51,12 @@ const VariantsDialog = ({
   }, [productId]);
 
   const handleSave = async () => {
-    const updates = Object.entries(stockChanges);
+    const updates = Object.entries(stockChanges).map(([id, stock]) => ({
+      id,
+      stock,
+    }));
 
-    await Promise.all(updates.map(([id, stock]) => ({ id, stock })));
+    await variantsMutation.mutateAsync(updates);
 
     setStockChanges({});
   };
@@ -108,7 +115,7 @@ const VariantsDialog = ({
           onClick={handleSave}
           className="mr-5 mt-3 py-1 px-5 border border-secondary rounded-md text-primary font-medium cursor-pointer"
         >
-          حفظ
+          {variantsMutation.isPending ? "يتم الحفظ..." : "حفظ"}
         </button>
       )}
     </div>
