@@ -1,5 +1,6 @@
 import { getVariants, supabase } from "@/supabase";
 import { updateVariant } from "@/supabase";
+import { updateVariantsInAdminPage } from "@/supabase/db/variants";
 import type { VariantsTableType } from "@/supabase/types";
 import type { TVariantsVM } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -81,6 +82,24 @@ export const useUpdateVariant = () => {
         queryKey: ["variant", data.id],
       });
       queryClient.invalidateQueries({ queryKey: ["variants"] });
+    },
+  });
+};
+
+export const useUpdateVariantsInAdminPage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (
+      updatedStocks: {
+        id: string;
+        stock: number;
+      }[],
+    ) => updateVariantsInAdminPage(updatedStocks),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["variantsVM"],
+      });
     },
   });
 };
