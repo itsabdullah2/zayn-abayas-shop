@@ -8,7 +8,7 @@ type VariantsOpts = {
 };
 
 export const getVariants = async (
-  options: VariantsOpts = {}
+  options: VariantsOpts = {},
 ): Promise<VariantsTableType[]> => {
   try {
     const { productId, inCol, inVal } = options;
@@ -34,7 +34,7 @@ export const getVariants = async (
 
 export const updateVariant = async (
   id: string,
-  stock: number
+  stock: number,
 ): Promise<VariantsTableType> => {
   try {
     if (!id) {
@@ -59,6 +59,29 @@ export const updateVariant = async (
     return data;
   } catch (err) {
     console.error(`Failed to update the variant ${err}`);
+    throw err;
+  }
+};
+
+export const updateVariantsInAdminPage = async (
+  updatedStocks: {
+    id: string;
+    stock: number;
+  }[],
+) => {
+  try {
+    const { data, error } = await supabase
+      .from("product_variants")
+      .upsert(updatedStocks);
+    // .select();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Failed to update the selected stock:", err);
     throw err;
   }
 };
@@ -112,7 +135,7 @@ export const deleteVariants = async (productId: string) => {
 };
 
 export const getColors = async (
-  colorId: string = ""
+  colorId: string = "",
 ): Promise<ColorsAndSizesType[]> => {
   try {
     let query = supabase.from("colors").select("*");
@@ -133,7 +156,7 @@ export const getColors = async (
 };
 
 export const getSizes = async (
-  sizeId: string = ""
+  sizeId: string = "",
 ): Promise<ColorsAndSizesType[]> => {
   try {
     let query = supabase.from("sizes").select("*");
