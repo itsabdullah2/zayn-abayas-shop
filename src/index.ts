@@ -12,10 +12,10 @@ export const CheckoutPage = lazy(() => import("./pages/Checkout"));
 export const OrderStatusPage = lazy(() => import("./pages/OrderStatus"));
 export const CartPage = lazy(() => import("./pages/Cart"));
 export const SearchPopup = lazy(
-  () => import("./components/common/search/SearchPopup")
+  () => import("./components/common/search/SearchPopup"),
 );
 export const ProductDetailsPopup = lazy(
-  () => import("./components/common/details_popup")
+  () => import("./components/common/details_popup"),
 );
 export const OrdersPage = lazy(() => import("./pages/Orders"));
 export const Error404Page = lazy(() => import("./pages/Error404"));
@@ -25,14 +25,18 @@ export const ProductDetailsPage = lazy(() => import("./pages/ProductDetails"));
 
 export const AdminOrdersPage = lazy(() => import("./pages/admin/AdminOrders"));
 export const AdminDashboardPage = lazy(
-  () => import("./pages/admin/AdminDashboard")
+  () => import("./pages/admin/AdminDashboard"),
 );
 export const AdminProductsPage = lazy(
-  () => import("./pages/admin/AdminProducts")
+  () => import("./pages/admin/AdminProducts"),
 );
 export const AdminSidebar = lazy(
-  () => import("./components/features/dash/Sidebar")
+  () => import("./components/features/dash/Sidebar"),
 );
 export const TablePagination = lazy(
-  () => import("./components/layout/TablePagination")
+  () => import("./components/layout/TablePagination"),
 );
+
+//
+
+export * from "./lib/queryClient";
