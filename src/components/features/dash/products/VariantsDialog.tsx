@@ -56,6 +56,8 @@ const VariantsDialog = ({
       stock,
     }));
 
+    if (!updates.length) return;
+
     await variantsMutation.mutateAsync(updates);
 
     setStockChanges({});
@@ -88,19 +90,24 @@ const VariantsDialog = ({
           </thead>
           <tbody>
             {variantsVM.map((v) => (
-              <tr key={v.id} className={`odd:bg-accent`}>
+              <tr
+                key={v.id}
+                className={`odd:bg-white ${v.isOutOfStock ? "bg-red-300/80!" : v.isLowStock ? "bg-yellow-300/80!" : ""}`}
+              >
                 <td className="py-1 px-5 text-sm flex items-center gap-2">
                   <StockInput variant={v} />
                 </td>
-                <td className="py-1 px-5 text-sm">
+                <td className="py-1 px-5 text-sm text-primary">
                   {translateVariantsOpts(v.color.name)}
                 </td>
-                <td className="py-1 px-5 text-sm">
+                <td className="py-1 px-5 text-sm text-primary">
                   {v.size.name.toUpperCase()}
                 </td>
-                <td className="py-1 px-5 text-sm">
+                <td
+                  className={`py-1 px-5 text-sm ${v.isOutOfStock ? "text-red-600" : v.isLowStock ? "text-yellow-600" : "text-primary"}`}
+                >
                   {v.isOutOfStock
-                    ? "غير متوفر"
+                    ? `غير متوفر`
                     : v.isLowStock
                       ? "كمية قليلة"
                       : "متوفر"}
@@ -113,7 +120,8 @@ const VariantsDialog = ({
       {isLoading ? null : (
         <button
           onClick={handleSave}
-          className="mr-5 mt-3 py-1 px-5 border border-secondary rounded-md text-primary font-medium cursor-pointer"
+          disabled={variantsMutation.isPending}
+          className={`mr-5 mt-3 py-1 px-5 border rounded-md ${variantsMutation.isPending ? "text-gray border-gray cursor-auto" : "text-primary border-secondary cursor-pointer"} font-medium`}
         >
           {variantsMutation.isPending ? "يتم الحفظ..." : "حفظ"}
         </button>
