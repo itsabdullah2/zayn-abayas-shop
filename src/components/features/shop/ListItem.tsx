@@ -6,20 +6,16 @@ import { IoIosMore } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useContextSelector } from "use-context-selector";
 
-type EnrichedProductType = ProductType & {
-  price?: number;
-};
-
 const ListItem = ({
   product,
   index,
 }: {
-  product: EnrichedProductType;
+  product: ProductType;
   index: number;
 }) => {
   const openProductPopup = useContextSelector(
     AppContext,
-    (ctx) => ctx?.openProductPopup
+    (ctx) => ctx?.openProductPopup,
   );
   const navigate = useNavigate();
 
@@ -54,8 +50,8 @@ const ListItem = ({
             : product.product_name}
         </p>
         <span className="font-medium text-accentA">
-          {product.price
-            ? `ج.م ${PriceFormatter(product.price, "en-EG")}`
+          {product.product_price
+            ? `ج.م ${PriceFormatter(product.product_price, "en-EG")}`
             : "N/A"}
         </span>
       </figcaption>
