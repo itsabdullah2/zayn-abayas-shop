@@ -10,7 +10,7 @@ import { SkeletonCard } from "@/components/common/SkeletonCard";
 const Shop = () => {
   const selectedCategory = useContextSelector(
     AppContext,
-    (ctx) => ctx?.selectedCategory
+    (ctx) => ctx?.selectedCategory,
   )!;
 
   const { data: categories = [], isLoading: categoriesLoading } =
