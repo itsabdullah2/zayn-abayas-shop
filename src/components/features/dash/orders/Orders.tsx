@@ -1,6 +1,6 @@
 import Table from "./Table";
 import DashboardNavbar from "../DashboardNavbar";
-import { useEnrichedProducts } from "@/hooks/useEnrichedOrders";
+import { useEnrichedOrders } from "@/hooks/useEnrichedOrders";
 import { useState } from "react";
 import { TablePagination } from "@/.";
 import useOrders from "@/hooks/useOrders";
@@ -9,9 +9,9 @@ const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const { data: orders = [], isLoading } = useEnrichedProducts(
+  const { data: orders = [], isLoading } = useEnrichedOrders(
     itemsPerPage,
-    currentPage
+    currentPage,
   );
   const { data: getAllOrders = [] } = useOrders();
   return (

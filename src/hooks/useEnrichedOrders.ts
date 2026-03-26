@@ -2,7 +2,7 @@ import { getAllOrders } from "@/supabase/db/orders";
 import type { FullOrder } from "@/supabase/types";
 import { useQuery } from "@tanstack/react-query";
 
-export const useEnrichedProducts = (limit: number, page: number = 1) => {
+export const useEnrichedOrders = (limit: number, page: number = 1) => {
   const offset = (page - 1) * limit;
 
   return useQuery<FullOrder[]>({
