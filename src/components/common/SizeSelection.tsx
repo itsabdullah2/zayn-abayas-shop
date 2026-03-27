@@ -8,9 +8,8 @@ type Props = {
   isAvailable: boolean | undefined;
 };
 
-const sharedSizeStyles =
-  "py-1 px-3 rounded-full border w-15 cursor-pointer text-sm";
-const activeSizeStyle = "text-neutral bg-primary border-primary";
+const sharedSizeStyles = "py-1 px-3 rounded-full border w-15 text-sm";
+const activeSizeStyle = `text-neutral border-primary`;
 const inactiveSizeStyle = "text-primary border-soft-gray";
 
 const SizeSelection = ({
@@ -27,10 +26,14 @@ const SizeSelection = ({
           <button
             key={size.id}
             className={`${sharedSizeStyles} ${
-              selectedSizeId === size.id ? activeSizeStyle : inactiveSizeStyle
+              selectedSizeId === size.id && isAvailable
+                ? `${activeSizeStyle} bg-primary`
+                : selectedSizeId === size.id && !isAvailable
+                  ? "bg-soft-gray/50 text-primary border-soft-gray/50 cursor-auto"
+                  : `${inactiveSizeStyle} cursor-pointer`
             }`}
             onClick={() => onSizeChange(size.id)}
-            disabled={!isAvailable}
+            // disabled={!isAvailable}
             aria-label={`Select size ${size.name}`}
           >
             {size.name}
