@@ -90,8 +90,9 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
         </div>
 
         <button
-          className="flex-1 border border-primary primary-btn rounded-none! px-3! h-auto! py-1 text-[15px] relative overflow-hidden group cursor-pointer mt-1"
+          className={`flex-1 border ${isVariantAvailable ? "primary-btn border-primary cursor-pointer" : "bg-soft-gray/50 border-soft-gray/50 cursor-auto"} rounded-none! px-3! h-auto! py-1 text-[15px] relative overflow-hidden group mt-1`}
           onClick={handleAddToCart}
+          disabled={!isVariantAvailable}
         >
           أضف إلى السلة
           <span className="shine-effect group-hover:animate-shine" />
