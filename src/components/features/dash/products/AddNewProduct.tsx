@@ -46,15 +46,15 @@ const AddNewProduct = ({
 
   const newProductData = useContextSelector(
     ProductContext,
-    (ctx) => ctx?.newProductData
+    (ctx) => ctx?.newProductData,
   )!;
   const setNewProductData = useContextSelector(
     ProductContext,
-    (ctx) => ctx?.setNewProductData
+    (ctx) => ctx?.setNewProductData,
   )!;
   const handleFieldChange = useContextSelector(
     ProductContext,
-    (ctx) => ctx?.handleFieldChange
+    (ctx) => ctx?.handleFieldChange,
   )!;
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -67,7 +67,7 @@ const AddNewProduct = ({
     setNewProductData((prev) => {
       const newSelections = selectedColorIds.map((id) => {
         const existing = prev.variants.selections.find(
-          (sel) => sel.color_id === id
+          (sel) => sel.color_id === id,
         );
         return existing ?? { color_id: id, sizes_id: [] };
       });
@@ -183,7 +183,7 @@ const AddNewProduct = ({
                 <DropdownSelection
                   key={sel.color_id}
                   label={`اختر المقاس لل${translateVariantsOpts(
-                    getColorName(sel.color_id, colors!)
+                    getColorName(sel.color_id, colors!),
                   )}`}
                   options={sizes || []}
                   selectedIds={sel.sizes_id}
@@ -195,7 +195,7 @@ const AddNewProduct = ({
                         selections: prev.variants.selections.map((s) =>
                           s.color_id === sel.color_id
                             ? { ...s, sizes_id: newSize }
-                            : s
+                            : s,
                         ),
                       },
                     }));
@@ -207,7 +207,7 @@ const AddNewProduct = ({
                 label="اختر اللون"
                 options={colors || []}
                 selectedIds={newProductData.variants.selections.map(
-                  (s) => s.color_id
+                  (s) => s.color_id,
                 )}
                 // onChange={handleVariantChange("colors")}
                 onChange={handleColorChange}
