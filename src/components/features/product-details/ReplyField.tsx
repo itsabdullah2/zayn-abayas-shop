@@ -1,3 +1,4 @@
+import CustomButton from "@/components/common/CustomButton";
 import React from "react";
 
 type Props = {
@@ -17,13 +18,12 @@ const ReplyField = ({ value, onChange, onSubmit }: Props) => {
         onChange={onChange}
         className="input border border-soft-gray text-sm py-1 px-2"
       />
-      <button
+      <CustomButton
         type="submit"
-        className="py-1 px-6 w-fit text-sm text-medium text-neutral cursor-pointer bg-primary ml-auto overflow-hidden relative group"
-      >
-        Add
-        <span className="shine-effect group-hover:animate-shine" />
-      </button>
+        className="py-1 px-6! w-fit text-sm text-medium cursor-pointer ml-auto!"
+        btnText="إضافة"
+        btnType="primary"
+      />
     </form>
   );
 };

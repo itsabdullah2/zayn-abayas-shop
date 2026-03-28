@@ -4,6 +4,7 @@ import useCheckout from "@/hooks/useCheckout";
 import { useMemo } from "react";
 import { CartContext } from "@/context/CartContext";
 import { useContextSelector } from "use-context-selector";
+import CustomButton from "@/components/common/CustomButton";
 
 const CartSidebar = () => {
   const navigate = useNavigate();
@@ -49,13 +50,12 @@ const CartSidebar = () => {
         </div>
       </div>
 
-      <button
-        className="w-full relative group overflow-hidden primary-btn rounded-none! cursor-pointer"
+      <CustomButton
         onClick={() => navigate("/checkout")}
-      >
-        متابعة إلى الدفع
-        <span className="shine-effect group-hover:animate-shine" />
-      </button>
+        className="w-full rounded-none!"
+        btnText="متابعة إلى الدفع"
+        btnType="primary"
+      />
     </aside>
   );
 };

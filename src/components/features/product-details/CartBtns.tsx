@@ -1,3 +1,4 @@
+import CustomButton from "@/components/common/CustomButton";
 import React from "react";
 
 type Props = {
@@ -14,13 +15,12 @@ const CartBtns = ({ handleAddToCart, handleBuyNow }: Props) => {
       >
         اشترِ الآن
       </button>
-      <button
-        className="flex-1 border border-primary primary-btn rounded-none! px-3! h-auto! py-1 text-[15px] relative overflow-hidden group cursor-pointer"
+      <CustomButton
         onClick={handleAddToCart}
-      >
-        أضف إلى السلة
-        <span className="shine-effect group-hover:animate-shine" />
-      </button>
+        className="flex-1 border border-primary rounded-none! px-3! h-auto! py-1! text-[15px]! cursor-pointer"
+        btnText="أضف إلى السلة"
+        btnType="primary"
+      />
     </div>
   );
 };

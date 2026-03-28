@@ -4,6 +4,7 @@ import { useContextSelector } from "use-context-selector";
 import { AuthContext } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { addReview } from "@/supabase";
+import CustomButton from "@/components/common/CustomButton";
 
 type Props = {
   productId: string;
@@ -71,7 +72,7 @@ const AddReview = ({ productId, refreshReviews }: Props) => {
         <textarea
           placeholder="أضف تقييم..."
           maxLength={600}
-          className="bg-light-gray h-[180px] resize-none py-2 px-4 focus:outline-none focus:placeholder:opacity-0 placeholder:duration-200 caret-accentA text-primary text-[15px]"
+          className="bg-light-gray h-45 resize-none py-2 px-4 focus:outline-none focus:placeholder:opacity-0 placeholder:duration-200 caret-accentA text-primary text-[15px]"
           value={reviewData.reviewVal}
           onChange={handleTextareaChange}
         />
@@ -79,13 +80,12 @@ const AddReview = ({ productId, refreshReviews }: Props) => {
         {/* Render The Number of Characters Here... */}
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
-        <button
+        <CustomButton
           type="submit"
-          className="py-2 px-12 w-fit text-medium text-neutral cursor-pointer bg-primary ml-auto overflow-hidden relative group"
-        >
-          إرسال
-          <span className="shine-effect group-hover:animate-shine" />
-        </button>
+          className="py-2! px-12! w-fit! text-medium cursor-pointer ml-auto"
+          btnText="إرسال"
+          btnType="primary"
+        />
       </form>
       <Stars
         className="md:basis-58 text-3xl"

@@ -5,6 +5,7 @@ import { PriceFormatter } from "@/utils/formatePrice";
 import ColorSelection from "../ColorSelection";
 import SizeSelection from "../SizeSelection";
 import { useState } from "react";
+import CustomButton from "../CustomButton";
 
 type Props = {
   product: ProductType;
@@ -88,15 +89,12 @@ const ProductInfo = ({ product, variants, colors, sizes, close }: Props) => {
             </div>
           )}
         </div>
-
-        <button
-          className={`flex-1 border ${isVariantAvailable ? "primary-btn border-primary cursor-pointer" : "bg-soft-gray/50 border-soft-gray/50 cursor-auto"} rounded-none! px-3! h-auto! py-1 text-[15px] relative overflow-hidden group mt-1`}
+        <CustomButton
           onClick={handleAddToCart}
-          disabled={!isVariantAvailable}
-        >
-          أضف إلى السلة
-          <span className="shine-effect group-hover:animate-shine" />
-        </button>
+          isDisabled={!isVariantAvailable}
+          className={`flex-1 border ${isVariantAvailable ? "primary-btn border-primary cursor-pointer" : "bg-soft-gray/50 border-soft-gray/50 cursor-auto"} rounded-none! px-3! h-auto! py-1 text-[15px] relative overflow-hidden group mt-1`}
+          btnText="أضف إلى السلة"
+        />
       </div>
     </div>
   );

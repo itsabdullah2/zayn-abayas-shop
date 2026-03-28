@@ -3,6 +3,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import CartDropdownItem from "./CartDropdownItem";
 import useCartData from "@/hooks/useCartData";
+import CustomButton from "../CustomButton";
 
 const CartDropdown = () => {
   const { cartProducts, totalItems, totalPrice } = useCartData();
@@ -66,13 +67,19 @@ const CartDropdown = () => {
                       ج.م {totalPrice?.toFixed(2)}
                     </span>
                   </div>
-                  <button
+                  {/* <button
                     className="primary-btn relative group overflow-hidden w-full cursor-pointer"
                     onClick={handleNavigate}
                   >
                     عرض السلة
                     <span className="shine-effect group-hover:animate-shine" />
-                  </button>
+                  </button> */}
+                  <CustomButton
+                    onClick={handleNavigate}
+                    className="w-full cursor-pointer"
+                    btnText="عرض السلة"
+                    btnType="primary"
+                  />
                 </div>
               </>
             )}

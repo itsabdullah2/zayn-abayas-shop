@@ -8,6 +8,7 @@ import { translateVariantsOpts } from "@/utils/translateOptsInAddProductPopup";
 import React, { useEffect } from "react";
 import { useContextSelector } from "use-context-selector";
 import StockInput from "./StockInput";
+import CustomButton from "@/components/common/CustomButton";
 
 const VariantsDialog = ({
   productId,
@@ -118,13 +119,12 @@ const VariantsDialog = ({
         </table>
       )}
       {isLoading ? null : (
-        <button
+        <CustomButton
           onClick={handleSave}
-          disabled={variantsMutation.isPending}
-          className={`mr-5 mt-3 py-1 px-5 border rounded-md ${variantsMutation.isPending ? "text-gray border-gray cursor-auto" : "text-primary border-secondary cursor-pointer"} font-medium`}
-        >
-          {variantsMutation.isPending ? "يتم الحفظ..." : "حفظ"}
-        </button>
+          isDisabled={variantsMutation.isPending}
+          className={`mr-5 mt-3 py-1 px-5 border ${variantsMutation.isPending ? "text-gray border-gray cursor-auto" : "bg-primary text-neutral border-primary cursor-pointer"} font-medium`}
+          btnText={variantsMutation.isPending ? "يتم الحفظ..." : "حفظ"}
+        />
       )}
     </div>
   );

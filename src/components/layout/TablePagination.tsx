@@ -33,7 +33,7 @@ const TablePagination = ({
     <div className={`flex items-center justify-between ${className}`}>
       <div className="flex items-center gap-1">
         <button
-          className={`cursor-pointer hover:bg-light-gray py-3 px-3 rounded-full duration-150 active:translate-x-[2px] ${
+          className={`cursor-pointer hover:bg-light-gray py-3 px-3 rounded-full duration-150 active:translate-x-0.5 ${
             currentPage === totalPages
               ? "opacity-40 cursor-not-allowed"
               : "hover:bg-light-gray text-primary"
@@ -49,7 +49,7 @@ const TablePagination = ({
           {/* {currentPage} - {end} */}
         </span>
         <button
-          className={`cursor-pointer hover:bg-light-gray py-3 px-3 rounded-full duration-150 active:translate-x-[-2px] ${
+          className={`cursor-pointer hover:bg-light-gray py-3 px-3 rounded-full duration-150 active:-translate-x-0.5 ${
             currentPage === 1
               ? "opacity-40 cursor-not-allowed"
               : "hover:bg-light-gray text-primary"

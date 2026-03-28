@@ -1,3 +1,4 @@
+import CustomButton from "@/components/common/CustomButton";
 import useCartData from "@/hooks/useCartData";
 import useCheckout from "@/hooks/useCheckout";
 import { getTotalPriceAfterDiscount } from "@/utils/promoUtils";
@@ -80,14 +81,13 @@ const OrderSummary = () => {
           onChange={(e) => setPromoCode?.(e.target.value)}
           className="flex-1 pr-3 input"
         />
-        <button
-          type="button"
+
+        <CustomButton
           onClick={() => handleApplyPromo?.(totalPrice)}
-          className="relative group overflow-hidden primary-btn rounded-full! cursor-pointer"
-        >
-          تطبيق
-          <span className="shine-effect group-hover:animate-shine" />
-        </button>
+          className="rounded-full!"
+          btnText="تطبيق"
+          btnType="primary"
+        />
       </div>
 
       {appliedPromo && (

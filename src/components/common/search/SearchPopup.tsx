@@ -5,6 +5,7 @@ import SearchInput from "./SearchInput";
 import { useEffect, useRef } from "react";
 import SearchResults from "./SearchResults";
 import useSearch from "@/hooks/useSearch";
+import { IoIosClose } from "react-icons/io";
 
 const SearchPopup = () => {
   const searchHook = useSearch();
@@ -12,7 +13,7 @@ const SearchPopup = () => {
 
   const handleCloseSearchPopup = useContextSelector(
     AppContext,
-    (ctx) => ctx?.handleCloseSearchPopup
+    (ctx) => ctx?.handleCloseSearchPopup,
   )!;
 
   useEffect(() => {
@@ -63,7 +64,7 @@ const SearchPopup = () => {
           onClick={handleCloseSearchPopup}
           aria-label="Close search popup"
         >
-          Esc
+          <IoIosClose />
         </Button>
       </div>
     </>

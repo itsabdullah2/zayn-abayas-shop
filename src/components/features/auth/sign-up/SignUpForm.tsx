@@ -1,3 +1,4 @@
+import CustomButton from "@/components/common/CustomButton";
 import InputField from "@/components/common/InputField";
 import { signUpWithEmail } from "@/supabase";
 import { useState } from "react";
@@ -39,7 +40,7 @@ const SignUpForm = () => {
         formData.email,
         formData.password,
         formData.username,
-        formData.role
+        formData.role,
       );
 
       navigate("/sign-in");
@@ -97,25 +98,13 @@ const SignUpForm = () => {
             value={formData.password}
             onChange={handleChange}
           />
-          {/* <InputField
-            label=""
-            type=""
-            name=""
-            id=""
-            placeholder=""
-            showPasswordFn={}
-            toggleIcon={}
-            value={}
-            onChange={}
-          /> */}
-          <button
+
+          <CustomButton
             type="submit"
-            disabled={loading}
+            isDisabled={loading}
             className={`relative group overflow-hidden w-full bg-primary text-neutral py-3 rounded-lg font-medium hover:bg-blueberry duration-200 cursor-pointer`}
-          >
-            {loading ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
-            <span className="shine-effect group-hover:animate-shine" />
-          </button>
+            btnText={loading ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
+          />
 
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         </form>

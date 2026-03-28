@@ -1,3 +1,4 @@
+import CustomButton from "@/components/common/CustomButton";
 import InputField from "@/components/common/InputField";
 import { signInWithPassword } from "@/supabase";
 import {
@@ -108,14 +109,12 @@ const SignInForm = () => {
             </a>
           </div>
 
-          <button
+          <CustomButton
             type="submit"
-            disabled={loading}
+            isDisabled={loading}
             className={`relative group overflow-hidden w-full bg-primary text-neutral py-3 rounded-lg font-medium hover:bg-blueberry duration-200 cursor-pointer`}
-          >
-            {loading ? "جارٍ تسجيل الدخول..." : "تسجيل الدخول"}
-            <span className="shine-effect group-hover:animate-shine" />
-          </button>
+            btnText={loading ? "جارٍ تسجيل الدخول..." : "تسجيل الدخول"}
+          />
 
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         </form>

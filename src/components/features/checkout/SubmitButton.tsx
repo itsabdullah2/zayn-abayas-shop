@@ -1,3 +1,5 @@
+import CustomButton from "@/components/common/CustomButton";
+
 interface SubmitButtonProps {
   loading: boolean;
   total: number;
@@ -9,18 +11,16 @@ const SubmitButton = ({
   total,
   stripeAvailable,
 }: SubmitButtonProps) => (
-  <button
+  <CustomButton
     type="submit"
-    disabled={!stripeAvailable || loading}
+    isDisabled={!stripeAvailable || loading}
     className={`w-full py-3 rounded-lg text-white font-semibold cursor-pointer ${
       loading || !stripeAvailable
         ? "bg-soft-gray cursor-not-allowed"
         : "bg-primary relative overflow-hidden group"
     }`}
-  >
-    {loading ? "جارٍ المعالجة..." : `ادفع ${total} ج.م`}
-    <span className="shine-effect group-hover:animate-shine" />
-  </button>
+    btnText={loading ? "جارٍ المعالجة..." : `ادفع ${total} ج.م`}
+  />
 );
 
 export default SubmitButton;
