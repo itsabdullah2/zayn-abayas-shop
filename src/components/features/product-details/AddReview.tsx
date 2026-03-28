@@ -82,7 +82,7 @@ const AddReview = ({ productId, refreshReviews }: Props) => {
 
         <CustomButton
           type="submit"
-          className="py-2! px-12! w-fit! text-medium cursor-pointer ml-auto"
+          className="py-2! px-12! w-fit! text-medium cursor-pointer ml-auto rounded-none!"
           btnText="إرسال"
           btnType="primary"
         />
