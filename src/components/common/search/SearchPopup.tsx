@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { AppContext } from "@/context/AppContext";
 import { useContextSelector } from "use-context-selector";
 import SearchInput from "./SearchInput";
@@ -57,15 +56,13 @@ const SearchPopup = () => {
           />
         </div>
 
-        <Button
-          role="button"
-          size="sm"
+        <button
           className="bg-gray/30 text-primary border border-text absolute top-2 right-5 cursor-pointer hover:bg-light-gray duration-200"
           onClick={handleCloseSearchPopup}
           aria-label="Close search popup"
         >
-          <IoIosClose />
-        </Button>
+          <IoIosClose size={25} />
+        </button>
       </div>
     </>
   );
