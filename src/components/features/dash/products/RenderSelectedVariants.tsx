@@ -12,15 +12,13 @@ type Props = {
 const RenderSelectedVariants = ({ sizes, colors }: Props) => {
   const setVariants = useContextSelector(
     ProductContext,
-    (ctx) => ctx?.setVariants
+    (ctx) => ctx?.setVariants,
   )!;
   const variants = useContextSelector(ProductContext, (ctx) => ctx?.variants)!;
 
   return variants.length ? (
-    <div className="flex flex-col gap-3">
-      <h3 className="text-sm font-medium text-dark-gray w-fit">
-        التصنيفات المختارة
-      </h3>
+    <div className="flex flex-col gap-3 border border-light-gray rounded-md p-2.5">
+      <h3 className="text-sm font-medium text-dark-gray w-fit">أضف الكمية</h3>
       <div className="flex flex-col gap-2 max-h-43 overflow-y-auto">
         {variants.map((variant, idx) => (
           <div
@@ -42,7 +40,7 @@ const RenderSelectedVariants = ({ sizes, colors }: Props) => {
               onChange={(e) => {
                 const value = Number(e.target.value);
                 setVariants((prev) =>
-                  prev.map((v, i) => (i === idx ? { ...v, stock: value } : v))
+                  prev.map((v, i) => (i === idx ? { ...v, stock: value } : v)),
                 );
               }}
             />
