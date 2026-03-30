@@ -52,7 +52,7 @@ const CartSidebar = () => {
 
       <CustomButton
         onClick={() => navigate("/checkout")}
-        className="w-full rounded-none!"
+        className="w-full rounded-none! cursor-pointer"
         btnText="متابعة إلى الدفع"
         btnType="primary"
       />
