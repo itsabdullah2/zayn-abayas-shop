@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 
 type SearchHookType = {
@@ -26,6 +26,13 @@ const SearchInput = ({
       searchProducts({ query: searchQuery });
     }
   };
+
+  // Keep the input focused even when the search query changes, to prevent losing focus when typing
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [searchQuery, loading]);
 
   return (
     <Input
