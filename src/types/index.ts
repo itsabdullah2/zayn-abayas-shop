@@ -47,3 +47,12 @@ export type TVariantsVM = {
   isLowStock: boolean;
   isOutOfStock: boolean;
 };
+
+export type TCheckoutFormData = {
+  name: string;
+  email: string;
+  address1: string;
+  address2: string;
+  city: string;
+  country: string;
+};
