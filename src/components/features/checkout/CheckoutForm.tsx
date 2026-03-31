@@ -14,7 +14,7 @@ import {
   updateOrderStatus,
   createNotification,
 } from "@/supabase";
-import type { EnrichedCartItem } from "@/types";
+import type { EnrichedCartItem, TCheckoutFormData } from "@/types";
 import { AuthContext } from "@/context/AuthContext";
 import useCartData from "@/hooks/useCartData";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ const CheckoutForm = () => {
   const { incrementCartVersion } = useCartData();
   const updateVariantMutation = useUpdateVariant();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<TCheckoutFormData>({
     name: "",
     email: "",
     address1: "",
@@ -243,6 +243,17 @@ const CheckoutForm = () => {
     );
   }
 
+  const requiredFields: (keyof TCheckoutFormData)[] = [
+    "name",
+    "email",
+    "address1",
+    "city",
+    "country",
+  ];
+  const isFormValid = requiredFields.every(
+    (field) => formData[field].trim() !== "",
+  );
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -255,6 +266,7 @@ const CheckoutForm = () => {
         loading={loading}
         total={priceBreakdown.subtotal > 0 ? priceBreakdown.total : 0}
         stripeAvailable={!!stripe && !!priceBreakdown.subtotal}
+        isFormValid={isFormValid}
       />
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
     </form>
