@@ -5,6 +5,8 @@ import CartSidebar from "./CartSidebar";
 const Cart = () => {
   const { cartProducts, isLoading, totalItems } = useCartData();
 
+  const isEmptyCart = cartProducts?.length === 0;
+
   return (
     <section className="section-container flex flex-col gap-10">
       <div className="flex flex-col">
@@ -30,11 +32,11 @@ const Cart = () => {
             <div className="flex flex-col ">
               {isLoading ? (
                 <div className="text-text font-medium text-[1.0625rem] text-center">
-                  Loading Products...
+                  تحميل المنتحات...
                 </div>
               ) : !cartProducts?.length ? (
                 <div className="text-text font-medium text-[1.0625rem] text-center">
-                  No Products Found
+                  لا توجد منتجات في السلة
                 </div>
               ) : (
                 <CartItems items={cartProducts} />
@@ -43,7 +45,7 @@ const Cart = () => {
           </div>
         </div>
 
-        <CartSidebar />
+        <CartSidebar isEmptyCart={isEmptyCart} />
       </div>
     </section>
   );
