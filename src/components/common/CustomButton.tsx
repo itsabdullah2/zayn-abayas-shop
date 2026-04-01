@@ -22,7 +22,11 @@ const CustomButton = ({
       type={type}
       onClick={onClick}
       disabled={isDisabled}
-      className={`${btnType === "primary" ? "primary-btn" : btnType === "secondary" ? "secondary-btn" : ""} overflow-hidden relative group ${className}`}
+      className={`${btnType === "primary" ? "primary-btn" : btnType === "secondary" ? "secondary-btn" : ""} overflow-hidden relative group ${
+        isDisabled
+          ? "bg-soft-gray! cursor-not-allowed!"
+          : "bg-primary relative overflow-hidden group cursor-pointer"
+      } ${className}`}
     >
       {btnText}
       <span className="shine-effect group-hover:animate-shine" />
