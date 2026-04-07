@@ -80,12 +80,12 @@ const ProductGrid = ({ title, eqCol, eqVal, limit }: ProductGridProps) => {
             <picture>
               {/* avif version */}
               <source
-                srcSet={`${item.product_img as string}?quality=80?format=avif`}
+                srcSet={`${item.product_img as string}?quality=80&format=avif`}
                 type="image/avif"
               />
               {/* webp version */}
               <source
-                srcSet={`${item.product_img as string}?quality=80?format=webp`}
+                srcSet={`${item.product_img as string}?quality=80&format=webp`}
                 type="image/webp"
               />
               <img

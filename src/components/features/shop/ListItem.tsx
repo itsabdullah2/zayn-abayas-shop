@@ -28,12 +28,12 @@ const ListItem = ({
       <picture>
         {/* avif version */}
         <source
-          srcSet={`${product.product_img as string}?quality=80?format=avif`}
+          srcSet={`${product.product_img as string}?quality=80&format=avif`}
           type="image/avif"
         />
         {/* webp version */}
         <source
-          srcSet={`${product.product_img as string}?quality=80?format=webp`}
+          srcSet={`${product.product_img as string}?quality=80&format=webp`}
           type="image/webp"
         />
         <img

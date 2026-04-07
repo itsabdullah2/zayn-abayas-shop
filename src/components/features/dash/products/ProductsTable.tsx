@@ -88,7 +88,7 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
                       <source
                         srcSet={`${
                           product.product_img as string
-                        }?quality=80?format=avif`}
+                        }?quality=80&format=avif`}
                         type="image/avif"
                         className="rounded-md"
                       />
@@ -96,7 +96,7 @@ const ProductsTable = ({ onClick }: { onClick: (id: string) => void }) => {
                       <source
                         srcSet={`${
                           product.product_img as string
-                        }?quality=80?format=webp`}
+                        }?quality=80&format=webp`}
                         type="image/webp"
                         className="rounded-md"
                       />
