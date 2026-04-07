@@ -1,5 +1,5 @@
 import type { ProductType } from "@/types";
-import { supabase } from "../";
+import { supabase } from "../client";
 
 type SearchOptions = {
   query: string;
@@ -9,7 +9,7 @@ type SearchOptions = {
 };
 
 export const searchProducts = async (
-  options: SearchOptions
+  options: SearchOptions,
 ): Promise<ProductType[]> => {
   try {
     const { query, category, limit = 20, sortBy = "name_asc" } = options;

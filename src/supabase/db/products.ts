@@ -1,4 +1,4 @@
-import { supabase } from "../";
+import { supabase } from "../client";
 import type { ProductType } from "@/types";
 
 type ProductOpts = {
@@ -10,7 +10,7 @@ type ProductOpts = {
 };
 
 export const getProducts = async (
-  options: ProductOpts = {}
+  options: ProductOpts = {},
 ): Promise<ProductType[]> => {
   try {
     const { limit, eqCol, eqVal, inCol, inVal } = options;
@@ -37,7 +37,7 @@ export const addProduct = async (
   productData: Omit<
     ProductType,
     "id" | "created_at" | "is_best_seller" | "available"
-  > & { category_id: string }
+  > & { category_id: string },
 ) => {
   try {
     const { data, error } = await supabase
@@ -88,7 +88,7 @@ type TEditingData = {
 };
 export const updateProduct = async (
   editedData: TEditingData,
-  productId: string
+  productId: string,
 ) => {
   try {
     const { product_name, product_desc, product_price, product_img } =
@@ -105,7 +105,7 @@ export const updateProduct = async (
     Object.keys(updatePayload).forEach(
       (key) =>
         updatePayload[key as keyof TEditingData] === undefined &&
-        delete updatePayload[key as keyof TEditingData]
+        delete updatePayload[key as keyof TEditingData],
     );
 
     const { data, error } = await supabase

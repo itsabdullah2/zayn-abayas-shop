@@ -1,8 +1,8 @@
-import { supabase } from "../";
+import { supabase } from "../client";
 import type { ReviewLikesTableType, ReviewsTableType } from "../types";
 
 export const getReviews = async (
-  productId: string
+  productId: string,
 ): Promise<ReviewsTableType[]> => {
   try {
     const { data, error } = await supabase
@@ -22,7 +22,7 @@ export const getReviews = async (
 type InsertReview = Omit<ReviewsTableType, "id" | "created_at">;
 
 export const addReview = async (
-  options: InsertReview
+  options: InsertReview,
 ): Promise<ReviewsTableType> => {
   try {
     const { data, error } = await supabase
@@ -43,7 +43,7 @@ export const updateReview = async (
   comment: string,
   rating: number,
   userId: string,
-  productId: string
+  productId: string,
 ): Promise<ReviewsTableType> => {
   try {
     const { data, error } = await supabase
@@ -63,7 +63,7 @@ export const updateReview = async (
 };
 
 export const getLikes = async (
-  review_id: string
+  review_id: string,
 ): Promise<ReviewLikesTableType[]> => {
   try {
     const { data, error } = await supabase
@@ -82,7 +82,7 @@ export const getLikes = async (
 
 export const addLike = async (
   user_id: string,
-  review_id: string
+  review_id: string,
 ): Promise<ReviewLikesTableType> => {
   try {
     const { data, error } = await supabase
@@ -105,7 +105,7 @@ export const addLike = async (
 
 export const deleteLike = async (
   user_id: string,
-  review_id: string
+  review_id: string,
 ): Promise<ReviewLikesTableType> => {
   try {
     const { data, error } = await supabase

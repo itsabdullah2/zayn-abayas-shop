@@ -1,4 +1,4 @@
-import { supabase } from "../";
+import { supabase } from "../client";
 import type { CartItemType } from "@/types";
 
 type ProductOpts = {
@@ -25,7 +25,7 @@ export const clearCart = async (userId: string) => {
 };
 
 export const getCartItems = async (
-  options: ProductOpts = {}
+  options: ProductOpts = {},
 ): Promise<CartItemType[]> => {
   try {
     const { eqCol, eqVal } = options;
@@ -121,7 +121,7 @@ export const removeItem = async (variantId: string, userId: string) => {
 
 export const increaseCartItemQuantity = async (
   variantId: string,
-  userId: string
+  userId: string,
 ) => {
   try {
     if (!variantId) throw new Error("Variant ID is Required");
@@ -158,7 +158,7 @@ export const increaseCartItemQuantity = async (
 
 export const decreaseCartItemQuantity = async (
   variantId: string,
-  userId: string
+  userId: string,
 ) => {
   try {
     if (!variantId) throw new Error("Variant ID is Required");

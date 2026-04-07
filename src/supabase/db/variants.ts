@@ -1,4 +1,4 @@
-import { supabase } from "../";
+import { supabase } from "../client";
 import type { ColorsAndSizesType, VariantsTableType } from "../types";
 
 type VariantsOpts = {

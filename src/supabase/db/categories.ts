@@ -1,4 +1,4 @@
-import { supabase } from "../";
+import { supabase } from "../client";
 import type { CategoriesTableType } from "../types";
 
 export const getCategories = async (): Promise<CategoriesTableType[]> => {
@@ -15,7 +15,7 @@ export const getCategories = async (): Promise<CategoriesTableType[]> => {
 };
 
 export const addNewCategory = async (
-  category: string
+  category: string,
 ): Promise<CategoriesTableType> => {
   try {
     if (!category.trim()) throw new Error("Category cannot be empty");

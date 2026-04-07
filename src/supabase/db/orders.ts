@@ -1,5 +1,5 @@
 import type { EnrichedCartItem } from "@/types";
-import { supabase } from "../";
+import { supabase } from "../client";
 import type {
   FullOrder,
   OrderItem,
