@@ -8,7 +8,7 @@ type Props = {
   inputClasses?: string;
   inputVal: number | string | File;
   onValChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
   isTextarea?: boolean;
   isFileInput?: boolean;
@@ -42,12 +42,14 @@ const PopupField = ({
         {labelIcon ? (
           <div className="flex flex-col gap-2">
             <img src={labelIcon} alt="labe-icon" className="w-14" />
-            <span className="wrap-break-word text-sm font-medium text-dark-gray">
-              {imgName}
-            </span>
           </div>
         ) : null}
       </label>
+      {labelIcon ? (
+        <p className="wrap-break-word text-sm font-medium text-dark-gray">
+          {imgName}
+        </p>
+      ) : null}
       {!isTextarea ? (
         <input
           type={type}
