@@ -64,6 +64,9 @@ const VariantsDialog = ({
     setStockChanges({});
   };
 
+  // store a boolean value that depends on the changed stock
+  const isStockChanged = Object.keys(stockChanges).length > 0;
+
   return (
     <div
       ref={ref}
@@ -121,8 +124,8 @@ const VariantsDialog = ({
       {isLoading ? null : (
         <CustomButton
           onClick={handleSave}
-          isDisabled={variantsMutation.isPending}
-          className={`mr-5 mt-3 py-1 px-5 border ${variantsMutation.isPending ? "text-gray border-gray cursor-auto" : "bg-primary text-neutral border-primary cursor-pointer"} font-medium`}
+          isDisabled={variantsMutation.isPending || !isStockChanged}
+          className={`mr-5 mt-3 py-1 px-5 border bg-primary text-white font-medium`}
           btnText={variantsMutation.isPending ? "يتم الحفظ..." : "حفظ"}
         />
       )}
