@@ -41,6 +41,14 @@ const ProtectedRoute = ({
         navigate("/");
         return;
       }
+      // Redirect the auth user to home page if they try to get to the sign up/in page
+      if (
+        user &&
+        (location.pathname === "/sign-up" || location.pathname === "/sign-in")
+      ) {
+        navigate("/", { replace: true });
+        return;
+      }
 
       // if role is explicitly required
       if (role && profile?.role !== role) {
@@ -48,7 +56,7 @@ const ProtectedRoute = ({
         return;
       }
     }
-  }, [user, loading, navigate, role, profile]);
+  }, [user, loading, navigate, role, profile, location.pathname]);
 
   if (loading || (!loading && !user)) return <Loading />;
 

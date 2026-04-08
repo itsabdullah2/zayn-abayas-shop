@@ -39,22 +39,33 @@ const Root = () => {
   }));
 
   useEffect(() => {
+    // Redirect the auth user to home page if they try to get to the sign up/in page
+    if (
+      user &&
+      (location.pathname === "/sign-in" || location.pathname === "/sign-up")
+    ) {
+      navigate(profile?.role === "admin" ? "/admin/dashboard" : "/", {
+        replace: true,
+      });
+      return;
+    }
+
     if (user && profile?.role === "admin" && !isAdminRoute) {
       navigate("/admin/dashboard", { replace: true });
     }
-  }, [user, profile?.role, isAdminRoute, navigate]);
+  }, [user, profile?.role, isAdminRoute, location.pathname, navigate]);
 
   const searchPopup = useContextSelector(
     AppContext,
-    (value) => value?.searchPopup
+    (value) => value?.searchPopup,
   );
   const productDetailsPopup = useContextSelector(
     AppContext,
-    (value) => value?.productPopup
+    (value) => value?.productPopup,
   );
   const productId = useContextSelector(
     AppContext,
-    (value) => value?.productPopup
+    (value) => value?.productPopup,
   )!;
 
   return (
