@@ -41,7 +41,7 @@ A modern, full-featured e-commerce platform for men's abayas, built with React, 
 
 ### Frontend
 
-- **React 18** - UI library
+- **React 19** - UI library
 - **TypeScript** - Type safety
 - **Vite** - Build tool and dev server
 - **Tailwind CSS** - Utility-first CSS framework
