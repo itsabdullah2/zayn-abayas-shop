@@ -47,7 +47,7 @@ const OrderTrackingPopup = ({ status, order }: Props) => {
   const trackingRef = useRef<HTMLDivElement>(null);
   const closeTrackingPopup = useContextSelector(
     OrdersContext,
-    (ctx) => ctx?.closeTrackingPopup
+    (ctx) => ctx?.closeTrackingPopup,
   );
 
   const stepIndex = steps.findIndex((s) => s.key === status);
@@ -77,9 +77,9 @@ const OrderTrackingPopup = ({ status, order }: Props) => {
 
   return (
     <>
-      <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-40" />
+      <div className="fixed top-0 left-0 w-full h-full bg-black/60 z-100" />
       <div
-        className="absolute top-32 left-1/2 -translate-x-1/2 z-50 text-white w-[95vw] md:w-[500px] lg:w-[800px] bg-white rounded-2xl py-5 px-6"
+        className="fixed top-32 left-1/2 -translate-x-1/2 text-white w-[95vw] md:w-125 lg:w-200 bg-white rounded-2xl py-5 px-6 z-200"
         ref={trackingRef}
       >
         {/* Header */}
@@ -111,17 +111,17 @@ const OrderTrackingPopup = ({ status, order }: Props) => {
             status === "paid"
               ? ""
               : status === "processing"
-              ? "before:h-[25%]"
-              : status === "shipped"
-              ? "before:h-[45%]"
-              : status === "out_for_delivery"
-              ? "before:h-[70%]"
-              : status === "delivered"
-              ? "before:h-[90%]"
-              : ""
-          } before:w-[2px] before:bg-blue-700 before:rounded-xl before:top-0 before:right-0 before:z-10 transition-all duration-200`}
+                ? "before:h-[25%]"
+                : status === "shipped"
+                  ? "before:h-[45%]"
+                  : status === "out_for_delivery"
+                    ? "before:h-[70%]"
+                    : status === "delivered"
+                      ? "before:h-[90%]"
+                      : ""
+          } before:w-0.5 before:bg-blue-700 before:rounded-xl before:top-0 before:right-0 before:z-10 transition-all duration-200`}
         >
-          <span className="absolute h-[260px] w-[2px] bg-light-gray rounded-xl top-0 right-0" />
+          <span className="absolute h-65 w-0.5 bg-light-gray rounded-xl top-0 right-0" />
 
           {steps.map((step, i) => {
             const isPast = i < stepIndex;
@@ -135,7 +135,7 @@ const OrderTrackingPopup = ({ status, order }: Props) => {
                 <span className="text-[12px] text-text">{step.desc}</span>
 
                 <div
-                  className={`w-5 h-5 rounded-full border absolute -right-[33px] -top-[1px] flex-center z-20 ${
+                  className={`w-5 h-5 rounded-full border absolute -right-8.25 -top-px flex-center z-20 ${
                     isPast || isCurrent
                       ? "bg-blue-700 border-blue-700"
                       : "bg-white border-soft-gray"
