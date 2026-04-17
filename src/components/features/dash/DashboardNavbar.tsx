@@ -91,7 +91,7 @@ const DashboardNavbar = () => {
     return () => {
       document.removeEventListener(
         "mousedown",
-        closeNotificationsOnClickOutside
+        closeNotificationsOnClickOutside,
       );
       document.removeEventListener("mousedown", closeAvatarOnClickOutside);
     };
@@ -173,11 +173,13 @@ const DashboardNavbar = () => {
 
         {isAvatarOpen && (
           <div
-            className="text-left flex flex-col gap-1 absolute left-10 top-full bg-neutral border border-gray-300 py-3 px-4 rounded-md shadow-lg z-50"
+            className="text-left flex flex-col gap-2 absolute left-10 top-full bg-neutral border border-gray-300 py-3 px-4 rounded-md shadow-lg z-50"
             ref={avatarRef}
           >
-            <span>{profile?.username}</span>
-            <span>{profile?.email}</span>
+            <span className="first-letter:capitalize border-b border-gray-400 pb-2 text-[15px]">
+              {profile?.username}
+            </span>
+            <span className="text-[15px]">{profile?.email}</span>
           </div>
         )}
       </nav>
