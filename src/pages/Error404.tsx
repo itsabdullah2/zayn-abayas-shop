@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Error404 = () => {
+  const location = useLocation();
+
+  const route = location.pathname.startsWith("/admin")
+    ? "/admin/dashboard"
+    : "/";
+
   return (
     <div className="flex-1 flex-center">
       <div className="flex flex-col items-center gap-3">
@@ -9,7 +15,7 @@ const Error404 = () => {
         </h1>
 
         <Link
-          to="/"
+          to={route}
           className="py-2 px-5 relative group overflow-hidden primary-btn rounded-none! w-fit mt-2 shadow-lg"
         >
           <span className="relative z-10 text-[15px]">الذهاب الى الرئيسية</span>
