@@ -20,6 +20,15 @@ import useCartData from "@/hooks/useCartData";
 import { useNavigate } from "react-router-dom";
 import { useUpdateVariant } from "@/hooks/useVariants";
 
+const INITIAL_STATE: TCheckoutFormData = {
+  name: "",
+  email: "",
+  address1: "",
+  address2: "",
+  city: "",
+  country: "",
+};
+
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
@@ -31,14 +40,7 @@ const CheckoutForm = () => {
   const { incrementCartVersion } = useCartData();
   const updateVariantMutation = useUpdateVariant();
 
-  const [formData, setFormData] = useState<TCheckoutFormData>({
-    name: "",
-    email: "",
-    address1: "",
-    address2: "",
-    city: "",
-    country: "",
-  });
+  const [formData, setFormData] = useState<TCheckoutFormData>(INITIAL_STATE);
 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
