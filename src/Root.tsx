@@ -112,6 +112,7 @@ const Root = () => {
                       </ProductProvider>
                     }
                   />
+                  <Route path="*" element={<Error404Page />} />
                 </Routes>
               </SidebarProvider>
             </ProtectedRoute>
